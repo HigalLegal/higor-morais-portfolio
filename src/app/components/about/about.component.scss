@@ -1,0 +1,24 @@
+mat-card {
+    background: none;
+    display: flex;
+    flex-direction: row;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+.coin {
+    display: flex;
+    flex-direction: column;
+    img {
+        width: 10%;
+        height: auto;
+    }
+}
+
+.text {
+    p {
+        color: var(--font-color);
+        font-family: CinzelDecorative;
+    }
+}

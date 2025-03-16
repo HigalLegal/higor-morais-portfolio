@@ -1,0 +1,48 @@
+<mat-toolbar class="medieval-navbar">
+    <button
+        mat-icon-button
+        (click)="openOrCloseMenu()"
+        aria-label="Menu"
+        class="menu-button"
+        [@rotateIcon]="isOpenMenu ? 'rotated' : 'default'"
+    >
+        <mat-icon>menu</mat-icon>
+    </button>
+    <div class="navbar-title">
+        <mat-icon svgIcon="medieval-celta"></mat-icon>
+        {{ name.toUpperCase() }}
+    </div>
+    <span class="spacer"></span>
+    <nav class="nav-links">
+        <button
+            mat-button
+            class="nav-button"
+            *ngFor="let item of navItems"
+            (click)="openComponent(item)"
+        >
+            {{ recoverValue(item) }}
+        </button>
+    </nav>
+    <button
+        mat-icon-button
+        aria-label="Toggle theme"
+        (click)="onChangeTheme()"
+        [matTooltip]="getThemeChangeMessage()"
+        matTooltipClass="tooltip"
+    >
+        <mat-icon>{{ getUnusedTheme() }}_mode</mat-icon>
+    </button>
+</mat-toolbar>
+<mat-sidenav-container
+    class="sidenav-container"
+    [ngStyle]="{ 'pointer-events': isOpenMenu ? 'auto' : 'none' }"
+    [@slideDown]="isOpenMenu ? 'visible' : 'hidden'"
+>
+    <mat-sidenav-content>
+        <mat-nav-list class="sidenav-list">
+            <button mat-button *ngFor="let item of navItems" class="nav-button">
+                {{ recoverValue(item) }}
+            </button>
+        </mat-nav-list>
+    </mat-sidenav-content>
+</mat-sidenav-container>

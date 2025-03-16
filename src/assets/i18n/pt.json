@@ -1,0 +1,18 @@
+{
+    "header": {
+        "inicio": "Início",
+        "sobreMim": "Sobre mim",
+        "habilidades": "Habilidades",
+        "cursos": "Cursos",
+        "experiencias": "Experiências",
+        "projetos": "Projetos",
+        "artigos": "Artigos",
+        "contateMe": "Contate-me",
+        "mudarTemaClaro": "Mudar para tema claro",
+        "mudarTemaEscuro": "Mudar para tema escuro"
+    },
+    "home": {
+        "desenvolvedor": "Desenvolvedor",
+        "fraseLogin": "Você sou eu? Se sim, clique aqui."
+    }
+}

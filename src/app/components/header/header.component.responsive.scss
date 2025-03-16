@@ -1,0 +1,21 @@
+@media (max-width: 1090px) {
+    .medieval-navbar {
+        .menu-button {
+            display: inline-flex;
+        }
+
+        .nav-links {
+            display: none;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-button {
+        display: inline-flex;
+    }
+
+    .nav-buttons {
+        display: none;
+    }
+}

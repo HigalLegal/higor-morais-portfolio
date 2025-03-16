@@ -1,0 +1,78 @@
+$background-value: var(--background-color);
+$color-light: var(--font-color);
+$font-size-base: 1rem;
+$font-size-large: 1.5rem;
+$spacing-small: 10px;
+$spacing-medium: 15px;
+
+@mixin nav-button-styles {
+    color: $color-light;
+    font-size: $font-size-base;
+    text-transform: capitalize;
+}
+
+@mixin themed-container {
+    background: $background-value;
+    color: $color-light;
+    border-bottom: 3px solid var(--font-color);
+}
+
+.tooltip {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.sidenav-container {
+    @include themed-container;
+    position: fixed;
+    display: flex;
+    width: 45vw;
+    justify-content: center;
+    border-right: 3px solid var(--font-color);
+    border-bottom: 3px solid var(--font-color);
+
+    .sidenav-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nav-button {
+        @include nav-button-styles;
+    }
+}
+
+.sidenav {
+    width: 250px;
+}
+
+.menu-button {
+    display: none;
+}
+
+.tooltip {
+    font-family: "CinzelDecorative";
+}
+
+.medieval-navbar {
+    @include themed-container;
+
+    .navbar-title {
+        margin-left: $spacing-medium;
+        font-size: $font-size-large;
+        font-weight: bold;
+
+        mat-icon[svgIcon="medieval-celta"] {
+            transform: scale(1.5);
+            transform-origin: center;
+            margin-right: $spacing-small;
+        }
+    }
+
+    .nav-button {
+        @include nav-button-styles;
+        margin-left: $spacing-small;
+    }
+
+    .spacer {
+        flex: 1 1 auto;
+    }
+}

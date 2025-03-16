@@ -1,0 +1,24 @@
+@forward "./assets/scss/variables.scss";
+
+@font-face {
+    font-family: "MedievalSharp";
+    src: url("assets/fonts/MedievalSharp-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "CinzelDecorative";
+    src: url("assets/fonts/CinzelDecorative-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+body .mat-mdc-tooltip-surface {
+    font-family: CinzelDecorative;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}

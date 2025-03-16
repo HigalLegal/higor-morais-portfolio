@@ -1,0 +1,4 @@
+<ng-container [ngSwitch]="componentSelected">
+    <app-home *ngSwitchCase="'inicio'" [@fadeAnimation] />
+    <app-about-me *ngSwitchCase="'sobreMim'" [@fadeAnimation] />
+</ng-container>
