@@ -14,6 +14,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: "Cormorant Garamond";
+    src: url("assets/fonts/CormorantGaramond-VariableFont_wght.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
 body .mat-mdc-tooltip-surface {
     font-family: CinzelDecorative;
 }

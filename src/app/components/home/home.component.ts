@@ -6,7 +6,7 @@ import { TranslateConfigService } from '../../services/translate-config-service/
     selector: 'app-home',
     imports: [],
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss', './home.component.responsive.scss'],
+    styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
     private readonly TRANSLANTE_JSON: string = 'home';
