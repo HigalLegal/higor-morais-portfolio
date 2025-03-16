@@ -6,7 +6,7 @@ Este é o meu portfólio de desenvolvedor, que está sendo desenvolvido em **Ang
 
 - **Frontend:** Angular
 - **Backend:** Quarkus
-- **Banco de Dados:** (se aplicável, mencione qual está usando)
+- **Banco de Dados:** PostgreSQL
 - **Estilização:** SCSS e Angular Material
 
 ## 🔥 Funcionalidades
