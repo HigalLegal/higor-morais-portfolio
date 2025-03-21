@@ -1,0 +1,21 @@
+<div class="carousel-container">
+    <button mat-icon-button (click)="prev()">
+        <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <div class="carousel-wrapper">
+        <div
+            class="carousel-track"
+            [style.transform]="'translateX(-' + index() * 100 + '%)'"
+        >
+            <mat-card class="carousel-item" *ngFor="let tech of visibleItems">
+                <img [src]="tech.urlImage" alt="{{ tech.name }}" />
+                <p>{{ tech.name }}</p>
+            </mat-card>
+        </div>
+    </div>
+
+    <button mat-icon-button (click)="next()">
+        <mat-icon>chevron_right</mat-icon>
+    </button>
+</div>

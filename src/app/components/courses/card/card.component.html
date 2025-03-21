@@ -1,0 +1,11 @@
+<mat-card class="custom-card">
+    <mat-card-title>{{ title }}</mat-card-title>
+
+    <a [href]="url" target="_blank" rel="noopener noreferrer">
+        <img mat-card-image [src]="imageUrl" [alt]="title" />
+    </a>
+
+    <mat-card-content>
+        <p>{{ description }}</p>
+    </mat-card-content>
+</mat-card>

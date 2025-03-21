@@ -1,12 +1,20 @@
 import { Component, Input } from '@angular/core';
 import { HomeComponent } from '../home/home.component';
 import { AboutComponent } from '../about/about.component';
+import { SkillsComponent } from '../skills/skills.component';
+import { CoursesComponent } from '../courses/courses.component';
 import { CommonModule } from '@angular/common';
 import { trigger, style, transition, animate } from '@angular/animations';
 
 @Component({
     selector: 'app-transition',
-    imports: [HomeComponent, CommonModule, AboutComponent],
+    imports: [
+        HomeComponent,
+        CommonModule,
+        AboutComponent,
+        SkillsComponent,
+        CoursesComponent,
+    ],
     templateUrl: './transition.component.html',
     styleUrl: './transition.component.scss',
     animations: [

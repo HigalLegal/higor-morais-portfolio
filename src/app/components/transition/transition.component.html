@@ -1,4 +1,6 @@
 <ng-container [ngSwitch]="componentSelected">
     <app-home *ngSwitchCase="'inicio'" [@fadeAnimation] />
     <app-about-me *ngSwitchCase="'sobreMim'" [@fadeAnimation] />
+    <app-skills *ngSwitchCase="'habilidades'" [@fadeAnimation] />
+    <app-courses *ngSwitchCase="'cursos'" [@fadeAnimation] />
 </ng-container>
