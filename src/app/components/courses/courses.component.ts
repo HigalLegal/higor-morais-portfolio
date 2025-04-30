@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { CardComponent } from './card/card.component';
+import { CardCourseComponent } from './card-course/card-course.component';
 import { CourseResponse } from '../../models/courseResponse';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CommonModule } from '@angular/common';
@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 @Component({
     selector: 'app-courses',
     standalone: true,
-    imports: [CardComponent, MatGridListModule, CommonModule],
+    imports: [CardCourseComponent, MatGridListModule, CommonModule],
     templateUrl: './courses.component.html',
     styleUrl: './courses.component.scss',
 })
@@ -67,6 +67,8 @@ export class CoursesComponent implements OnInit {
         } else {
             this.cols = 3; // 3 colunas para telas grandes
         }
+
+        console.log(this.cols);
     }
 
     generateDescription(technologies: string[]): string {

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ThemeService } from '../../services/theme-service/theme.service';
 import { MatCardModule } from '@angular/material/card';
+import { LongTextComponent } from '../long-text/long-text.component';
 
 @Component({
     selector: 'app-about-me',
-    imports: [MatCardModule],
+    imports: [MatCardModule, LongTextComponent],
     templateUrl: './about.component.html',
     styleUrls: ['./about.component.scss', './about.component.responsive.scss'],
 })

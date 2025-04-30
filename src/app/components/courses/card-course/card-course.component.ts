@@ -2,12 +2,12 @@ import { Component, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-    selector: 'app-card',
+    selector: 'app-card-course',
     imports: [MatCardModule],
-    templateUrl: './card.component.html',
-    styleUrl: './card.component.scss',
+    templateUrl: './card-course.component.html',
+    styleUrl: './card-course.component.scss',
 })
-export class CardComponent {
+export class CardCourseComponent {
     @Input() title: string = '';
     @Input() imageUrl: string = '';
     @Input() url: string = '';

@@ -3,6 +3,7 @@ import { HomeComponent } from '../home/home.component';
 import { AboutComponent } from '../about/about.component';
 import { SkillsComponent } from '../skills/skills.component';
 import { CoursesComponent } from '../courses/courses.component';
+import { ExperiencesComponent } from '../experiences/experiences.component';
 import { CommonModule } from '@angular/common';
 import { trigger, style, transition, animate } from '@angular/animations';
 
@@ -14,6 +15,7 @@ import { trigger, style, transition, animate } from '@angular/animations';
         AboutComponent,
         SkillsComponent,
         CoursesComponent,
+        ExperiencesComponent,
     ],
     templateUrl: './transition.component.html',
     styleUrl: './transition.component.scss',
