@@ -1,4 +1,14 @@
 p {
     color: var(--font-color);
     font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.summary-message {
+    &:hover {
+        text-decoration: underline;
+    }
+    &:active {
+        font-size: 32px;
+    }
 }

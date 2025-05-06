@@ -14,5 +14,13 @@
     "home": {
         "desenvolvedor": "Desenvolvedor",
         "fraseLogin": "Você sou eu? Se sim, clique aqui."
+    },
+    "experience": {
+        "atual": "Atual",
+        "tecnologiasTrabalhadas": "Tecnologias na qual trabalhei: "
+    },
+    "longText": {
+        "verMais": "Ver mais",
+        "verMenos": "Ver menos"
     }
 }

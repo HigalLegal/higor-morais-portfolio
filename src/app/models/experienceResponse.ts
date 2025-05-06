@@ -1,4 +1,4 @@
-export type ExperienceResponse = {
+type ExperienceResponse = {
     id: number;
     companyName: string;
     description: string;
@@ -6,3 +6,5 @@ export type ExperienceResponse = {
     end: string | null;
     technologiesWorked: string[];
 };
+
+export default ExperienceResponse;

@@ -1,3 +1,13 @@
-@for (paragraph of splitText(); track $index) {
-    <p>{{ paragraph }}</p>
+@if (hideText) {
+    <p class="summary-message" (click)="hideOrShowText()">{{ limitText() }}</p>
+} @else {
+    @for (paragraph of splitText(); track $index) {
+        <p>{{ paragraph }}</p>
+    }
+    <br />
+    @if (hideTextByDefault) {
+        <p class="summary-message" (click)="hideOrShowText()">
+            {{ recoverValue("verMenos") }}
+        </p>
+    }
 }

@@ -1,0 +1,11 @@
+<div class="experience-container">
+    @for (experience of experiences; track $index) {
+        <app-card-experience
+            [companyName]="experience.companyName"
+            [description]="experience.description"
+            [beginning]="experience.beginning"
+            [end]="experience.end"
+            [technologiesWorked]="experience.technologiesWorked"
+        />
+    }
+</div>

@@ -40,7 +40,12 @@
 >
     <mat-sidenav-content>
         <mat-nav-list class="sidenav-list">
-            <button mat-button *ngFor="let item of navItems" class="nav-button">
+            <button
+                mat-button
+                *ngFor="let item of navItems"
+                (click)="openComponent(item)"
+                class="nav-button"
+            >
                 {{ recoverValue(item) }}
             </button>
         </mat-nav-list>

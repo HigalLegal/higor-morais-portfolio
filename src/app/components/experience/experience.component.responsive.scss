@@ -1,0 +1,23 @@
+@media (max-width: 790px) {
+    .experience-container {
+        app-card-experience {
+            max-width: 500px;
+        }
+    }
+}
+
+@media (max-width: 570px) {
+    .experience-container {
+        app-card-experience {
+            max-width: 350px;
+        }
+    }
+}
+
+@media (max-width: 370px) {
+    .experience-container {
+        app-card-experience {
+            max-width: 250px;
+        }
+    }
+}
