@@ -1,11 +1,11 @@
 <div class="courses-wrapper">
     <div class="card-grid">
         @for (course of courses; track $index) {
-            <app-card-course
+            <app-card-image
                 [title]="course.name"
                 [imageUrl]="course.urlImage"
                 [url]="course.urlCertificate"
-                [description]="generateDescription(course.technologies)"
+                [technologiesUsed]="generateDescription(course.technologies)"
             />
         }
     </div>

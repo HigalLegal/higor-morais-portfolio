@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { CardCourseComponent } from './card-course/card-course.component';
+import { CardImageComponent } from '../card-image/card-image.component';
 import { CourseResponse } from '../../models/courseResponse';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CommonModule } from '@angular/common';
@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 @Component({
     selector: 'app-courses',
     standalone: true,
-    imports: [CardCourseComponent, MatGridListModule, CommonModule],
+    imports: [CardImageComponent, MatGridListModule, CommonModule],
     templateUrl: './courses.component.html',
     styleUrl: './courses.component.scss',
 })

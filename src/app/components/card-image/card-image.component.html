@@ -5,7 +5,13 @@
         <img mat-card-image [src]="imageUrl" [alt]="title" />
     </a>
 
+    @if (description) {
+        <mat-card-content>
+            <app-long-text [text]="description" />
+        </mat-card-content>
+    }
+
     <mat-card-content>
-        <p>{{ description }}</p>
+        <p>{{ technologiesUsed }}</p>
     </mat-card-content>
 </mat-card>
