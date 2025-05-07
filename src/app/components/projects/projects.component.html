@@ -5,7 +5,9 @@
                 [title]="project.description"
                 [imageUrl]="project.urlImage"
                 [url]="project.urlRepository"
-                [technologiesUsed]="generateDescription(project.technologiesWorked)"
+                [technologiesUsed]="
+                    generateDescription(project.technologiesWorked)
+                "
             />
         }
     </div>

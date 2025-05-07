@@ -1,0 +1,11 @@
+<h1>
+    @if (url) {
+        <a [href]="url" target="_blank" rel="noopener noreferrer">{{ title }}</a>
+    } @else {
+        {{ title }}
+    }
+</h1>
+<app-long-text [text]="description" [hideTextByDefault]="hideTextByDefault" />
+<p>
+    <span>{{ technologiesUsed }}</span>
+</p>

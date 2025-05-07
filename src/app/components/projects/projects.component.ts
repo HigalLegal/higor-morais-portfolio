@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import ProjectResponse from '../../models/projectResponse';
 import { CardImageComponent } from '../card-image/card-image.component';
+import { generatePhraseTechnologies } from '../utils/functionTechnologies';
 
 @Component({
     selector: 'app-projects',
@@ -40,7 +41,10 @@ export class ProjectsComponent {
     ];
 
     generateDescription(technologies: string[]): string {
-        const mensagemTecnologiaUsada = technologies.length > 0 ? 'Tecnologias usadas: ' : 'Tecnologia usada: '
-        return `${mensagemTecnologiaUsada}${technologies.join(', ')}`;
+        const message =
+            technologies.length > 0
+                ? 'Tecnologias usadas: '
+                : 'Tecnologia usada: ';
+        return generatePhraseTechnologies(message, technologies)
     }
 }

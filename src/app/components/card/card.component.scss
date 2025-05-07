@@ -1,6 +1,15 @@
 h1 {
     color: var(--font-color);
     font-family: "MedievalSharp";
+
+    a {
+        all: unset;
+
+        &:hover {
+            background-color: rgba($color: #ffffff, $alpha: 0.2);
+            cursor: pointer;
+        }
+    }
 }
 
 p {

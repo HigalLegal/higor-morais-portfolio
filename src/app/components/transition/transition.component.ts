@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { ExperienceComponent } from '../experience/experience.component';
 import { ProjectsComponent } from '../projects/projects.component';
+import { ArticlesComponent } from '../articles/articles.component';
 
 @Component({
     selector: 'app-transition',
@@ -18,6 +19,7 @@ import { ProjectsComponent } from '../projects/projects.component';
         CoursesComponent,
         ExperienceComponent,
         ProjectsComponent,
+        ArticlesComponent,
     ],
     templateUrl: './transition.component.html',
     styleUrl: './transition.component.scss',

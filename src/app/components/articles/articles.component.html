@@ -1,0 +1,10 @@
+<div class="articles-container">
+    @for (article of articles; track $index) {
+        <app-card
+            [title]="article.title"
+            [description]="article.summary"
+            [technologiesUsed]="generateSentence(article.technologiesCovered)"
+            [url]="article.urlArticle"
+        />
+    }
+</div>

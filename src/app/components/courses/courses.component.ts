@@ -3,6 +3,7 @@ import { CardImageComponent } from '../card-image/card-image.component';
 import { CourseResponse } from '../../models/courseResponse';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CommonModule } from '@angular/common';
+import { generatePhraseTechnologies } from '../utils/functionTechnologies';
 
 @Component({
     selector: 'app-courses',
@@ -72,6 +73,7 @@ export class CoursesComponent implements OnInit {
     }
 
     generateDescription(technologies: string[]): string {
-        return `Tecnologias abordadas: ${technologies.join(', ')}`;
+        const message = technologies.length > 1 ? 'Tecnologias abordadas: ' : 'Tecnologia abordada: ';
+        return generatePhraseTechnologies(message, technologies);
     }
 }
