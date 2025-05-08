@@ -8,6 +8,7 @@ import { trigger, style, transition, animate } from '@angular/animations';
 import { ExperienceComponent } from '../experience/experience.component';
 import { ProjectsComponent } from '../projects/projects.component';
 import { ArticlesComponent } from '../articles/articles.component';
+import { ContactComponent } from '../contact/contact.component';
 
 @Component({
     selector: 'app-transition',
@@ -20,6 +21,7 @@ import { ArticlesComponent } from '../articles/articles.component';
         ExperienceComponent,
         ProjectsComponent,
         ArticlesComponent,
+        ContactComponent,
     ],
     templateUrl: './transition.component.html',
     styleUrl: './transition.component.scss',

@@ -30,6 +30,7 @@
     --background-color: #dbb587;
     --font-color: #101d20;
     --secondary-color: black;
+    --alternative-color: rgba(219, 181, 135, 0.9);
     @include body-style;
     @include home-component-light;
 }
@@ -38,6 +39,7 @@
     --background-color: url("../texture/textura-navbar-tema-escuro.png");
     --font-color: #dbb587;
     --secondary-color: white;
+    --alternative-color: rgba(16, 29, 32, 0.9);
     @include body-style;
     @include home-component-dark;
 }

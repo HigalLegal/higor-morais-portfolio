@@ -7,7 +7,10 @@ import { generatePhraseTechnologies } from '../utils/functionTechnologies';
     selector: 'app-articles',
     imports: [CardComponent],
     templateUrl: './articles.component.html',
-    styleUrls: ['./articles.component.scss', './articles.component.responsive.scss'] ,
+    styleUrls: [
+        './articles.component.scss',
+        './articles.component.responsive.scss',
+    ],
 })
 export class ArticlesComponent {
     articles: ArticleResponse[] = [
@@ -50,7 +53,10 @@ export class ArticlesComponent {
     ];
 
     generateSentence(technologies: string[]): string {
-        const message = technologies.length > 1 ? 'Tecnologias abordadas: ' : 'Tecnologia aborda: ';
+        const message =
+            technologies.length > 1
+                ? 'Tecnologias abordadas: '
+                : 'Tecnologia aborda: ';
         return generatePhraseTechnologies(message, technologies);
     }
 }

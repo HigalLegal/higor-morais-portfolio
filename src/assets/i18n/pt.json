@@ -22,5 +22,10 @@
     "longText": {
         "verMais": "Ver mais",
         "verMenos": "Ver menos"
+    },
+    "contact": {
+        "email": "Email",
+        "linkedin": "LinkedIn",
+        "github": "GitHub"
     }
 }

@@ -62,7 +62,7 @@ export class ExperienceComponent {
     }
 
     generateSentence(technologies: string[]): string {
-        const message = this.recoverValue('tecnologiasTrabalhadas')
+        const message = this.recoverValue('tecnologiasTrabalhadas');
         return generatePhraseTechnologies(message, technologies);
     }
 }

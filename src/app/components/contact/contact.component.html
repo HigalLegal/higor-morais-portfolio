@@ -1,0 +1,22 @@
+<div class="container-contact">
+    <div class="contacts">
+        <div class="contact">
+            <span>{{ recoverValue("email") }}</span>
+            <button mat-icon-button (click)="copyEmail()">
+                <mat-icon>mail</mat-icon>
+            </button>
+        </div>
+        <div class="contact">
+            <span>{{ recoverValue("github") }}</span>
+            <button mat-icon-button (click)="openLink('github')">
+                <mat-icon svgIcon="github-icon"></mat-icon>
+            </button>
+        </div>
+        <div class="contact">
+            <span>{{ recoverValue("linkedin") }}</span>
+            <button mat-icon-button (click)="openLink('linkedin')">
+                <mat-icon svgIcon="linkedin"></mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

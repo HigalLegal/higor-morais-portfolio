@@ -73,7 +73,10 @@ export class CoursesComponent implements OnInit {
     }
 
     generateDescription(technologies: string[]): string {
-        const message = technologies.length > 1 ? 'Tecnologias abordadas: ' : 'Tecnologia abordada: ';
+        const message =
+            technologies.length > 1
+                ? 'Tecnologias abordadas: '
+                : 'Tecnologia abordada: ';
         return generatePhraseTechnologies(message, technologies);
     }
 }

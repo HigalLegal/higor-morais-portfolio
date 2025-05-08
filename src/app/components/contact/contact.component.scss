@@ -1,0 +1,34 @@
+@mixin containers {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.container-contact {
+    @include containers;
+    align-items: center;
+    .contacts {
+        @include containers;
+        align-items: flex-start;
+        background: url("../../../assets/img/background-contato.jpg");
+        padding: 60px;
+        margin-top: 45px;
+        border: 3px solid var(--secondary-color);
+        border-radius: 32px;
+        .contact {
+            font-family: Cormorant Garamond;
+            font-size: 24px;
+            padding: 10px;
+            margin-top: 10px;
+            background: var(--alternative-color);
+            border-radius: 12px;
+            span {
+                color: var(--font-color);
+                margin-right: 5px;
+            }
+            button {
+                color: var(--secondary-color);
+            }
+        }
+    }
+}

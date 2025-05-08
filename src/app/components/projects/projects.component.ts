@@ -45,6 +45,6 @@ export class ProjectsComponent {
             technologies.length > 0
                 ? 'Tecnologias usadas: '
                 : 'Tecnologia usada: ';
-        return generatePhraseTechnologies(message, technologies)
+        return generatePhraseTechnologies(message, technologies);
     }
 }
