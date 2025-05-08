@@ -16,6 +16,7 @@ import {
 } from '@angular/animations';
 import { ThemeService } from '../../services/theme-service/theme.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { HomeScreenService } from '../../services/home-screen.service';
 
 const TRANSLANTE_JSON = 'header';
 
@@ -77,12 +78,12 @@ export class HeaderComponent {
     windowWidth: number;
     tooltipClass: string = 'mat-tooltip';
 
-    @Output() componentSelected = new EventEmitter<string>();
 
     constructor(
         private translate: TranslateConfigService,
         private iconService: IconService,
         private themeService: ThemeService,
+        private homeScreenService: HomeScreenService,
     ) {
         this.iconService.registerIcons('medieval-celta');
         this.windowWidth = window.innerWidth;
@@ -131,6 +132,6 @@ export class HeaderComponent {
     }
 
     openComponent(aliasComponent: string): void {
-        this.componentSelected.emit(aliasComponent);
+        this.homeScreenService.setHomeScreen(aliasComponent);
     }
 }

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, DoCheck, Input, OnInit } from '@angular/core';
 import { HomeComponent } from '../home/home.component';
 import { AboutComponent } from '../about/about.component';
 import { SkillsComponent } from '../skills/skills.component';
@@ -9,6 +9,7 @@ import { ExperienceComponent } from '../experience/experience.component';
 import { ProjectsComponent } from '../projects/projects.component';
 import { ArticlesComponent } from '../articles/articles.component';
 import { ContactComponent } from '../contact/contact.component';
+import { HomeScreenService } from '../../services/home-screen.service';
 
 @Component({
     selector: 'app-transition',
@@ -37,6 +38,20 @@ import { ContactComponent } from '../contact/contact.component';
         ]),
     ],
 })
-export class TransitionComponent {
-    @Input() componentSelected: string = 'inicio';
+export class TransitionComponent implements OnInit, DoCheck {
+    componentSelected: string = 'inicio';
+
+    constructor(private homeScreenService: HomeScreenService) { }
+
+    ngOnInit(): void {
+        this.updateComponentSelected();
+    }
+
+    ngDoCheck(): void {
+        this.updateComponentSelected();
+    }
+
+    updateComponentSelected(): void {
+        this.componentSelected = this.homeScreenService.getHomeScreen();
+    }
 }
