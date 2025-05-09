@@ -25,7 +25,9 @@ export class LoginComponent implements DoCheck {
 
     ngDoCheck(): void {
         const min = 5;
-        this.disableButton = !(this.email.length > min && this.password.length > min);
+        this.disableButton = !(
+            this.email.length > min && this.password.length > min
+        );
     }
 
     onLogin(): void {
