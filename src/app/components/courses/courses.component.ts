@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CardImageComponent } from '../card-image/card-image.component';
-import { CourseResponse } from '../../models/courseResponse';
+import { CourseResponse } from '../../models/response/courseResponse';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CommonModule } from '@angular/common';
 import { generatePhraseTechnologies } from '../utils/functionTechnologies';

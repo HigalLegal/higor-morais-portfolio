@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { TechnologyResponse } from '../../models/technologyResponse';
+import { TechnologyResponse } from '../../models/response/technologyResponse';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';

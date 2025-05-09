@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import ArticleResponse from '../../models/articleResponse';
+import ArticleResponse from '../../models/response/articleResponse';
 import { CardComponent } from '../card/card.component';
 import { generatePhraseTechnologies } from '../utils/functionTechnologies';
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import ExperienceResponse from '../../models/experienceResponse';
+import ExperienceResponse from '../../models/response/experienceResponse';
 import { DESCRIPTION_1, DESCRIPTION_2 } from './mocksExperiences';
 import { CardComponent } from '../card/card.component';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
