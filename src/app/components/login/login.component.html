@@ -1,11 +1,11 @@
 <div class="form-container">
-    <form (ngSubmit)="onSubmit()">
+    <form (ngSubmit)="onLogin()">
         <mat-form-field appearance="fill">
             <input
                 matInput
-                name="name"
-                [(ngModel)]="name"
-                placeholder="Nome da tecnologia"
+                name="email"
+                [(ngModel)]="email"
+                placeholder="Email"
                 required
             />
         </mat-form-field>
@@ -13,10 +13,10 @@
         <mat-form-field appearance="fill">
             <input
                 matInput
-                type="number"
-                name="importanceLevel"
-                [(ngModel)]="importanceLevel"
-                placeholder="Nível de importância"
+                type="password"
+                name="senha"
+                [(ngModel)]="password"
+                placeholder="senha"
                 min="0"
                 required
             />
@@ -32,7 +32,7 @@
                     : {}
             "
         >
-            Enviar
+            Login
         </button>
     </form>
 </div>

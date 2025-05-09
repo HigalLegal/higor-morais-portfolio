@@ -8,7 +8,13 @@ import { CommonModule } from '@angular/common';
 @Component({
     selector: 'app-form-technology',
     standalone: true,
-    imports: [FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, CommonModule],
+    imports: [
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        CommonModule,
+    ],
     templateUrl: './form-technology.component.html',
     styleUrls: [
         './form-technology.component.scss',

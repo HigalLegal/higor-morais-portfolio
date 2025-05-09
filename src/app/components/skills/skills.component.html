@@ -17,7 +17,11 @@
                 <mat-card class="carousel-item">
                     <img [src]="tech.urlImage" alt="{{ tech.name }}" />
                     <p>{{ tech.name }}</p>
-                    <a mat-raised-button color="primary" [routerLink]="'editar-tecnologia/' + tech.id">
+                    <a
+                        mat-raised-button
+                        color="primary"
+                        [routerLink]="'editar-tecnologia/' + tech.id"
+                    >
                         {{ recoverValue("edit") }}
                     </a>
                 </mat-card>

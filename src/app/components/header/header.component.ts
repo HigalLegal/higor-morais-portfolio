@@ -135,7 +135,7 @@ export class HeaderComponent {
     openComponent(aliasComponent: string): void {
         const currentRoute: string = this.router.url;
 
-        if(currentRoute != '/') {
+        if (currentRoute != '/') {
             this.router.navigate(['/']);
         }
 

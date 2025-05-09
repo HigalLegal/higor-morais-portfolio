@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { ThemeService } from '../../services/theme-service/theme.service';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-home',
@@ -22,6 +23,7 @@ export class HomeComponent {
     constructor(
         private themeService: ThemeService,
         private translate: TranslateConfigService,
+        private router: Router,
     ) {
         this.windowWidth = window.innerWidth;
     }
@@ -42,5 +44,9 @@ export class HomeComponent {
     @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {
         this.windowWidth = (event.target as Window).innerWidth;
+    }
+
+    onLogin(): void {
+        this.router.navigate(['/login']);
     }
 }
