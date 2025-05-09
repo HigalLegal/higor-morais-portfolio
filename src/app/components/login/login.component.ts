@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
         CommonModule,
     ],
     templateUrl: './login.component.html',
-    styleUrl: './login.component.scss',
+    styleUrls: ['./login.component.scss', './login.component.responsive.scss'],
 })
 export class LoginComponent implements DoCheck {
     email: string = '';
