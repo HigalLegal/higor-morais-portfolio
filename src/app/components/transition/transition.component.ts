@@ -41,7 +41,7 @@ import { HomeScreenService } from '../../services/home-screen.service';
 export class TransitionComponent implements OnInit, DoCheck {
     componentSelected: string = 'inicio';
 
-    constructor(private homeScreenService: HomeScreenService) { }
+    constructor(private homeScreenService: HomeScreenService) {}
 
     ngOnInit(): void {
         this.updateComponentSelected();

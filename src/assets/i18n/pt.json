@@ -15,6 +15,10 @@
         "desenvolvedor": "Desenvolvedor",
         "fraseLogin": "Você sou eu? Se sim, clique aqui."
     },
+    "skills": {
+        "register": "Cadastrar nova habilidade técnica.",
+        "edit": "Editar"
+    },
     "experience": {
         "atual": "Atual",
         "tecnologiasTrabalhadas": "Tecnologias na qual trabalhei: "

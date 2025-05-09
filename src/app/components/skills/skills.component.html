@@ -1,1 +1,31 @@
-<app-carousel />
+<div class="button-form">
+    <a mat-raised-button color="primary" routerLink="inserir-tecnologia">
+        {{ recoverValue("register") }}
+    </a>
+</div>
+<div class="carousel-container">
+    <button mat-icon-button (click)="prev()">
+        <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <div class="carousel-wrapper">
+        <div
+            class="carousel-track"
+            [style.transform]="'translateX(-' + index() * 100 + '%)'"
+        >
+            @for (tech of visibleItems; track tech.id) {
+                <mat-card class="carousel-item">
+                    <img [src]="tech.urlImage" alt="{{ tech.name }}" />
+                    <p>{{ tech.name }}</p>
+                    <a mat-raised-button color="primary" [routerLink]="'editar-tecnologia/' + tech.id">
+                        {{ recoverValue("edit") }}
+                    </a>
+                </mat-card>
+            }
+        </div>
+    </div>
+
+    <button mat-icon-button (click)="next()">
+        <mat-icon>chevron_right</mat-icon>
+    </button>
+</div>

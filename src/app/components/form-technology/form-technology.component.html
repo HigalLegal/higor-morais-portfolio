@@ -1,0 +1,27 @@
+<div class="form-container">
+    <form (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+            <input
+                matInput
+                name="name"
+                [(ngModel)]="name"
+                placeholder="Nome da tecnologia"
+                required
+            />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <input
+                matInput
+                type="number"
+                name="importanceLevel"
+                [(ngModel)]="importanceLevel"
+                placeholder="Nível de importância"
+                min="0"
+                required
+            />
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">Enviar</button>
+    </form>
+</div>
