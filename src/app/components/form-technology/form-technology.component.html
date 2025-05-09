@@ -22,6 +22,6 @@
             />
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit">Enviar</button>
+        <button mat-raised-button color="primary" type="submit" [ngStyle]="disableButton ? { 'pointer-events': 'none', 'opacity': '0.5' } : {}">Enviar</button>
     </form>
 </div>
