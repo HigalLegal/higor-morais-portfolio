@@ -19,6 +19,18 @@
         "register": "Cadastrar nova habilidade técnica.",
         "edit": "Editar"
     },
+    "courses": {
+        "register": "Cadastrar novo curso.",
+        "edit": "Editar"
+    },
+    "formCourse": {
+        "nameCourse": "Nome do curso",
+        "urlCertificate": "Link do certificado",
+        "importanceLevel": "Nível de importância",
+        "techonologies": "Selecionar tecnologias",
+        "image": "Imagem do certificado",
+        "submit": "Cadastrar"
+    },
     "experience": {
         "atual": "Atual",
         "tecnologiasTrabalhadas": "Tecnologias na qual trabalhei: "

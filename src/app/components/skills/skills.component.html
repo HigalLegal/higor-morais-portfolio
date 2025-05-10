@@ -1,7 +1,8 @@
 <div class="button-form">
-    <a mat-raised-button color="primary" routerLink="inserir-tecnologia">
-        {{ recoverValue("register") }}
-    </a>
+    <app-button-form
+        [text]="recoverValue('register')"
+        urlRouter="inserir-tecnologia"
+    />
 </div>
 <div class="carousel-container">
     <button mat-icon-button (click)="prev()">
@@ -17,13 +18,10 @@
                 <mat-card class="carousel-item">
                     <img [src]="tech.urlImage" alt="{{ tech.name }}" />
                     <p>{{ tech.name }}</p>
-                    <a
-                        mat-raised-button
-                        color="primary"
-                        [routerLink]="'editar-tecnologia/' + tech.id"
-                    >
-                        {{ recoverValue("edit") }}
-                    </a>
+                    <app-button-form
+                        [text]="recoverValue('edit')"
+                        [urlRouter]="'editar-tecnologia/' + tech.id"
+                    />
                 </mat-card>
             }
         </div>

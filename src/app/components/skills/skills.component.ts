@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { RouterModule } from '@angular/router';
+import { ButtonFormComponent } from '../../shared/button-form/button-form.component';
 
 @Component({
     selector: 'app-skills',
@@ -15,6 +16,7 @@ import { RouterModule } from '@angular/router';
         MatCardModule,
         CommonModule,
         RouterModule,
+        ButtonFormComponent,
     ],
     templateUrl: './skills.component.html',
     styleUrl: './skills.component.scss',

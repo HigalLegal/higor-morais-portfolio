@@ -1,4 +1,10 @@
 <div class="courses-wrapper">
+    <div class="button-form">
+        <app-button-form
+            [text]="recoverValue('register')"
+            urlRouter="inserir-curso"
+        />
+    </div>
     <div class="card-grid">
         @for (course of courses; track $index) {
             <app-card-image
@@ -6,6 +12,7 @@
                 [imageUrl]="course.urlImage"
                 [url]="course.urlCertificate"
                 [technologiesUsed]="generateDescription(course.technologies)"
+                [urlRouterFormEdit]="'editar-curso/' + course.id"
             />
         }
     </div>

@@ -1,0 +1,58 @@
+<div class="form-container">
+    <form (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+            <mat-label>{{ i18n.nameCourse }}</mat-label>
+            <input matInput name="name" [(ngModel)]="name" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>{{ i18n.urlCertificate }}</mat-label>
+            <input
+                matInput
+                name="urlCertificate"
+                [(ngModel)]="urlCertificate"
+                required
+            />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <input
+                matInput
+                type="number"
+                name="importanceLevel"
+                [(ngModel)]="importanceLevel"
+                placeholder="Nível de importância"
+                min="0"
+                required
+            />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>{{ i18n.techonologies }}</mat-label>
+            <mat-select
+                name="technologies"
+                [(ngModel)]="technologiesIds"
+                multiple
+            >
+                @for (technology of technologies; track $index) {
+                    <mat-option [value]="technology.id">
+                        {{ technology.name }}
+                    </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [ngStyle]="
+                disableButton
+                    ? { 'pointer-events': 'none', opacity: '0.5' }
+                    : {}
+            "
+        >
+            {{ i18n.submit }}
+        </button>
+    </form>
+</div>

@@ -14,4 +14,13 @@
     <mat-card-content>
         <p>{{ technologiesUsed }}</p>
     </mat-card-content>
+
+    @if (urlRouterFormEdit) {
+        <mat-card-content class="button-form">
+            <app-button-form
+                [text]="messageEdit"
+                [urlRouter]="urlRouterFormEdit"
+            />
+        </mat-card-content>
+    }
 </mat-card>

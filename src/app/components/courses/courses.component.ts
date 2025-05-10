@@ -4,15 +4,24 @@ import { CourseResponse } from '../../models/response/courseResponse';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CommonModule } from '@angular/common';
 import { generatePhraseTechnologies } from '../utils/functionTechnologies';
+import { ButtonFormComponent } from '../../shared/button-form/button-form.component';
+import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 
 @Component({
     selector: 'app-courses',
     standalone: true,
-    imports: [CardImageComponent, MatGridListModule, CommonModule],
+    imports: [
+        CardImageComponent,
+        MatGridListModule,
+        CommonModule,
+        ButtonFormComponent,
+    ],
     templateUrl: './courses.component.html',
     styleUrl: './courses.component.scss',
 })
-export class CoursesComponent implements OnInit {
+export class CoursesComponent {
+    readonly TRANSLATE_JSON: string = 'courses';
+
     courses: CourseResponse[] = [
         {
             id: 1,
@@ -52,24 +61,10 @@ export class CoursesComponent implements OnInit {
         },
     ];
 
-    cols: number = 2; // Número inicial de colunas
+    constructor(private translate: TranslateConfigService) {}
 
-    ngOnInit(): void {
-        this.onResize(); // Ajusta o número de colunas ao carregar a página
-    }
-
-    @HostListener('window:resize', ['$event'])
-    onResize(): void {
-        // Ajusta o número de colunas com base na largura da tela
-        if (window.innerWidth <= 600) {
-            this.cols = 1; // 1 coluna para telas pequenas
-        } else if (window.innerWidth <= 900) {
-            this.cols = 2; // 2 colunas para telas médias
-        } else {
-            this.cols = 3; // 3 colunas para telas grandes
-        }
-
-        console.log(this.cols);
+    recoverValue(key: string): string {
+        return this.translate.retrieveKeyValue(`${this.TRANSLATE_JSON}.${key}`);
     }
 
     generateDescription(technologies: string[]): string {
