@@ -25,7 +25,7 @@ export class FileUploadComponent {
     private insertI18N(): void {
         this.recoverValue('escolher').subscribe({
             next: escolher => { this.message = escolher; },
-            error: err => { console.error('Erro inesperado! ', err) }
+            error: err => { console.error('Erro inesperado! ' + err) }
     });
     }
 }
