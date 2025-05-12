@@ -1,4 +1,4 @@
-import { Component, HostListener, EventEmitter, Output } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,8 +18,9 @@ import { ThemeService } from '../../services/theme-service/theme.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { HomeScreenService } from '../../services/home-screen.service';
 import { Router } from '@angular/router';
-
-const TRANSLANTE_JSON = 'header';
+import { forkJoin } from 'rxjs';
+import { Observable } from 'rxjs';
+import HeaderI18n from './headerI18N';
 
 @Component({
     selector: 'app-header',
@@ -63,7 +64,21 @@ const TRANSLANTE_JSON = 'header';
         ]),
     ],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+    private readonly TRANSLANTE_JSON = 'header';
+
+    i18n: HeaderI18n = {
+        inicio: '',
+        sobreMim: '',
+        habilidades: '',
+        cursos: '',
+        experiencias: '',
+        projetos: '',
+        artigos: '',
+        contateMe: '',
+        mudarTemaEscuro: '',
+        mudarTemaClaro: '',
+    };
     name: string = 'Higor Morais';
     isOpenMenu: boolean = false;
     navItems: string[] = [
@@ -78,6 +93,7 @@ export class HeaderComponent {
     ];
     windowWidth: number;
     tooltipClass: string = 'mat-tooltip';
+    themeColor: 'dark' | 'light' = 'dark';
 
     constructor(
         private translate: TranslateConfigService,
@@ -90,8 +106,14 @@ export class HeaderComponent {
         this.windowWidth = window.innerWidth;
     }
 
-    recoverValue(key: string): string {
-        return this.translate.retrieveKeyValue(`${TRANSLANTE_JSON}.${key}`);
+    ngOnInit(): void {
+        this.insertI18n();
+    }
+
+    recoverValue(key: string): Observable<string> {
+        return this.translate.retrieveKeyValueObservable(
+            `${this.TRANSLANTE_JSON}.${key}`,
+        );
     }
 
     onChangeTheme(): void {
@@ -102,6 +124,8 @@ export class HeaderComponent {
         } else {
             this.themeService.changeTheme(true);
         }
+        this.themeColor =
+            this.themeService.getThemeCurrent() == 'dark' ? 'dark' : 'light';
     }
 
     getUnusedTheme(): string {
@@ -111,12 +135,6 @@ export class HeaderComponent {
             return 'light';
         }
         return 'dark';
-    }
-
-    getThemeChangeMessage(): string {
-        return this.getUnusedTheme() == 'dark'
-            ? this.recoverValue('mudarTemaEscuro')
-            : this.recoverValue('mudarTemaClaro');
     }
 
     @HostListener('window:resize', ['$event'])
@@ -130,6 +148,52 @@ export class HeaderComponent {
 
     openOrCloseMenu() {
         this.isOpenMenu = !this.isOpenMenu;
+    }
+
+    private insertI18n(): void {
+        forkJoin(this.observableRequests()).subscribe({
+            next: ([
+                inicio,
+                sobreMim,
+                habilidades,
+                cursos,
+                experiencias,
+                projetos,
+                artigos,
+                contateMe,
+                mudarTemaEscuro,
+                mudarTemaClaro,
+            ]) => {
+                this.i18n = {
+                    inicio,
+                    sobreMim,
+                    habilidades,
+                    cursos,
+                    experiencias,
+                    projetos,
+                    artigos,
+                    contateMe,
+                    mudarTemaEscuro,
+                    mudarTemaClaro,
+                };
+            },
+            error: (err) => console.error('Erro inesperado! ' + err),
+        });
+    }
+
+    private observableRequests(): Observable<string>[] {
+        return [
+            this.recoverValue('inicio'),
+            this.recoverValue('sobreMim'),
+            this.recoverValue('habilidades'),
+            this.recoverValue('cursos'),
+            this.recoverValue('experiencias'),
+            this.recoverValue('projetos'),
+            this.recoverValue('artigos'),
+            this.recoverValue('contateMe'),
+            this.recoverValue('mudarTemaEscuro'),
+            this.recoverValue('mudarTemaClaro'),
+        ];
     }
 
     openComponent(aliasComponent: string): void {

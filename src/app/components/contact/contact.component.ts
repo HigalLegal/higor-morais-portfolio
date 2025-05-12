@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { IconService } from '../../services/icon-service/icon.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import Link from './link';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import Link from './link';
+import ContactI18N from './contactI18N';
+import { Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-contact',
@@ -13,10 +16,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     templateUrl: './contact.component.html',
     styleUrl: './contact.component.scss',
 })
-export class ContactComponent {
-    readonly TRANSLATE_JSON: string = 'contact';
-    readonly EMAIL: string = 'moraislimahigor@gmail.com';
-    readonly LINKS: Link[] = [
+export class ContactComponent implements OnInit {
+    private readonly TRANSLATE_JSON: string = 'contact';
+    private readonly EMAIL: string = 'moraislimahigor@gmail.com';
+    private readonly LINKS: Link[] = [
         { name: 'github', url: 'https://github.com/HigalLegal' },
         {
             name: 'linkedin',
@@ -26,6 +29,11 @@ export class ContactComponent {
 
     tooltipMessage: string = '';
     tooltipDisabled: boolean = true;
+    i18n: ContactI18N = {
+        email: '',
+        github: '',
+        linkedin: '',
+    };
 
     constructor(
         private translate: TranslateConfigService,
@@ -35,8 +43,14 @@ export class ContactComponent {
         this.iconService.registerIcons('github-icon', 'linkedin');
     }
 
-    recoverValue(key: string): string {
-        return this.translate.retrieveKeyValue(`${this.TRANSLATE_JSON}.${key}`);
+    ngOnInit(): void {
+        this.insertI18n();
+    }
+
+    recoverValue(key: string): Observable<string> {
+        return this.translate.retrieveKeyValueObservable(
+            `${this.TRANSLATE_JSON}.${key}`,
+        );
     }
 
     openLink(nameLink: string) {
@@ -52,10 +66,10 @@ export class ContactComponent {
                     `Email copiado com sucesso (${this.EMAIL})!`,
                     'Fechar',
                     {
-                        duration: 3000, // milissegundos (3s)
+                        duration: 3000,
                         verticalPosition: 'bottom',
                         horizontalPosition: 'center',
-                        panelClass: 'snackbar-success', // opcional: estilo
+                        panelClass: 'snackbar-success',
                     },
                 );
             })
@@ -65,5 +79,22 @@ export class ContactComponent {
                     panelClass: 'snackbar-error',
                 });
             });
+    }
+
+    private insertI18n(): void {
+        forkJoin(this.observableRequests()).subscribe({
+            next: ([email, github, linkedin]) => {
+                this.i18n = { email, github, linkedin };
+            },
+            error: (err) => console.error('Erro inesperado! ' + err),
+        });
+    }
+
+    private observableRequests(): Observable<string>[] {
+        return [
+            this.recoverValue('email'),
+            this.recoverValue('github'),
+            this.recoverValue('linkedin'),
+        ];
     }
 }

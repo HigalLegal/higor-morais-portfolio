@@ -7,8 +7,10 @@ import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { TechnologyResponse } from '../../models/response/technologyResponse';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
-import FormCourseI18N from './formCourseI18N';
 import { ChangeDetectorRef } from '@angular/core';
+import { Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
+import FormCourseI18N from './formCourseI18N';
 
 @Component({
     selector: 'app-form-course',
@@ -40,7 +42,7 @@ export class FormCourseComponent implements DoCheck, AfterViewInit {
         nameCourse: '',
         urlCertificate: '',
         importanceLevel: '',
-        techonologies: '',
+        technologies: '',
         submit: '',
     };
 
@@ -50,7 +52,10 @@ export class FormCourseComponent implements DoCheck, AfterViewInit {
         { id: 3, name: 'Vue', urlImage: '', importanceLevel: 2 },
     ];
 
-    constructor(private translate: TranslateConfigService, private detector: ChangeDetectorRef) {}
+    constructor(
+        private translate: TranslateConfigService,
+        private detector: ChangeDetectorRef,
+    ) {}
 
     ngAfterViewInit(): void {
         this.insertI18N();
@@ -75,15 +80,39 @@ export class FormCourseComponent implements DoCheck, AfterViewInit {
         );
     }
 
-    private recoverValue(key: string): string {
-        return this.translate.retrieveKeyValue(`${this.TRANSLATE_JSON}.${key}`);
+    private recoverValue(key: string): Observable<string> {
+        return this.translate.retrieveKeyValueObservable(
+            `${this.TRANSLATE_JSON}.${key}`,
+        );
     }
 
     private insertI18N(): void {
-        this.i18n.nameCourse = this.recoverValue('nameCourse');
-        this.i18n.urlCertificate = this.recoverValue('urlCertificate');
-        this.i18n.importanceLevel = this.recoverValue('importanceLevel');
-        this.i18n.techonologies = this.recoverValue('techonologies');
-        this.i18n.submit = this.recoverValue('submit');
+        forkJoin(this.observableRequests()).subscribe({
+            next: ([
+                nameCourse,
+                urlCertificate,
+                importanceLevel,
+                techonologies,
+                submit,
+            ]) => {
+                this.i18n = {
+                    nameCourse: nameCourse,
+                    urlCertificate: urlCertificate,
+                    importanceLevel: importanceLevel,
+                    technologies: techonologies,
+                    submit: submit,
+                };
+            },
+        });
+    }
+
+    private observableRequests(): Observable<string>[] {
+        return [
+            this.recoverValue('nameCourse'),
+            this.recoverValue('urlCertificate'),
+            this.recoverValue('importanceLevel'),
+            this.recoverValue('techonologies'),
+            this.recoverValue('submit'),
+        ];
     }
 }

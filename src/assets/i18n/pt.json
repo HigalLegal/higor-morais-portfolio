@@ -19,9 +19,21 @@
         "register": "Cadastrar nova habilidade técnica.",
         "edit": "Editar"
     },
+    "login": {
+        "email": "Email",
+        "password": "Senha"
+    },
     "courses": {
         "register": "Cadastrar novo curso.",
         "edit": "Editar"
+    },
+    "cardImage": {
+        "edit": "Editar"
+    },
+    "formTechnology": {
+        "nameTechnology": "Nome da tecnologia",
+        "importanceLevel": "Nível de importância",
+        "submit": "Cadastrar"
     },
     "formCourse": {
         "nameCourse": "Nome do curso",

@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TechnologyResponse } from '../../models/response/technologyResponse';
@@ -7,6 +7,9 @@ import { CommonModule } from '@angular/common';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { RouterModule } from '@angular/router';
 import { ButtonFormComponent } from '../../shared/button-form/button-form.component';
+import { Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
+import SKillsI18N from './skillsI18N';
 
 @Component({
     selector: 'app-skills',
@@ -21,7 +24,7 @@ import { ButtonFormComponent } from '../../shared/button-form/button-form.compon
     templateUrl: './skills.component.html',
     styleUrl: './skills.component.scss',
 })
-export class SkillsComponent {
+export class SkillsComponent implements OnInit {
     readonly TRANSLATE_JSON: string = 'skills';
 
     index = signal(0);
@@ -46,14 +49,19 @@ export class SkillsComponent {
         },
     ];
 
+    i18n: SKillsI18N = {
+        register: '',
+        edit: '',
+    }
+
     constructor(private translate: TranslateConfigService) {}
+
+    ngOnInit(): void {
+        this.insertI18N();
+    }
 
     get visibleItems(): TechnologyResponse[] {
         return [...this.technologies];
-    }
-
-    recoverValue(key: string): string {
-        return this.translate.retrieveKeyValue(`${this.TRANSLATE_JSON}.${key}`);
     }
 
     next(): void {
@@ -65,5 +73,25 @@ export class SkillsComponent {
             (i) =>
                 (i - 1 + this.technologies.length) % this.technologies.length,
         );
+    }
+
+    private recoverValue(key: string): Observable<string> {
+        return this.translate.retrieveKeyValueObservable(`${this.TRANSLATE_JSON}.${key}`);
+    }
+
+    private observableRequests(): Observable<string>[] {
+        return [
+            this.recoverValue('register'),
+            this.recoverValue('edit'),
+        ];
+    }
+
+    private insertI18N(): void {
+        forkJoin(this.observableRequests()).subscribe({
+            next: ([register, edit]) => {
+                this.i18n = { register, edit };
+            },
+            error: err => console.error('Erro inesperado! ' + err),
+        });
     }
 }

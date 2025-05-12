@@ -1,7 +1,10 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ThemeService } from '../../services/theme-service/theme.service';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
+import HomeI18N from '../home/homeI18N';
 
 @Component({
     selector: 'app-home',
@@ -9,7 +12,7 @@ import { Router } from '@angular/router';
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
     private readonly TRANSLANTE_JSON: string = 'home';
 
     private readonly SWORD_BLACK_THEME: string =
@@ -20,12 +23,22 @@ export class HomeComponent {
 
     windowWidth: number;
 
+    i18n: HomeI18N = {
+        desenvolvedor: '',
+        fraseLogin: '',
+        tecnologiasTrabalhadas: '',
+    };
+
     constructor(
         private themeService: ThemeService,
         private translate: TranslateConfigService,
         private router: Router,
     ) {
         this.windowWidth = window.innerWidth;
+    }
+
+    ngOnInit(): void {
+        this.insertI18n();
     }
 
     getSwordIcon(): string {
@@ -35,8 +48,8 @@ export class HomeComponent {
         return this.SWORD_LIGHT_THEME;
     }
 
-    recoverValue(key: string): string {
-        return this.translate.retrieveKeyValue(
+    recoverValue(key: string): Observable<string> {
+        return this.translate.retrieveKeyValueObservable(
             `${this.TRANSLANTE_JSON}.${key}`,
         );
     }
@@ -48,5 +61,26 @@ export class HomeComponent {
 
     onLogin(): void {
         this.router.navigate(['/login']);
+    }
+
+    private insertI18n(): void {
+        forkJoin(this.observableRequests()).subscribe({
+            next: ([desenvolvedor, fraseLogin, tecnologiasTrabalhadas]) => {
+                this.i18n = {
+                    desenvolvedor,
+                    fraseLogin,
+                    tecnologiasTrabalhadas,
+                };
+            },
+            error: (err) => console.error('Erro inesperado! ' + err),
+        });
+    }
+
+    private observableRequests(): Observable<string>[] {
+        return [
+            this.recoverValue('desenvolvedor'),
+            this.recoverValue('fraseLogin'),
+            this.recoverValue('tecnologiasTrabalhadas'),
+        ];
     }
 }

@@ -1,9 +1,6 @@
 <div class="courses-wrapper">
     <div class="button-form">
-        <app-button-form
-            [text]="recoverValue('register')"
-            urlRouter="inserir-curso"
-        />
+        <app-button-form [text]="i18n.register" urlRouter="inserir-curso" />
     </div>
     <div class="card-grid">
         @for (course of courses; track $index) {

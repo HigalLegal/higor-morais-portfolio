@@ -2,7 +2,7 @@ type FormCourseI18N = {
     nameCourse: string;
     urlCertificate: string;
     importanceLevel: string;
-    techonologies: string;
+    technologies: string;
     submit: string;
 };
 

@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import ExperienceResponse from '../../models/response/experienceResponse';
 import { DESCRIPTION_1, DESCRIPTION_2 } from './mocksExperiences';
 import { CardComponent } from '../card/card.component';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { generatePhraseTechnologies } from '../utils/functionTechnologies';
+import { Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
+import ExperienceI18N from './experienceI18N';
 
 @Component({
     selector: 'app-experience',
@@ -14,8 +17,8 @@ import { generatePhraseTechnologies } from '../utils/functionTechnologies';
         './experience.component.responsive.scss',
     ],
 })
-export class ExperienceComponent {
-    readonly TRANSLATE_JSON: string = 'experience';
+export class ExperienceComponent implements OnInit {
+    private readonly TRANSLATE_JSON: string = 'experience';
 
     experiences: ExperienceResponse[] = [
         {
@@ -51,18 +54,48 @@ export class ExperienceComponent {
         },
     ];
 
+    private i18n: ExperienceI18N = {
+        atual: '',
+        tecnologiasTrabalhadas: '',
+    };
+
     constructor(private translate: TranslateConfigService) {}
 
-    recoverValue(key: string): string {
-        return this.translate.retrieveKeyValue(`${this.TRANSLATE_JSON}.${key}`);
+    ngOnInit(): void {
+        this.insertI18n();
+    }
+
+    recoverValue(key: string): Observable<string> {
+        return this.translate.retrieveKeyValueObservable(
+            `${this.TRANSLATE_JSON}.${key}`,
+        );
     }
 
     generateTitle(experience: ExperienceResponse) {
-        return `${experience.companyName} | ${experience.beginning} - ${experience.end ? experience.end : 'Atual'}`;
+        const { atual: actually } = this.i18n;
+        return `${experience.companyName} | ${experience.beginning} - ${experience.end ? experience.end : actually}`;
     }
 
     generateSentence(technologies: string[]): string {
-        const message = this.recoverValue('tecnologiasTrabalhadas');
+        const { tecnologiasTrabalhadas: message } = this.i18n;
         return generatePhraseTechnologies(message, technologies);
+    }
+
+    private insertI18n(): void {
+        forkJoin(this.observableRequests()).subscribe({
+            next: ([atual, tecnologiasTrabalhadas]) => {
+                this.i18n = { atual, tecnologiasTrabalhadas };
+            },
+            error: (err) => {
+                console.error('Erro inesperado! ' + err);
+            },
+        });
+    }
+
+    private observableRequests(): Observable<string>[] {
+        return [
+            this.recoverValue('atual'),
+            this.recoverValue('tecnologiasTrabalhadas'),
+        ];
     }
 }

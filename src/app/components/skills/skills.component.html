@@ -1,6 +1,6 @@
 <div class="button-form">
     <app-button-form
-        [text]="recoverValue('register')"
+        [text]="i18n.register"
         urlRouter="inserir-tecnologia"
     />
 </div>
@@ -19,7 +19,7 @@
                     <img [src]="tech.urlImage" alt="{{ tech.name }}" />
                     <p>{{ tech.name }}</p>
                     <app-button-form
-                        [text]="recoverValue('edit')"
+                        [text]="i18n.edit"
                         [urlRouter]="'editar-tecnologia/' + tech.id"
                     />
                 </mat-card>

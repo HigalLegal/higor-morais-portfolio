@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { generatePhraseTechnologies } from '../utils/functionTechnologies';
 import { ButtonFormComponent } from '../../shared/button-form/button-form.component';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
+import { Observable } from 'rxjs';
+import CoursesI18N from './coursesI18N';
 
 @Component({
     selector: 'app-courses',
@@ -19,8 +21,8 @@ import { TranslateConfigService } from '../../services/translate-config-service/
     templateUrl: './courses.component.html',
     styleUrl: './courses.component.scss',
 })
-export class CoursesComponent {
-    readonly TRANSLATE_JSON: string = 'courses';
+export class CoursesComponent implements OnInit {
+    private readonly TRANSLATE_JSON: string = 'courses';
 
     courses: CourseResponse[] = [
         {
@@ -60,11 +62,20 @@ export class CoursesComponent {
             technologies: ['PostgreSQL', 'SQL', 'Banco de Dados'],
         },
     ];
+    i18n: CoursesI18N = {
+        register: '',
+    };
 
     constructor(private translate: TranslateConfigService) {}
 
-    recoverValue(key: string): string {
-        return this.translate.retrieveKeyValue(`${this.TRANSLATE_JSON}.${key}`);
+    ngOnInit(): void {
+        this.insertI18n();
+    }
+
+    recoverValue(key: string): Observable<string> {
+        return this.translate.retrieveKeyValueObservable(
+            `${this.TRANSLATE_JSON}.${key}`,
+        );
     }
 
     generateDescription(technologies: string[]): string {
@@ -73,5 +84,14 @@ export class CoursesComponent {
                 ? 'Tecnologias abordadas: '
                 : 'Tecnologia abordada: ';
         return generatePhraseTechnologies(message, technologies);
+    }
+
+    private insertI18n(): void {
+        this.recoverValue('register').subscribe({
+            next: (register) => {
+                this.i18n.register = register;
+            },
+            error: (err) => console.error('Erro inesperado! ' + err),
+        });
     }
 }

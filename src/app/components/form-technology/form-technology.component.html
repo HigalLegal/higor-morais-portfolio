@@ -1,21 +1,27 @@
 <div class="form-container">
     <form (ngSubmit)="onSubmit()">
         <mat-form-field appearance="fill">
+            <mat-label>{{ i18n.nameTechnology }}</mat-label>
             <input
                 matInput
+                type="text"
                 name="name"
-                [(ngModel)]="name"
-                placeholder="Nome da tecnologia"
+                [ngModel]="name()"
+                (ngModelChange)="name.set($event)"
+                [ngModelOptions]="{ standalone: true }"
                 required
             />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
+            <mat-label>{{ i18n.importanceLevel }}</mat-label>
             <input
                 matInput
                 type="number"
                 name="importanceLevel"
-                [(ngModel)]="importanceLevel"
+                [ngModel]="importanceLevel()"
+                (ngModelChange)="importanceLevel.set($event)"
+                [ngModelOptions]="{ standalone: true }"
                 placeholder="Nível de importância"
                 min="0"
                 required
@@ -27,12 +33,12 @@
             color="primary"
             type="submit"
             [ngStyle]="
-                disableButton
+                disableButton()
                     ? { 'pointer-events': 'none', opacity: '0.5' }
                     : {}
             "
         >
-            Enviar
+            {{ i18n.submit }}
         </button>
     </form>
 </div>

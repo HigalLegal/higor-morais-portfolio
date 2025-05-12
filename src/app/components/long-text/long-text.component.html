@@ -1,5 +1,5 @@
 @if (hideText) {
-    <p class="summary-message" (click)="hideOrShowText()">{{ limitText() }}</p>
+    <p class="summary-message" (click)="hideOrShowText()">{{ limitedText }}</p>
 } @else {
     @for (paragraph of splitText(); track $index) {
         <p>{{ paragraph }}</p>
@@ -7,7 +7,7 @@
     <br />
     @if (hideTextByDefault) {
         <p class="summary-message" (click)="hideOrShowText()">
-            {{ recoverValue("verMenos") }}
+            {{ this.i18n.verMenos }}
         </p>
     }
 }

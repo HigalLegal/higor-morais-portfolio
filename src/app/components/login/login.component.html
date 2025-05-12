@@ -1,23 +1,26 @@
 <div class="form-container">
     <form (ngSubmit)="onLogin()">
         <mat-form-field appearance="fill">
+            <mat-label>{{ i18n.email }}</mat-label>
             <input
                 matInput
                 name="email"
-                [(ngModel)]="email"
-                placeholder="Email"
+                (ngModel)="email()"
+                (ngModelChange)="email.set($event)"
+                [ngModelOptions]="{ standalone: true }"
                 required
             />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
+            <mat-label>{{ i18n.password }}</mat-label>
             <input
                 matInput
                 type="password"
-                name="senha"
-                [(ngModel)]="password"
-                placeholder="senha"
-                min="0"
+                name="password"
+                (ngModel)="password()"
+                (ngModelChange)="password.set($event)"
+                [ngModelOptions]="{ standalone: true }"
                 required
             />
         </mat-form-field>
@@ -27,7 +30,7 @@
             color="primary"
             type="submit"
             [ngStyle]="
-                disableButton
+                disableButton()
                     ? { 'pointer-events': 'none', opacity: '0.5' }
                     : {}
             "

@@ -14,23 +14,22 @@
     </div>
     <span class="spacer"></span>
     <nav class="nav-links">
-        <button
-            mat-button
-            class="nav-button"
-            *ngFor="let item of navItems"
-            (click)="openComponent(item)"
-        >
-            {{ recoverValue(item) }}
-        </button>
+        @for (item of navItems; track $index) {
+            <button mat-button class="nav-button" (click)="openComponent(item)">
+                {{ i18n[item] }}
+            </button>
+        }
     </nav>
     <button
         mat-icon-button
         aria-label="Toggle theme"
         (click)="onChangeTheme()"
-        [matTooltip]="getThemeChangeMessage()"
+        [matTooltip]="
+            themeColor == 'dark' ? i18n.mudarTemaClaro : i18n.mudarTemaEscuro
+        "
         matTooltipClass="tooltip"
     >
-        <mat-icon>{{ getUnusedTheme() }}_mode</mat-icon>
+        <mat-icon>{{ themeColor }}_mode</mat-icon>
     </button>
 </mat-toolbar>
 <mat-sidenav-container
@@ -40,14 +39,15 @@
 >
     <mat-sidenav-content>
         <mat-nav-list class="sidenav-list">
-            <button
-                mat-button
-                *ngFor="let item of navItems"
-                (click)="openComponent(item)"
-                class="nav-button"
-            >
-                {{ recoverValue(item) }}
-            </button>
+            @for (item of navItems; track $index) {
+                <button
+                    mat-button
+                    (click)="openComponent(item)"
+                    class="nav-button"
+                >
+                    {{ i18n[item] }}
+                </button>
+            }
         </mat-nav-list>
     </mat-sidenav-content>
 </mat-sidenav-container>
