@@ -2,6 +2,9 @@
     .form-container {
         form {
             width: 300px;
+            app-file-upload {
+                width: 98% !important;
+            }
         }
     }
 }

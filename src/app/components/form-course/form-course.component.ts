@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DoCheck, OnInit } from '@angular/core';
+import { AfterViewInit, Component, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -10,6 +10,7 @@ import { TranslateConfigService } from '../../services/translate-config-service/
 import { ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs';
+import { FileUploadComponent } from '../../shared/file-upload/file-upload.component';
 import FormCourseI18N from './formCourseI18N';
 
 @Component({
@@ -21,6 +22,7 @@ import FormCourseI18N from './formCourseI18N';
         MatButtonModule,
         CommonModule,
         MatSelectModule,
+        FileUploadComponent,
     ],
     templateUrl: './form-course.component.html',
     styleUrls: [
@@ -28,15 +30,25 @@ import FormCourseI18N from './formCourseI18N';
         './form-course.component.responsive.scss',
     ],
 })
-export class FormCourseComponent implements DoCheck, AfterViewInit {
+export class FormCourseComponent implements AfterViewInit {
     private readonly TRANSLATE_JSON: string = 'formCourse';
+    private readonly MIN: number = 3;
 
-    name: string = '';
-    urlCertificate: string = '';
-    importanceLevel: number | null = null;
-    technologiesIds: number[] = [];
+    name = signal<string>('');
+    urlCertificate = signal<string>('');
+    importanceLevel = signal<number | null>(null);
+    technologiesIds = signal<number[]>([]);
+    image = signal<File | null | undefined>(null);
 
-    disableButton: boolean = true;
+    disableButton = computed(() => {
+        return (
+            this.name().length <= this.MIN ||
+            this.urlCertificate().length <= this.MIN ||
+            !this.importanceLevel() ||
+            this.technologiesIds().length <= 0 ||
+            !this.image()
+        );
+    });
 
     i18n: FormCourseI18N = {
         nameCourse: '',
@@ -62,22 +74,12 @@ export class FormCourseComponent implements DoCheck, AfterViewInit {
         this.detector.detectChanges();
     }
 
-    ngDoCheck(): void {
-        this.disableButton = !this.validateFields();
-    }
-
     onSubmit(): void {
         console.log('Deu bom.');
     }
 
-    private validateFields(): boolean {
-        const min = 3;
-        return (
-            this.name.length > min &&
-            this.urlCertificate.length > min &&
-            !!this.importanceLevel &&
-            this.technologies.length > 0
-        );
+    handleImage(file: File | null | undefined): void {
+        this.image.set(file);
     }
 
     private recoverValue(key: string): Observable<string> {

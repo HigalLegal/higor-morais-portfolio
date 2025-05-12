@@ -2,15 +2,26 @@
     <form (ngSubmit)="onSubmit()">
         <mat-form-field appearance="fill">
             <mat-label>{{ i18n.nameCourse }}</mat-label>
-            <input matInput name="name" [(ngModel)]="name" required />
+            <input
+                matInput
+                type="text"
+                name="name"
+                [ngModel]="name()"
+                (ngModelChange)="name.set($event)"
+                [ngModelOptions]="{ standalone: true }"
+                required
+            />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
             <mat-label>{{ i18n.urlCertificate }}</mat-label>
             <input
                 matInput
+                type="text"
                 name="urlCertificate"
-                [(ngModel)]="urlCertificate"
+                [ngModel]="urlCertificate()"
+                (ngModelChange)="urlCertificate.set($event)"
+                [ngModelOptions]="{ standalone: true }"
                 required
             />
         </mat-form-field>
@@ -21,7 +32,9 @@
                 matInput
                 type="number"
                 name="importanceLevel"
-                [(ngModel)]="importanceLevel"
+                (ngModel)="importanceLevel()"
+                (ngModelChange)="importanceLevel.set($event)"
+                [ngModelOptions]="{ standalone: true }"
                 min="0"
                 required
             />
@@ -31,7 +44,9 @@
             <mat-label>{{ i18n.technologies }}</mat-label>
             <mat-select
                 name="technologies"
-                [(ngModel)]="technologiesIds"
+                (ngModel)="technologiesIds()"
+                (ngModelChange)="technologiesIds.set($event)"
+                [ngModelOptions]="{ standalone: true }"
                 multiple
             >
                 @for (technology of technologies; track $index) {
@@ -42,12 +57,14 @@
             </mat-select>
         </mat-form-field>
 
+        <app-file-upload (image)="handleImage($event)" />
+
         <button
             mat-raised-button
             color="primary"
             type="submit"
             [ngStyle]="
-                disableButton
+                disableButton()
                     ? { 'pointer-events': 'none', opacity: '0.5' }
                     : {}
             "
