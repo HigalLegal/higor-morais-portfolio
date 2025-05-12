@@ -27,6 +27,14 @@
         "register": "Cadastrar novo curso.",
         "edit": "Editar"
     },
+    "projects": {
+        "technologies": "Tecnologias usadas: ",
+        "technology": "Tecnologia usada: "
+    },
+    "articles": {
+        "technologies": "Tecnologias abordadas: ",
+        "technology": "Tecnologia abordada: "
+    },
     "cardImage": {
         "edit": "Editar"
     },

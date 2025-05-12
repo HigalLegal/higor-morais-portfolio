@@ -6,11 +6,12 @@ import { TranslateConfigService } from '../../services/translate-config-service/
 import { generatePhraseTechnologies } from '../utils/functionTechnologies';
 import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs';
+import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
 import ExperienceI18N from './experienceI18N';
 
 @Component({
     selector: 'app-experience',
-    imports: [CardComponent],
+    imports: [CardComponent, ApiLoadingComponent],
     templateUrl: './experience.component.html',
     styleUrls: [
         './experience.component.scss',
@@ -59,10 +60,15 @@ export class ExperienceComponent implements OnInit {
         tecnologiasTrabalhadas: '',
     };
 
+    isLoading: boolean = true;
+
     constructor(private translate: TranslateConfigService) {}
 
     ngOnInit(): void {
         this.insertI18n();
+        setTimeout(() => {
+            this.isLoading = false;
+        }, 500);
     }
 
     recoverValue(key: string): Observable<string> {

@@ -1,10 +1,14 @@
-<div class="experience-container">
-    @for (experience of experiences; track $index) {
-        <app-card
-            [title]="generateTitle(experience)"
-            [description]="experience.description"
-            [technologiesUsed]="generateSentence(experience.technologiesWorked)"
-            [hideTextByDefault]="true"
-        />
-    }
-</div>
+<app-api-loading [isLoading]="isLoading">
+    <div class="experience-container">
+        @for (experience of experiences; track $index) {
+            <app-card
+                [title]="generateTitle(experience)"
+                [description]="experience.description"
+                [technologiesUsed]="
+                    generateSentence(experience.technologiesWorked)
+                "
+                [hideTextByDefault]="true"
+            />
+        }
+    </div>
+</app-api-loading>

@@ -1,16 +1,20 @@
-<div class="courses-wrapper">
-    <div class="button-form">
-        <app-button-form [text]="i18n.register" urlRouter="inserir-curso" />
+<app-api-loading [isLoading]="isLoading">
+    <div class="courses-wrapper">
+        <div class="button-form">
+            <app-button-form [text]="i18n.register" urlRouter="inserir-curso" />
+        </div>
+        <div class="card-grid">
+            @for (course of courses; track $index) {
+                <app-card-image
+                    [title]="course.name"
+                    [imageUrl]="course.urlImage"
+                    [url]="course.urlCertificate"
+                    [technologiesUsed]="
+                        generateDescription(course.technologies)
+                    "
+                    [urlRouterFormEdit]="'editar-curso/' + course.id"
+                />
+            }
+        </div>
     </div>
-    <div class="card-grid">
-        @for (course of courses; track $index) {
-            <app-card-image
-                [title]="course.name"
-                [imageUrl]="course.urlImage"
-                [url]="course.urlCertificate"
-                [technologiesUsed]="generateDescription(course.technologies)"
-                [urlRouterFormEdit]="'editar-curso/' + course.id"
-            />
-        }
-    </div>
-</div>
+</app-api-loading>

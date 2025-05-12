@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CardImageComponent } from '../card-image/card-image.component';
 import { CourseResponse } from '../../models/response/courseResponse';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -7,6 +7,7 @@ import { generatePhraseTechnologies } from '../utils/functionTechnologies';
 import { ButtonFormComponent } from '../../shared/button-form/button-form.component';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { Observable } from 'rxjs';
+import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
 import CoursesI18N from './coursesI18N';
 
 @Component({
@@ -17,6 +18,7 @@ import CoursesI18N from './coursesI18N';
         MatGridListModule,
         CommonModule,
         ButtonFormComponent,
+        ApiLoadingComponent,
     ],
     templateUrl: './courses.component.html',
     styleUrl: './courses.component.scss',
@@ -62,14 +64,20 @@ export class CoursesComponent implements OnInit {
             technologies: ['PostgreSQL', 'SQL', 'Banco de Dados'],
         },
     ];
+
     i18n: CoursesI18N = {
         register: '',
     };
+
+    isLoading: boolean = true;
 
     constructor(private translate: TranslateConfigService) {}
 
     ngOnInit(): void {
         this.insertI18n();
+        setTimeout(() => {
+            this.isLoading = false;
+        }, 500);
     }
 
     recoverValue(key: string): Observable<string> {

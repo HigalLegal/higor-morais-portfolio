@@ -1,0 +1,9 @@
+.container-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    .custom-spinner {
+        --mdc-circular-progress-active-indicator-color: var(--font-color);
+    }
+}

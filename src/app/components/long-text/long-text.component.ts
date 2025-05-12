@@ -25,7 +25,7 @@ export class LongTextComponent implements OnInit {
     i18n: LongTextI18N = {
         verMais: '',
         verMenos: '',
-    }
+    };
 
     constructor(private translate: TranslateConfigService) {}
 
@@ -51,14 +51,13 @@ export class LongTextComponent implements OnInit {
     }
 
     private recoverValue(key: string): Observable<string> {
-        return this.translate.retrieveKeyValueObservable(`${this.TRANSLATE_JSON}.${key}`);
+        return this.translate.retrieveKeyValueObservable(
+            `${this.TRANSLATE_JSON}.${key}`,
+        );
     }
 
     private observableRequests(): Observable<string>[] {
-        return [
-            this.recoverValue('verMais'),
-            this.recoverValue('verMenos'),
-        ];
+        return [this.recoverValue('verMais'), this.recoverValue('verMenos')];
     }
 
     private insertI18N(): void {
@@ -67,7 +66,7 @@ export class LongTextComponent implements OnInit {
                 this.i18n = { verMais, verMenos };
                 this.updateLimitedText();
             },
-            error: err => console.error('Erro inesperado! ' + err),
+            error: (err) => console.error('Erro inesperado! ' + err),
         });
     }
 }

@@ -1,18 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import ArticleResponse from '../../models/response/articleResponse';
 import { CardComponent } from '../card/card.component';
 import { generatePhraseTechnologies } from '../utils/functionTechnologies';
+import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
+import { Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
+import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
+import ArticleI18N from './articlesI18N';
 
 @Component({
     selector: 'app-articles',
-    imports: [CardComponent],
+    imports: [CardComponent, ApiLoadingComponent],
     templateUrl: './articles.component.html',
     styleUrls: [
         './articles.component.scss',
         './articles.component.responsive.scss',
     ],
 })
-export class ArticlesComponent {
+export class ArticlesComponent implements OnInit {
+    private readonly TRANSLATE_JSON: string = 'articles';
+    private i18n: ArticleI18N = {
+        technologies: '',
+        technology: '',
+    };
+
     articles: ArticleResponse[] = [
         {
             id: 1,
@@ -52,11 +63,51 @@ export class ArticlesComponent {
         },
     ];
 
-    generateSentence(technologies: string[]): string {
+    textsDescription: string[] = [];
+
+    isLoading: boolean = true;
+
+    constructor(private translate: TranslateConfigService) {}
+
+    ngOnInit(): void {
+        this.insertI18N();
+        this.textsDescription = this.articles.map((article) =>
+            this.generateSentence(article.technologiesCovered),
+        );
+        setTimeout(() => {
+            this.isLoading = false;
+        }, 500);
+    }
+
+    private generateSentence(technologies: string[]): string {
         const message =
             technologies.length > 1
-                ? 'Tecnologias abordadas: '
-                : 'Tecnologia aborda: ';
+                ? this.i18n.technologies
+                : this.i18n.technology;
         return generatePhraseTechnologies(message, technologies);
+    }
+
+    private recoverValue(key: string): Observable<string> {
+        return this.translate.retrieveKeyValueObservable(
+            `${this.TRANSLATE_JSON}.${key}`,
+        );
+    }
+
+    private observableRequests(): Observable<string>[] {
+        return [
+            this.recoverValue('technologies'),
+            this.recoverValue('technology'),
+        ];
+    }
+
+    private insertI18N(): void {
+        forkJoin(this.observableRequests()).subscribe({
+            next: ([technologies, technology]) => {
+                this.i18n = { technologies, technology };
+            },
+            error: (err) => {
+                console.error('Erro inesperado! ' + err);
+            },
+        });
     }
 }

@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { ButtonFormComponent } from '../../shared/button-form/button-form.component';
 import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs';
+import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
 import SKillsI18N from './skillsI18N';
 
 @Component({
@@ -20,6 +21,7 @@ import SKillsI18N from './skillsI18N';
         CommonModule,
         RouterModule,
         ButtonFormComponent,
+        ApiLoadingComponent,
     ],
     templateUrl: './skills.component.html',
     styleUrl: './skills.component.scss',
@@ -52,12 +54,17 @@ export class SkillsComponent implements OnInit {
     i18n: SKillsI18N = {
         register: '',
         edit: '',
-    }
+    };
+
+    isLoading: boolean = true;
 
     constructor(private translate: TranslateConfigService) {}
 
     ngOnInit(): void {
         this.insertI18N();
+        setTimeout(() => {
+            this.isLoading = false;
+        }, 500); // simula uma chamada pra API
     }
 
     get visibleItems(): TechnologyResponse[] {
@@ -76,14 +83,13 @@ export class SkillsComponent implements OnInit {
     }
 
     private recoverValue(key: string): Observable<string> {
-        return this.translate.retrieveKeyValueObservable(`${this.TRANSLATE_JSON}.${key}`);
+        return this.translate.retrieveKeyValueObservable(
+            `${this.TRANSLATE_JSON}.${key}`,
+        );
     }
 
     private observableRequests(): Observable<string>[] {
-        return [
-            this.recoverValue('register'),
-            this.recoverValue('edit'),
-        ];
+        return [this.recoverValue('register'), this.recoverValue('edit')];
     }
 
     private insertI18N(): void {
@@ -91,7 +97,7 @@ export class SkillsComponent implements OnInit {
             next: ([register, edit]) => {
                 this.i18n = { register, edit };
             },
-            error: err => console.error('Erro inesperado! ' + err),
+            error: (err) => console.error('Erro inesperado! ' + err),
         });
     }
 }

@@ -1,14 +1,14 @@
-<div class="projects-wrapper">
-    <div class="card-grid">
-        @for (project of projects; track $index) {
-            <app-card-image
-                [title]="project.description"
-                [imageUrl]="project.urlImage"
-                [url]="project.urlRepository"
-                [technologiesUsed]="
-                    generateDescription(project.technologiesWorked)
-                "
-            />
-        }
+<app-api-loading [isLoading]="isLoading">
+    <div class="projects-wrapper">
+        <div class="card-grid">
+            @for (project of projects; track $index) {
+                <app-card-image
+                    [title]="project.description"
+                    [imageUrl]="project.urlImage"
+                    [url]="project.urlRepository"
+                    [technologiesUsed]="textsDescription[$index]"
+                />
+            }
+        </div>
     </div>
-</div>
+</app-api-loading>
