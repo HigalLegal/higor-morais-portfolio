@@ -63,5 +63,8 @@
         "email": "Email",
         "linkedin": "LinkedIn",
         "github": "GitHub"
+    },
+    "fileUpload": {
+        "escolher": "Escolher arquivo"
     }
 }
