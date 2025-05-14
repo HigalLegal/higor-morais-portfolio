@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { generatePhraseTechnologies } from '../utils/functionTechnologies';
 import { ButtonFormComponent } from '../../shared/button-form/button-form.component';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
 import CoursesI18N from './coursesI18N';
 
@@ -65,7 +65,11 @@ export class CoursesComponent implements OnInit {
         },
     ];
 
+    descriptionsTechnologies: string[] = [];
+
     i18n: CoursesI18N = {
+        technologies: '',
+    technology: '',
         register: '',
     };
 
@@ -75,29 +79,38 @@ export class CoursesComponent implements OnInit {
 
     ngOnInit(): void {
         this.insertI18n();
+        this.descriptionsTechnologies = this.courses.map(course => this.generateDescription(course.technologies));
         setTimeout(() => {
             this.isLoading = false;
         }, 500);
     }
 
-    recoverValue(key: string): Observable<string> {
+    private recoverValue(key: string): Observable<string> {
         return this.translate.retrieveKeyValueObservable(
             `${this.TRANSLATE_JSON}.${key}`,
         );
     }
 
-    generateDescription(technologies: string[]): string {
+    private generateDescription(technologies: string[]): string {
         const message =
             technologies.length > 1
-                ? 'Tecnologias abordadas: '
-                : 'Tecnologia abordada: ';
+                ? this.i18n.technologies
+                : this.i18n.technology;
         return generatePhraseTechnologies(message, technologies);
     }
 
+    private observableRequests(): Observable<string>[] {
+        return [
+            this.recoverValue('technologies'),
+            this.recoverValue('technology'),
+            this.recoverValue('register'),
+        ];
+    }
+
     private insertI18n(): void {
-        this.recoverValue('register').subscribe({
-            next: (register) => {
-                this.i18n.register = register;
+        forkJoin(this.observableRequests()).subscribe({
+            next: ([technologies, technology, register]) => {
+                this.i18n = { technologies, technology, register };
             },
             error: (err) => console.error('Erro inesperado! ' + err),
         });

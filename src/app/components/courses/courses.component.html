@@ -10,7 +10,7 @@
                     [imageUrl]="course.urlImage"
                     [url]="course.urlCertificate"
                     [technologiesUsed]="
-                        generateDescription(course.technologies)
+                        descriptionsTechnologies[$index]
                     "
                     [urlRouterFormEdit]="'editar-curso/' + course.id"
                 />

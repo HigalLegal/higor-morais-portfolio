@@ -6,10 +6,11 @@ import { TranslateConfigService } from '../../services/translate-config-service/
 import ProjectsI18N from './projectsI18N';
 import { forkJoin, Observable } from 'rxjs';
 import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
+import { ButtonFormComponent } from '../../shared/button-form/button-form.component';
 
 @Component({
     selector: 'app-projects',
-    imports: [CardImageComponent, ApiLoadingComponent],
+    imports: [CardImageComponent, ApiLoadingComponent, ButtonFormComponent,],
     templateUrl: './projects.component.html',
     styleUrl: './projects.component.scss',
 })

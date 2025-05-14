@@ -15,13 +15,13 @@ export class TranslateConfigService {
         return this.translate.get(key);
     }
 
-    public retrieveKeyValue(key: string): string {
-        let valueMessage = '';
+    // public retrieveKeyValue(key: string): string {
+    //     let valueMessage = '';
 
-        this.translate.get(key).subscribe((value) => {
-            valueMessage = value;
-        });
+    //     this.translate.get(key).subscribe((value) => {
+    //         valueMessage = value;
+    //     });
 
-        return valueMessage;
-    }
+    //     return valueMessage;
+    // }
 }

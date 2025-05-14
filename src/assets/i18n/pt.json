@@ -24,6 +24,8 @@
         "password": "Senha"
     },
     "courses": {
+        "technologies": "Tecnologias usadas: ",
+        "technology": "Tecnologia usada: ",
         "register": "Cadastrar novo curso.",
         "edit": "Editar"
     },
@@ -62,6 +64,13 @@
         "technologiesWorked": "Tecnologias trabalhadas",
         "labelBeginningAfterEnd": "Data de admissão não pode ser depois ou igual da data de saída.",
         "labelFutureDate": "Nenhuma das datas pode ser no futuro.",
+        "submit": "Cadastrar"
+    },
+    "formProject": {
+        "description": "Título do projeto",
+        "urlRepository": "Link do repositório do projeto",
+        "importanceLevel": "Nível de importância",
+        "technologiesWorked": "Tecnologias usadas",
         "submit": "Cadastrar"
     },
     "experience": {
