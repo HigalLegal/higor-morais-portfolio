@@ -9,10 +9,10 @@ import { HomeScreenService } from '../../services/home-screen.service';
 import NotFoundI18N from './notFoundI18N';
 
 @Component({
-  selector: 'app-not-found',
-  imports: [CommonModule, MatButtonModule, MatIconModule],
-  templateUrl: './not-found.component.html',
-  styleUrl: './not-found.component.scss'
+    selector: 'app-not-found',
+    imports: [CommonModule, MatButtonModule, MatIconModule],
+    templateUrl: './not-found.component.html',
+    styleUrl: './not-found.component.scss',
 })
 export class NotFoundComponent implements OnInit {
     private readonly TRANSLATE_JSON: string = 'notFound';
@@ -21,9 +21,13 @@ export class NotFoundComponent implements OnInit {
         title: '',
         message: '',
         toHome: '',
-    }
+    };
 
-    constructor(private translate: TranslateConfigService, private router: Router, private homeScreenService: HomeScreenService) {}
+    constructor(
+        private translate: TranslateConfigService,
+        private router: Router,
+        private homeScreenService: HomeScreenService,
+    ) {}
 
     ngOnInit(): void {
         this.insertI18N();
@@ -35,29 +39,28 @@ export class NotFoundComponent implements OnInit {
     }
 
     private recoverValue(key: string): Observable<string> {
-            return this.translate.retrieveKeyValueObservable(
-                `${this.TRANSLATE_JSON}.${key}`,
-            );
-        }
+        return this.translate.retrieveKeyValueObservable(
+            `${this.TRANSLATE_JSON}.${key}`,
+        );
+    }
 
-        private observableRequests(): Observable<string>[] {
-            return [
-                this.recoverValue('title'),
-                this.recoverValue('message'),
-                this.recoverValue('toHome'),
-            ];
-        }
+    private observableRequests(): Observable<string>[] {
+        return [
+            this.recoverValue('title'),
+            this.recoverValue('message'),
+            this.recoverValue('toHome'),
+        ];
+    }
 
-
-        private insertI18N(): void {
-            forkJoin(this.observableRequests()).subscribe({
-                next: ([
-                    title, message, toHome
-                ]) => {
-                    this.i18n = {
-                        title, message, toHome
-                    };
-                },
-            });
-        }
+    private insertI18N(): void {
+        forkJoin(this.observableRequests()).subscribe({
+            next: ([title, message, toHome]) => {
+                this.i18n = {
+                    title,
+                    message,
+                    toHome,
+                };
+            },
+        });
+    }
 }

@@ -14,14 +14,17 @@ import FormArticleI18N from './formArticleI18N';
     selector: 'app-form-article',
     imports: [
         FormsModule,
-                MatFormFieldModule,
-                MatInputModule,
-                MatButtonModule,
-                CommonModule,
-                MatSelectModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        CommonModule,
+        MatSelectModule,
     ],
     templateUrl: './form-article.component.html',
-    styleUrls: ['./form-article.component.scss', './form-article.component.responsive.scss'],
+    styleUrls: [
+        './form-article.component.scss',
+        './form-article.component.responsive.scss',
+    ],
 })
 export class FormArticleComponent implements OnInit {
     private readonly TRANSLATE_JSON: string = 'formArticle';
@@ -49,15 +52,20 @@ export class FormArticleComponent implements OnInit {
     constructor(private translate: TranslateConfigService) {}
 
     disableButton = computed(() => {
-        return this.title().length <= this.MIN || this.summary().length <= this.MIN || this.urlArticle().length <= this.MIN || this.technologiesCoveredId().length < 1;
-    })
+        return (
+            this.title().length <= this.MIN ||
+            this.summary().length <= this.MIN ||
+            this.urlArticle().length <= this.MIN ||
+            this.technologiesCoveredId().length < 1
+        );
+    });
 
     ngOnInit(): void {
         this.insertI18N();
     }
 
     onSubmit(): void {
-        console.log('Por hora, só o clique mesmo...')
+        console.log('Por hora, só o clique mesmo...');
     }
 
     private recoverValue(key: string) {
@@ -78,7 +86,13 @@ export class FormArticleComponent implements OnInit {
 
     private insertI18N(): void {
         forkJoin(this.observableRequests()).subscribe({
-            next: ([title, summary, urlArticle, technologiesCovered, submit]) => {
+            next: ([
+                title,
+                summary,
+                urlArticle,
+                technologiesCovered,
+                submit,
+            ]) => {
                 this.i18n = {
                     title,
                     summary,

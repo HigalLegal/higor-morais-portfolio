@@ -20,6 +20,7 @@ import { HomeScreenService } from '../../services/home-screen.service';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { Observable } from 'rxjs';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import HeaderI18n from './headerI18N';
 
 @Component({
@@ -32,6 +33,7 @@ import HeaderI18n from './headerI18N';
         MatSidenavModule,
         MatListModule,
         MatTooltipModule,
+        MatProgressBarModule,
     ],
     templateUrl: './header.component.html',
     styleUrls: [
@@ -91,6 +93,7 @@ export class HeaderComponent implements OnInit {
         'artigos',
         'contateMe',
     ];
+    isLoading: boolean = false;
     windowWidth: number;
     tooltipClass: string = 'mat-tooltip';
     themeColor: 'dark' | 'light' = 'dark';
@@ -201,8 +204,13 @@ export class HeaderComponent implements OnInit {
 
         if (currentRoute != '/') {
             this.router.navigate(['/']);
+        } else {
+            this.isLoading = true;
         }
 
         this.homeScreenService.setHomeScreen(aliasComponent);
+        setTimeout(() => {
+            this.isLoading = false;
+        }, 250);
     }
 }
