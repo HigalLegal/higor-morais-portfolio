@@ -15,9 +15,11 @@ import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.compon
 })
 export class ProjectsComponent implements OnInit {
     private readonly TRANSLATE_JSON: string = 'projects';
-    private i18n: ProjectsI18N = {
+    i18n: ProjectsI18N = {
         technologies: '',
         technology: '',
+        register: '',
+        edit: '',
     };
 
     projects: ProjectResponse[] = [
@@ -84,13 +86,15 @@ export class ProjectsComponent implements OnInit {
         return [
             this.recoverValue('technologies'),
             this.recoverValue('technology'),
+            this.recoverValue('register'),
+            this.recoverValue('edit'),
         ];
     }
 
     private insertI18N(): void {
         forkJoin(this.observableRequests()).subscribe({
-            next: ([technologies, technology]) => {
-                this.i18n = { technologies, technology };
+            next: ([technologies, technology, register, edit]) => {
+                this.i18n = { technologies, technology, register, edit };
             },
             error: (err) => {
                 console.error('Erro inesperado! ' + err);

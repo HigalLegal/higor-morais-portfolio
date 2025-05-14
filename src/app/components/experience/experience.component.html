@@ -1,13 +1,18 @@
 <app-api-loading [isLoading]="isLoading">
     <div class="experience-container">
+        <div class="button-form">
+            <app-button-form
+                [text]="i18n.register"
+                urlRouter="inserir-experiencia"
+            />
+        </div>
         @for (experience of experiences; track $index) {
             <app-card
-                [title]="generateTitle(experience)"
+                [title]="messagesTitle[$index]"
                 [description]="experience.description"
-                [technologiesUsed]="
-                    generateSentence(experience.technologiesWorked)
-                "
+                [technologiesUsed]="messagesTechnologies[$index]"
                 [hideTextByDefault]="true"
+                [urlRouterFormEdit]="'editar-experiencia/' + experience.id"
             />
         }
     </div>

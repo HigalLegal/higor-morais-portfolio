@@ -7,11 +7,12 @@ import { generatePhraseTechnologies } from '../utils/functionTechnologies';
 import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs';
 import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
+import { ButtonFormComponent } from '../../shared/button-form/button-form.component';
 import ExperienceI18N from './experienceI18N';
 
 @Component({
     selector: 'app-experience',
-    imports: [CardComponent, ApiLoadingComponent],
+    imports: [CardComponent, ApiLoadingComponent, ButtonFormComponent],
     templateUrl: './experience.component.html',
     styleUrls: [
         './experience.component.scss',
@@ -55,9 +56,13 @@ export class ExperienceComponent implements OnInit {
         },
     ];
 
-    private i18n: ExperienceI18N = {
+    messagesTitle: string[] = [];
+    messagesTechnologies: string[] = [];
+
+    i18n: ExperienceI18N = {
         atual: '',
         tecnologiasTrabalhadas: '',
+        register: '',
     };
 
     isLoading: boolean = true;
@@ -66,6 +71,12 @@ export class ExperienceComponent implements OnInit {
 
     ngOnInit(): void {
         this.insertI18n();
+        this.messagesTitle = this.experiences.map((experience) =>
+            this.generateTitle(experience),
+        );
+        this.messagesTechnologies = this.experiences.map((experience) =>
+            this.generateSentence(experience.technologiesWorked),
+        );
         setTimeout(() => {
             this.isLoading = false;
         }, 500);
@@ -77,7 +88,7 @@ export class ExperienceComponent implements OnInit {
         );
     }
 
-    generateTitle(experience: ExperienceResponse) {
+    generateTitle(experience: ExperienceResponse): string {
         const { atual: actually } = this.i18n;
         return `${experience.companyName} | ${experience.beginning} - ${experience.end ? experience.end : actually}`;
     }
@@ -89,8 +100,8 @@ export class ExperienceComponent implements OnInit {
 
     private insertI18n(): void {
         forkJoin(this.observableRequests()).subscribe({
-            next: ([atual, tecnologiasTrabalhadas]) => {
-                this.i18n = { atual, tecnologiasTrabalhadas };
+            next: ([atual, tecnologiasTrabalhadas, register, edit]) => {
+                this.i18n = { atual, tecnologiasTrabalhadas, register };
             },
             error: (err) => {
                 console.error('Erro inesperado! ' + err);
@@ -102,6 +113,7 @@ export class ExperienceComponent implements OnInit {
         return [
             this.recoverValue('atual'),
             this.recoverValue('tecnologiasTrabalhadas'),
+            this.recoverValue('register'),
         ];
     }
 }

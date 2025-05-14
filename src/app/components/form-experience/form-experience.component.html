@@ -1,0 +1,103 @@
+<div class="form-container">
+    <form (submit)="onSubmit()">
+        <mat-form-field appearance="fill">
+            <mat-label>{{ i18n.companyName }}</mat-label>
+            <input
+                matInput
+                name="companyName"
+                [ngModel]="companyName()"
+                (ngModelChange)="companyName.set($event)"
+                [ngModelOptions]="{ standalone: true }"
+                required
+            />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>{{ i18n.description }}</mat-label>
+            <textarea
+                matInput
+                name="description"
+                [ngModel]="description()"
+                (ngModelChange)="description.set($event)"
+                [ngModelOptions]="{ standalone: true }"
+                required
+            ></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>{{ i18n.beginning }}</mat-label>
+            <input
+                matInput
+                name="beginning"
+                placeholder="dd/mm/aaaa"
+                mask="00/00/0000"
+                [ngModel]="beginning()"
+                (ngModelChange)="handleDate($event, beginning.set)"
+                [ngModelOptions]="{ standalone: true }"
+                required
+            />
+        </mat-form-field>
+
+        <mat-checkbox
+            (ngModel)="isCurrent()"
+            (ngModelChange)="handleActually($event)"
+            [ngModelOptions]="{ standalone: true }"
+            ><span>{{ i18n.actually }}</span></mat-checkbox
+        >
+
+        @if (!isCurrent()) {
+            <mat-form-field appearance="fill">
+                <mat-label>{{ i18n.end }}</mat-label>
+                <input
+                    matInput
+                    name="end"
+                    placeholder="dd/mm/aaaa"
+                    mask="00/00/0000"
+                    [ngModel]="end()"
+                    (ngModelChange)="handleDate($event, end.set)"
+                    [ngModelOptions]="{ standalone: true }"
+                    required
+                />
+            </mat-form-field>
+        }
+
+        <mat-form-field appearance="fill">
+            <mat-label>{{ i18n.technologiesWorked }}</mat-label>
+            <mat-select
+                name="technologies"
+                (ngModel)="technologiesWorkedId()"
+                (ngModelChange)="technologiesWorkedId.set($event)"
+                [ngModelOptions]="{ standalone: true }"
+                multiple
+            >
+                @for (technology of technologies; track $index) {
+                    <mat-option [value]="technology.id">
+                        {{ technology.name }}
+                    </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        @if (isBeginningAfterEnd()) {
+            <app-text-error [text]="i18n.labelBeginningAfterEnd" />
+        }
+
+        @if (isFutureDate()) {
+            <app-text-error [text]="i18n.labelFutureDate" />
+        }
+
+        <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [ngStyle]="
+                disableButton()
+                    ? { 'pointer-events': 'none', opacity: '0.5' }
+                    : {}
+            "
+        >
+            {{ i18n.submit }}
+        </button>
+    </form>
+</div>
+<!-- [matDatepicker]="picker" -->

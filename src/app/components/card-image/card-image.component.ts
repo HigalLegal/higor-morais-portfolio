@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
     styleUrl: './card-image.component.scss',
 })
 export class CardImageComponent implements OnInit {
-    private readonly TRANSLATE_JSON: string = 'cardImage';
+    private readonly TRANSLATE_JSON: string = 'card';
 
     @Input() title: string = '';
     @Input() imageUrl: string = '';

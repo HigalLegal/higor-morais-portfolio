@@ -3,6 +3,7 @@ import { TransitionComponent } from './components/transition/transition.componen
 import { LoginComponent } from './components/login/login.component';
 import { FormTechnologyComponent } from './components/form-technology/form-technology.component';
 import { FormCourseComponent } from './components/form-course/form-course.component';
+import { FormExperienceComponent } from './components/form-experience/form-experience.component';
 
 export const routes: Routes = [
     {
@@ -28,5 +29,13 @@ export const routes: Routes = [
     {
         path: 'editar-curso/:id',
         component: FormCourseComponent,
+    },
+    {
+        path: 'inserir-experiencia',
+        component: FormExperienceComponent,
+    },
+    {
+        path: 'editar-experiencia/:id',
+        component: FormExperienceComponent,
     },
 ];

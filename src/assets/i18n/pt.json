@@ -29,13 +29,15 @@
     },
     "projects": {
         "technologies": "Tecnologias usadas: ",
-        "technology": "Tecnologia usada: "
+        "technology": "Tecnologia usada: ",
+        "register": "Cadastrar nova experiência profissional.",
+        "edit": "Editar"
     },
     "articles": {
         "technologies": "Tecnologias abordadas: ",
         "technology": "Tecnologia abordada: "
     },
-    "cardImage": {
+    "card": {
         "edit": "Editar"
     },
     "formTechnology": {
@@ -51,9 +53,22 @@
         "image": "Imagem do certificado",
         "submit": "Cadastrar"
     },
+    "formExperience": {
+        "companyName": "Nome da empresa",
+        "description": "Descrição das atividades feitas",
+        "beginning": "Data de admissão",
+        "actually": "Ainda está trabalhando nessa empresa?",
+        "end": "Data de saída",
+        "technologiesWorked": "Tecnologias trabalhadas",
+        "labelBeginningAfterEnd": "Data de admissão não pode ser depois ou igual da data de saída.",
+        "labelFutureDate": "Nenhuma das datas pode ser no futuro.",
+        "submit": "Cadastrar"
+    },
     "experience": {
         "atual": "Atual",
-        "tecnologiasTrabalhadas": "Tecnologias na qual trabalhei: "
+        "tecnologiasTrabalhadas": "Tecnologias na qual trabalhei: ",
+        "register": "Cadastrar nova experiência profissional.",
+        "edit": "Editar"
     },
     "longText": {
         "verMais": "Ver mais",
