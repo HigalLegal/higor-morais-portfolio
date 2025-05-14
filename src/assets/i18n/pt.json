@@ -37,7 +37,8 @@
     },
     "articles": {
         "technologies": "Tecnologias abordadas: ",
-        "technology": "Tecnologia abordada: "
+        "technology": "Tecnologia abordada: ",
+        "register": "Cadastrar novo artigo"
     },
     "card": {
         "edit": "Editar"
@@ -71,6 +72,13 @@
         "urlRepository": "Link do repositório do projeto",
         "importanceLevel": "Nível de importância",
         "technologiesWorked": "Tecnologias usadas",
+        "submit": "Cadastrar"
+    },
+    "formArticle": {
+        "title": "Título",
+        "summary": "Breve resumo",
+        "urlArticle": "Link do artigo",
+        "technologiesCovered": "Tecnologias abordadas",
         "submit": "Cadastrar"
     },
     "experience": {

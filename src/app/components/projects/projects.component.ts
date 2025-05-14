@@ -10,7 +10,7 @@ import { ButtonFormComponent } from '../../shared/button-form/button-form.compon
 
 @Component({
     selector: 'app-projects',
-    imports: [CardImageComponent, ApiLoadingComponent, ButtonFormComponent,],
+    imports: [CardImageComponent, ApiLoadingComponent, ButtonFormComponent],
     templateUrl: './projects.component.html',
     styleUrl: './projects.component.scss',
 })

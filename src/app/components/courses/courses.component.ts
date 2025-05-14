@@ -69,7 +69,7 @@ export class CoursesComponent implements OnInit {
 
     i18n: CoursesI18N = {
         technologies: '',
-    technology: '',
+        technology: '',
         register: '',
     };
 
@@ -79,7 +79,9 @@ export class CoursesComponent implements OnInit {
 
     ngOnInit(): void {
         this.insertI18n();
-        this.descriptionsTechnologies = this.courses.map(course => this.generateDescription(course.technologies));
+        this.descriptionsTechnologies = this.courses.map((course) =>
+            this.generateDescription(course.technologies),
+        );
         setTimeout(() => {
             this.isLoading = false;
         }, 500);

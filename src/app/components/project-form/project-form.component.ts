@@ -25,7 +25,10 @@ import ProjectFormI18N from './projectFormI18N';
         FileUploadComponent,
     ],
     templateUrl: './project-form.component.html',
-    styleUrls: ['./project-form.component.scss', './project-form.component.responsive.scss'],
+    styleUrls: [
+        './project-form.component.scss',
+        './project-form.component.responsive.scss',
+    ],
 })
 export class ProjectFormComponent implements OnInit {
     private readonly TRANSLATE_JSON: string = 'formProject';
@@ -54,15 +57,21 @@ export class ProjectFormComponent implements OnInit {
     constructor(private translate: TranslateConfigService) {}
 
     disableButton = computed(() => {
-        return this.description().length <= this.MIN || this.urlRepository().length <= this.MIN || !this.importanceLevel() || this.technologiesWorkedId().length < 1 || !this.image();
-    })
+        return (
+            this.description().length <= this.MIN ||
+            this.urlRepository().length <= this.MIN ||
+            !this.importanceLevel() ||
+            this.technologiesWorkedId().length < 1 ||
+            !this.image()
+        );
+    });
 
     ngOnInit(): void {
         this.insertI18N();
     }
 
     onSubmit(): void {
-        console.log('Por hora, só o clique...')
+        console.log('Por hora, só o clique...');
     }
 
     handleImage(file: File | null | undefined): void {

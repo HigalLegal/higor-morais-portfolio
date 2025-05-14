@@ -1,49 +1,47 @@
 <div class="form-container">
-    <form (submit)="onSubmit()">
+    <form  (submit)="onSubmit()">
         <mat-form-field appearance="fill">
-            <mat-label>{{ i18n.description }}</mat-label>
+            <mat-label>{{ i18n.title }}</mat-label>
             <input
                 matInput
-                name="description"
-                [ngModel]="description()"
-                (ngModelChange)="description.set($event)"
+                name="title"
+                [ngModel]="title()"
+                (ngModelChange)="title.set($event)"
                 [ngModelOptions]="{ standalone: true }"
                 required
             />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>{{ i18n.urlRepository }}</mat-label>
+            <mat-label>{{ i18n.summary }}</mat-label>
+            <textarea
+                matInput
+                name="summary"
+                [ngModel]="summary()"
+                (ngModelChange)="summary.set($event)"
+                [ngModelOptions]="{ standalone: true }"
+                required
+            ></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>{{ i18n.urlArticle }}</mat-label>
             <input
                 matInput
-                name="urlRepository"
-                [ngModel]="urlRepository()"
-                (ngModelChange)="urlRepository.set($event)"
+                name="urlArticle"
+                [ngModel]="urlArticle()"
+                (ngModelChange)="urlArticle.set($event)"
                 [ngModelOptions]="{ standalone: true }"
                 required
             />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>{{ i18n.importanceLevel }}</mat-label>
-            <input
-                matInput
-                type="number"
-                name="importanceLevel"
-                [ngModel]="importanceLevel()"
-                (ngModelChange)="importanceLevel.set($event)"
-                [ngModelOptions]="{ standalone: true }"
-                min="0"
-                required
-            />
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>{{ i18n.technologiesWorked }}</mat-label>
+            <mat-label>{{ i18n.technologiesCovered }}</mat-label>
             <mat-select
                 name="technologies"
-                (ngModel)="technologiesWorkedId()"
-                (ngModelChange)="technologiesWorkedId.set($event)"
+                (ngModel)="technologiesCoveredId()"
+                (ngModelChange)="technologiesCoveredId.set($event)"
                 [ngModelOptions]="{ standalone: true }"
                 multiple
             >
@@ -54,8 +52,6 @@
                 }
             </mat-select>
         </mat-form-field>
-
-        <app-file-upload (image)="handleImage($event)" />
 
         <button
             mat-raised-button

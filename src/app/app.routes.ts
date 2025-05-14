@@ -5,6 +5,7 @@ import { FormTechnologyComponent } from './components/form-technology/form-techn
 import { FormCourseComponent } from './components/form-course/form-course.component';
 import { FormExperienceComponent } from './components/form-experience/form-experience.component';
 import { ProjectFormComponent } from './components/project-form/project-form.component';
+import { FormArticleComponent } from './components/form-article/form-article.component';
 
 export const routes: Routes = [
     {
@@ -46,5 +47,13 @@ export const routes: Routes = [
     {
         path: 'editar-projeto/:id',
         component: ProjectFormComponent,
+    },
+    {
+        path: 'inserir-artigo',
+        component: FormArticleComponent,
+    },
+    {
+        path: 'editar-artigo/:id',
+        component: FormArticleComponent,
     },
 ];

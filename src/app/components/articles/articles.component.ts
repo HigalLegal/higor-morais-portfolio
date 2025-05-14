@@ -6,11 +6,12 @@ import { TranslateConfigService } from '../../services/translate-config-service/
 import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs';
 import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
+import { ButtonFormComponent } from '../../shared/button-form/button-form.component';
 import ArticleI18N from './articlesI18N';
 
 @Component({
     selector: 'app-articles',
-    imports: [CardComponent, ApiLoadingComponent],
+    imports: [CardComponent, ApiLoadingComponent, ButtonFormComponent],
     templateUrl: './articles.component.html',
     styleUrls: [
         './articles.component.scss',
@@ -19,9 +20,10 @@ import ArticleI18N from './articlesI18N';
 })
 export class ArticlesComponent implements OnInit {
     private readonly TRANSLATE_JSON: string = 'articles';
-    private i18n: ArticleI18N = {
+    i18n: ArticleI18N = {
         technologies: '',
         technology: '',
+        register: '',
     };
 
     articles: ArticleResponse[] = [
@@ -97,13 +99,14 @@ export class ArticlesComponent implements OnInit {
         return [
             this.recoverValue('technologies'),
             this.recoverValue('technology'),
+            this.recoverValue('register'),
         ];
     }
 
     private insertI18N(): void {
         forkJoin(this.observableRequests()).subscribe({
-            next: ([technologies, technology]) => {
-                this.i18n = { technologies, technology };
+            next: ([technologies, technology, register]) => {
+                this.i18n = { technologies, technology, register };
             },
             error: (err) => {
                 console.error('Erro inesperado! ' + err);
