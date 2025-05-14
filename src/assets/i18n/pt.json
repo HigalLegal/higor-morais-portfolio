@@ -98,5 +98,10 @@
     },
     "fileUpload": {
         "escolher": "Escolher arquivo"
+    },
+    "notFound": {
+        "title": "Ops... Algo deu errado",
+        "message": "A página que você tentou acessar não existe ou foi movida.",
+        "toHome": "Voltar pra página inicial"
     }
 }

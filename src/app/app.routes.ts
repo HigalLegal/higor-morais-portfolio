@@ -6,6 +6,7 @@ import { FormCourseComponent } from './components/form-course/form-course.compon
 import { FormExperienceComponent } from './components/form-experience/form-experience.component';
 import { ProjectFormComponent } from './components/project-form/project-form.component';
 import { FormArticleComponent } from './components/form-article/form-article.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 export const routes: Routes = [
     {
@@ -55,5 +56,9 @@ export const routes: Routes = [
     {
         path: 'editar-artigo/:id',
         component: FormArticleComponent,
+    },
+    {
+        path: '**',
+        component: NotFoundComponent,
     },
 ];
