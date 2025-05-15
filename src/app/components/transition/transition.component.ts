@@ -1,29 +1,13 @@
-import { Component, DoCheck, Input, OnInit } from '@angular/core';
-import { HomeComponent } from '../home/home.component';
-import { AboutComponent } from '../about/about.component';
-import { SkillsComponent } from '../skills/skills.component';
-import { CoursesComponent } from '../courses/courses.component';
+import { Component, Type, effect, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { trigger, style, transition, animate } from '@angular/animations';
-import { ExperienceComponent } from '../experience/experience.component';
-import { ProjectsComponent } from '../projects/projects.component';
-import { ArticlesComponent } from '../articles/articles.component';
-import { ContactComponent } from '../contact/contact.component';
 import { HomeScreenService } from '../../services/home-screen.service';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-transition',
-    imports: [
-        HomeComponent,
-        CommonModule,
-        AboutComponent,
-        SkillsComponent,
-        CoursesComponent,
-        ExperienceComponent,
-        ProjectsComponent,
-        ArticlesComponent,
-        ContactComponent,
-    ],
+    standalone: true,
+    imports: [CommonModule],
     templateUrl: './transition.component.html',
     styleUrl: './transition.component.scss',
     animations: [
@@ -38,20 +22,48 @@ import { HomeScreenService } from '../../services/home-screen.service';
         ]),
     ],
 })
-export class TransitionComponent implements OnInit, DoCheck {
-    componentSelected: string = 'inicio';
+export class TransitionComponent {
+    lazyComponent: Type<unknown> | null = null;
 
-    constructor(private homeScreenService: HomeScreenService) {}
+    private homeScreenService = inject(HomeScreenService);
 
-    ngOnInit(): void {
-        this.updateComponentSelected();
+    constructor() {
+        effect(
+            async () => {
+                const name = this.homeScreenService.getHomeScreen();
+                this.lazyComponent = await this.loadComponentByName(name);
+            },
+            { allowSignalWrites: true },
+        );
     }
 
-    ngDoCheck(): void {
-        this.updateComponentSelected();
-    }
-
-    updateComponentSelected(): void {
-        this.componentSelected = this.homeScreenService.getHomeScreen();
+    async loadComponentByName(name: string): Promise<Type<unknown> | null> {
+        switch (name) {
+            case 'inicio':
+                return (await import('../home/home.component')).HomeComponent;
+            case 'sobreMim':
+                return (await import('../about/about.component'))
+                    .AboutComponent;
+            case 'habilidades':
+                return (await import('../skills/skills.component'))
+                    .SkillsComponent;
+            case 'cursos':
+                return (await import('../courses/courses.component'))
+                    .CoursesComponent;
+            case 'experiencias':
+                return (await import('../experience/experience.component'))
+                    .ExperienceComponent;
+            case 'projetos':
+                return (await import('../projects/projects.component'))
+                    .ProjectsComponent;
+            case 'artigos':
+                return (await import('../articles/articles.component'))
+                    .ArticlesComponent;
+            case 'contateMe':
+                return (await import('../contact/contact.component'))
+                    .ContactComponent;
+            default:
+                return null;
+        }
     }
 }

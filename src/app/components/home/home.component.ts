@@ -1,18 +1,19 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { ThemeService } from '../../services/theme-service/theme.service';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs';
+import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
 import HomeI18N from '../home/homeI18N';
 
 @Component({
     selector: 'app-home',
-    imports: [],
+    imports: [ApiLoadingComponent],
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
     private readonly TRANSLANTE_JSON: string = 'home';
 
     private readonly SWORD_BLACK_THEME: string =
@@ -22,6 +23,8 @@ export class HomeComponent implements OnInit {
     MY_PHOTO: string = '../../../assets/texture/sem-foto.jpg';
 
     windowWidth: number;
+
+    isLoading: boolean = true;
 
     i18n: HomeI18N = {
         desenvolvedor: '',
@@ -39,6 +42,10 @@ export class HomeComponent implements OnInit {
 
     ngOnInit(): void {
         this.insertI18n();
+    }
+
+    ngAfterViewInit(): void {
+        this.isLoading = false;
     }
 
     getSwordIcon(): string {

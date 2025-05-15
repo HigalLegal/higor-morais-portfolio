@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CardImageComponent } from '../card-image/card-image.component';
 import { CourseResponse } from '../../models/response/courseResponse';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -23,7 +23,7 @@ import CoursesI18N from './coursesI18N';
     templateUrl: './courses.component.html',
     styleUrl: './courses.component.scss',
 })
-export class CoursesComponent implements OnInit {
+export class CoursesComponent implements OnInit, AfterViewInit {
     private readonly TRANSLATE_JSON: string = 'courses';
 
     courses: CourseResponse[] = [
@@ -82,9 +82,10 @@ export class CoursesComponent implements OnInit {
         this.descriptionsTechnologies = this.courses.map((course) =>
             this.generateDescription(course.technologies),
         );
-        setTimeout(() => {
-            this.isLoading = false;
-        }, 500);
+    }
+
+    ngAfterViewInit(): void {
+        this.isLoading = false;
     }
 
     private recoverValue(key: string): Observable<string> {

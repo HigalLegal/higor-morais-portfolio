@@ -1,8 +1,9 @@
 .container {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    width: 50%;
+    margin-top: 90px;
 }
 
 .coin {
@@ -15,6 +16,7 @@
 
 .text {
     margin-top: 20px;
+    width: 50%;
 
     p {
         color: var(--font-color);

@@ -1,10 +1,12 @@
-<div class="container">
-    <div class="coin">
-        <img src="{{ getCoin1() }}" alt="" />
-        <img src="{{ getCoin2() }}" alt="" />
-        <img src="{{ getCoin1() }}" alt="" />
+<app-api-loading [isLoading]="isLoading">
+    <div class="container">
+        <div class="coin">
+            <img src="{{ getCoin1() }}" alt="" />
+            <img src="{{ getCoin2() }}" alt="" />
+            <img src="{{ getCoin1() }}" alt="" />
+        </div>
+        <div class="text">
+            <app-long-text [text]="textAboutMe" />
+        </div>
     </div>
-    <div class="text">
-        <app-long-text [text]="textAboutMe" />
-    </div>
-</div>
+</app-api-loading>

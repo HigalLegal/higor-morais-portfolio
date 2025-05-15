@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, AfterViewInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TechnologyResponse } from '../../models/response/technologyResponse';
@@ -26,7 +26,7 @@ import SKillsI18N from './skillsI18N';
     templateUrl: './skills.component.html',
     styleUrl: './skills.component.scss',
 })
-export class SkillsComponent implements OnInit {
+export class SkillsComponent implements OnInit, AfterViewInit {
     readonly TRANSLATE_JSON: string = 'skills';
 
     index = signal(0);
@@ -62,9 +62,10 @@ export class SkillsComponent implements OnInit {
 
     ngOnInit(): void {
         this.insertI18N();
-        setTimeout(() => {
-            this.isLoading = false;
-        }, 500); // simula uma chamada pra API
+    }
+
+    ngAfterViewInit(): void {
+        this.isLoading = false;
     }
 
     get visibleItems(): TechnologyResponse[] {

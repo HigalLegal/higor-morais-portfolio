@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { IconService } from '../../services/icon-service/icon.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,14 +9,20 @@ import Link from './link';
 import ContactI18N from './contactI18N';
 import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs';
+import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
 
 @Component({
     selector: 'app-contact',
-    imports: [MatIconModule, MatButtonModule, MatSnackBarModule],
+    imports: [
+        MatIconModule,
+        MatButtonModule,
+        MatSnackBarModule,
+        ApiLoadingComponent,
+    ],
     templateUrl: './contact.component.html',
     styleUrl: './contact.component.scss',
 })
-export class ContactComponent implements OnInit {
+export class ContactComponent implements OnInit, AfterViewInit {
     private readonly TRANSLATE_JSON: string = 'contact';
     private readonly EMAIL: string = 'moraislimahigor@gmail.com';
     private readonly LINKS: Link[] = [
@@ -35,6 +41,8 @@ export class ContactComponent implements OnInit {
         linkedin: '',
     };
 
+    isLoading: boolean = true;
+
     constructor(
         private translate: TranslateConfigService,
         private iconService: IconService,
@@ -45,6 +53,10 @@ export class ContactComponent implements OnInit {
 
     ngOnInit(): void {
         this.insertI18n();
+    }
+
+    ngAfterViewInit(): void {
+        this.isLoading = false;
     }
 
     recoverValue(key: string): Observable<string> {

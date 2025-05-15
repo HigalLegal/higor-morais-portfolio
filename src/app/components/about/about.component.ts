@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { ThemeService } from '../../services/theme-service/theme.service';
 import { MatCardModule } from '@angular/material/card';
 import { LongTextComponent } from '../long-text/long-text.component';
+import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
 
 @Component({
     selector: 'app-about-me',
-    imports: [MatCardModule, LongTextComponent],
+    imports: [MatCardModule, LongTextComponent, ApiLoadingComponent],
     templateUrl: './about.component.html',
     styleUrls: ['./about.component.scss', './about.component.responsive.scss'],
 })
-export class AboutComponent {
+export class AboutComponent implements AfterViewInit {
     private readonly COIN_BLACK_1: string =
         '../../../assets/img/moeda-1-para-tema-escuro.png';
     private readonly COIN_BLACK_2: string =
@@ -26,7 +27,13 @@ export class AboutComponent {
 
         Nos meus momentos livres, também sou fã de animes e mangás, o que me ajuda a relaxar e explorar novas perspectivas criativas. Sou natural de Icó, no Ceará.`;
 
+    isLoading = true;
+
     constructor(private themeService: ThemeService) {}
+
+    ngAfterViewInit(): void {
+        this.isLoading = false;
+    }
 
     getCoin1(): string {
         const currentTheme: string = this.themeService.getThemeCurrent();

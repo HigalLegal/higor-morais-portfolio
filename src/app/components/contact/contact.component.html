@@ -1,22 +1,24 @@
-<div class="container-contact">
-    <div class="contacts">
-        <div class="contact">
-            <span>{{ i18n.email }}</span>
-            <button mat-icon-button (click)="copyEmail()">
-                <mat-icon>mail</mat-icon>
-            </button>
-        </div>
-        <div class="contact">
-            <span>{{ this.i18n.github }}</span>
-            <button mat-icon-button (click)="openLink('github')">
-                <mat-icon svgIcon="github-icon"></mat-icon>
-            </button>
-        </div>
-        <div class="contact">
-            <span>{{ this.i18n.linkedin }}</span>
-            <button mat-icon-button (click)="openLink('linkedin')">
-                <mat-icon svgIcon="linkedin"></mat-icon>
-            </button>
+<app-api-loading [isLoading]="isLoading">
+    <div class="container-contact">
+        <div class="contacts">
+            <div class="contact">
+                <span>{{ i18n.email }}</span>
+                <button mat-icon-button (click)="copyEmail()">
+                    <mat-icon>mail</mat-icon>
+                </button>
+            </div>
+            <div class="contact">
+                <span>{{ i18n.github }}</span>
+                <button mat-icon-button (click)="openLink('github')">
+                    <mat-icon svgIcon="github-icon"></mat-icon>
+                </button>
+            </div>
+            <div class="contact">
+                <span>{{ i18n.linkedin }}</span>
+                <button mat-icon-button (click)="openLink('linkedin')">
+                    <mat-icon svgIcon="linkedin"></mat-icon>
+                </button>
+            </div>
         </div>
     </div>
-</div>
+</app-api-loading>

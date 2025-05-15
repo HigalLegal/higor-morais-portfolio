@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import ArticleResponse from '../../models/response/articleResponse';
 import { CardComponent } from '../card/card.component';
 import { generatePhraseTechnologies } from '../utils/functionTechnologies';
@@ -18,7 +18,7 @@ import ArticleI18N from './articlesI18N';
         './articles.component.responsive.scss',
     ],
 })
-export class ArticlesComponent implements OnInit {
+export class ArticlesComponent implements OnInit, AfterViewInit {
     private readonly TRANSLATE_JSON: string = 'articles';
     i18n: ArticleI18N = {
         technologies: '',
@@ -76,9 +76,10 @@ export class ArticlesComponent implements OnInit {
         this.textsDescription = this.articles.map((article) =>
             this.generateSentence(article.technologiesCovered),
         );
-        setTimeout(() => {
-            this.isLoading = false;
-        }, 500);
+    }
+
+    ngAfterViewInit(): void {
+        this.isLoading = false;
     }
 
     private generateSentence(technologies: string[]): string {

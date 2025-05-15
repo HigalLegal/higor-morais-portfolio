@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, signal, computed } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    signal,
+    computed,
+    DoCheck,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -44,8 +50,8 @@ export class FormCourseComponent implements AfterViewInit {
         return (
             this.name().length <= this.MIN ||
             this.urlCertificate().length <= this.MIN ||
-            !this.importanceLevel() ||
-            this.technologiesIds().length <= 0 ||
+            (!this.importanceLevel() && this.importanceLevel() !== 0) ||
+            this.technologiesIds().length == 0 ||
             !this.image()
         );
     });

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import ProjectResponse from '../../models/response/projectResponse';
 import { CardImageComponent } from '../card-image/card-image.component';
 import { generatePhraseTechnologies } from '../utils/functionTechnologies';
@@ -14,7 +14,7 @@ import { ButtonFormComponent } from '../../shared/button-form/button-form.compon
     templateUrl: './projects.component.html',
     styleUrl: './projects.component.scss',
 })
-export class ProjectsComponent implements OnInit {
+export class ProjectsComponent implements OnInit, AfterViewInit {
     private readonly TRANSLATE_JSON: string = 'projects';
     i18n: ProjectsI18N = {
         technologies: '',
@@ -64,9 +64,10 @@ export class ProjectsComponent implements OnInit {
         this.textsDescription = this.projects.map((project) =>
             this.generateDescription(project.technologiesWorked),
         );
-        setTimeout(() => {
-            this.isLoading = false;
-        }, 500);
+    }
+
+    ngAfterViewInit(): void {
+        this.isLoading = false;
     }
 
     private generateDescription(technologies: string[]): string {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import ExperienceResponse from '../../models/response/experienceResponse';
 import { DESCRIPTION_1, DESCRIPTION_2 } from './mocksExperiences';
 import { CardComponent } from '../card/card.component';
@@ -19,7 +19,7 @@ import ExperienceI18N from './experienceI18N';
         './experience.component.responsive.scss',
     ],
 })
-export class ExperienceComponent implements OnInit {
+export class ExperienceComponent implements OnInit, AfterViewInit {
     private readonly TRANSLATE_JSON: string = 'experience';
 
     experiences: ExperienceResponse[] = [
@@ -77,9 +77,10 @@ export class ExperienceComponent implements OnInit {
         this.messagesTechnologies = this.experiences.map((experience) =>
             this.generateSentence(experience.technologiesWorked),
         );
-        setTimeout(() => {
-            this.isLoading = false;
-        }, 500);
+    }
+
+    ngAfterViewInit(): void {
+        this.isLoading = false;
     }
 
     recoverValue(key: string): Observable<string> {
