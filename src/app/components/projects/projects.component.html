@@ -1,7 +1,10 @@
 <app-api-loading [isLoading]="isLoading">
     <div class="projects-wrapper">
         <div class="button-form">
-            <app-button-form [text]="i18n.register" urlRouter="inserir-curso" />
+            <app-button-form
+                [text]="i18n.register"
+                urlRouter="inserir-projeto"
+            />
         </div>
         <div class="card-grid">
             @for (project of projects; track $index) {

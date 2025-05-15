@@ -97,7 +97,8 @@
         "github": "GitHub"
     },
     "fileUpload": {
-        "escolher": "Escolher arquivo"
+        "escolher": "Escolher arquivo",
+        "limpar": "Limpar arquivo"
     },
     "notFound": {
         "title": "Ops... Algo deu errado",

@@ -28,6 +28,8 @@
             />
         </mat-form-field>
 
+        <app-file-upload (image)="image.set($event)" />
+
         <button
             mat-raised-button
             color="primary"

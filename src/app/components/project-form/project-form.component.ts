@@ -11,6 +11,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TechnologyResponse } from '../../models/response/technologyResponse';
 import { FileUploadComponent } from '../../shared/file-upload/file-upload.component';
 import ProjectFormI18N from './projectFormI18N';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-project-form',
@@ -54,15 +55,18 @@ export class ProjectFormComponent implements OnInit {
         { id: 3, name: 'Vue', urlImage: '', importanceLevel: 2 },
     ];
 
-    constructor(private translate: TranslateConfigService) {}
+    constructor(
+        private translate: TranslateConfigService,
+        private router: Router,
+    ) {}
 
     disableButton = computed(() => {
-        return (
-            this.description().length <= this.MIN ||
-            this.urlRepository().length <= this.MIN ||
-            !this.importanceLevel() ||
-            this.technologiesWorkedId().length < 1 ||
-            !this.image()
+        return !(
+            this.description().length > this.MIN &&
+            this.urlRepository().length > this.MIN &&
+            this.importanceLevel() !== null &&
+            this.technologiesWorkedId().length > 0 &&
+            this.validateImage()
         );
     });
 
@@ -115,5 +119,12 @@ export class ProjectFormComponent implements OnInit {
                 console.error('Erro inesperado! ' + err);
             },
         });
+    }
+
+    private validateImage(): boolean {
+        const currentRouter = this.router.url;
+        return currentRouter.includes('inserir-projeto')
+            ? !!this.image()
+            : true;
     }
 }

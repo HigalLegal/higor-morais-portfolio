@@ -6,7 +6,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { forkJoin, Observable } from 'rxjs';
+import { FileUploadComponent } from '../../shared/file-upload/file-upload.component';
 import FormTechnologyI18N from './formTechnologyI18N';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-form-technology',
@@ -17,6 +19,7 @@ import FormTechnologyI18N from './formTechnologyI18N';
         MatInputModule,
         MatButtonModule,
         CommonModule,
+        FileUploadComponent,
     ],
     templateUrl: './form-technology.component.html',
     styleUrls: [
@@ -29,6 +32,7 @@ export class FormTechnologyComponent implements OnInit {
 
     name = signal<string>('');
     importanceLevel = signal<number | null>(null);
+    image = signal<File | null | undefined>(null);
 
     i18n: FormTechnologyI18N = {
         nameTechnology: '',
@@ -36,10 +40,20 @@ export class FormTechnologyComponent implements OnInit {
         submit: '',
     };
 
-    constructor(private translate: TranslateConfigService) {}
+    constructor(
+        private translate: TranslateConfigService,
+        private router: Router,
+    ) {}
 
     disableButton = computed(() => {
-        return !(this.name().length > 2 && !!this.importanceLevel());
+        const currentRoute = this.router.url;
+
+        const isNameValid = this.name().trim().length > 3;
+        const isImportanceValid = this.importanceLevel() !== null;
+        const isImageValid =
+            !currentRoute.includes('inserir-tecnologia') || !!this.image();
+
+        return !(isNameValid && isImportanceValid && isImageValid);
     });
 
     ngOnInit(): void {
@@ -47,15 +61,7 @@ export class FormTechnologyComponent implements OnInit {
     }
 
     onSubmit() {
-        if (this.name && this.importanceLevel) {
-            const request = {
-                name: this.name,
-                importanceLevel: this.importanceLevel,
-            };
-            console.log('Form enviado:', request);
-        } else {
-            console.log('Form inválido');
-        }
+        console.log('Por hora, só o clique...');
     }
 
     private recoverValue(key: string): Observable<string> {
@@ -79,5 +85,11 @@ export class FormTechnologyComponent implements OnInit {
             },
             error: (err) => console.error('Erro inesperado! ' + err),
         });
+    }
+
+    private validateImage(): boolean {
+        const currentRouter = this.router.url;
+
+        return currentRouter.includes('inserir-curso') ? !this.image() : false;
     }
 }

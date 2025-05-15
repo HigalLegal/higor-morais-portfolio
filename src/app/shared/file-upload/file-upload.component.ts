@@ -1,7 +1,14 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    EventEmitter,
+    Output,
+    ViewChild,
+    ElementRef,
+} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 
 @Component({
     selector: 'app-file-upload',
@@ -13,7 +20,10 @@ export class FileUploadComponent implements OnInit {
     private readonly TRANSLATE_JSON: string = 'fileUpload';
 
     message: string = '';
+    messageClear: string = '';
     fileName: string | null = null;
+
+    @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
     @Output() image = new EventEmitter<File | null | undefined>();
 
     constructor(private translate: TranslateConfigService) {}
@@ -29,10 +39,18 @@ export class FileUploadComponent implements OnInit {
         if (file) {
             this.image.emit(file);
             this.fileName = file.name;
-        } else {
-            this.image.emit(null);
-            this.fileName = null;
         }
+    }
+
+    onClear(): void {
+        const fileInput = document.getElementById(
+            'fileInput',
+        ) as HTMLInputElement;
+        if (fileInput) {
+            fileInput.value = '';
+        }
+        this.fileName = null;
+        this.image.emit(null);
     }
 
     private recoverValue(key: string): Observable<string> {
@@ -41,10 +59,15 @@ export class FileUploadComponent implements OnInit {
         );
     }
 
+    private observableRequests(): Observable<string>[] {
+        return [this.recoverValue('escolher'), this.recoverValue('limpar')];
+    }
+
     private insertI18N(): void {
-        this.recoverValue('escolher').subscribe({
-            next: (escolher) => {
+        forkJoin(this.observableRequests()).subscribe({
+            next: ([escolher, limpar]) => {
                 this.message = escolher;
+                this.messageClear = limpar;
             },
             error: (err) => {
                 console.error('Erro inesperado! ' + err);

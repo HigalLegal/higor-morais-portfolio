@@ -1,10 +1,4 @@
-import {
-    AfterViewInit,
-    Component,
-    signal,
-    computed,
-    DoCheck,
-} from '@angular/core';
+import { AfterViewInit, Component, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +12,7 @@ import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs';
 import { FileUploadComponent } from '../../shared/file-upload/file-upload.component';
 import FormCourseI18N from './formCourseI18N';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-form-course',
@@ -47,12 +42,20 @@ export class FormCourseComponent implements AfterViewInit {
     image = signal<File | null | undefined>(null);
 
     disableButton = computed(() => {
-        return (
-            this.name().length <= this.MIN ||
-            this.urlCertificate().length <= this.MIN ||
-            (!this.importanceLevel() && this.importanceLevel() !== 0) ||
-            this.technologiesIds().length == 0 ||
-            !this.image()
+        const route = this.router.url;
+
+        const isNameValid = this.name().trim().length > 3;
+        const isUrlCertificateValid = this.urlCertificate().trim().length > 3;
+        const isImportanceValid = this.importanceLevel() !== null;
+        const hasTechnologies = this.technologiesIds().length > 0;
+        const isImageValid = this.validateImage();
+
+        return !(
+            isNameValid &&
+            isUrlCertificateValid &&
+            isImportanceValid &&
+            hasTechnologies &&
+            isImageValid
         );
     });
 
@@ -73,6 +76,7 @@ export class FormCourseComponent implements AfterViewInit {
     constructor(
         private translate: TranslateConfigService,
         private detector: ChangeDetectorRef,
+        private router: Router,
     ) {}
 
     ngAfterViewInit(): void {
@@ -122,5 +126,10 @@ export class FormCourseComponent implements AfterViewInit {
             this.recoverValue('techonologies'),
             this.recoverValue('submit'),
         ];
+    }
+
+    private validateImage(): boolean {
+        const currentRouter = this.router.url;
+        return currentRouter.includes('inserir-curso') ? !!this.image() : true;
     }
 }

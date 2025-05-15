@@ -2,19 +2,27 @@
     display: none;
 }
 
+button {
+    border: none;
+    margin-top: 8px;
+}
+
 .custom-file-label {
-    display: inline-flex;
+    display: inline-flex; // Mantém alinhamento dos ícones
     align-items: center;
     gap: 8px;
     padding: 8px 16px;
     background-color: #1976d2;
     color: white;
     cursor: pointer;
-    width: 92%;
-    border-radius: 4px;
-    font-weight: 500;
     border-radius: 20px;
+    font-weight: 500;
     transition: background 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &:hover {
         background-color: #1565c0;
@@ -22,5 +30,6 @@
 
     mat-icon {
         font-size: 20px;
+        flex-shrink: 0;
     }
 }
