@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
 
     disableButton = computed(() => {
         return (
-            this.email().length <= this.MIN &&
+            this.email().length <= this.MIN ||
             this.password().length <= this.MIN
         );
     });
