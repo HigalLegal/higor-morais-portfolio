@@ -1,5 +1,6 @@
 @media (max-width: 790px) {
     .articles-container {
+        padding-inline: 40px;
         app-card-experience {
             max-width: 500px;
         }
@@ -16,6 +17,7 @@
 
 @media (max-width: 370px) {
     .articles-container {
+        padding-inline: 30px;
         app-card-experience {
             max-width: 250px;
         }
