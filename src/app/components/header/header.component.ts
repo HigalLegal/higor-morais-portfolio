@@ -170,6 +170,11 @@ export class HeaderComponent implements OnInit {
         this.isOpenMenu = !this.isOpenMenu;
     }
 
+    @HostListener('window:scroll', [])
+    closeMenu() {
+        this.isOpenMenu = false;
+    }
+
     private insertI18n(): void {
         forkJoin(this.observableRequests()).subscribe({
             next: ([
