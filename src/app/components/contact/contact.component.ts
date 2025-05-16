@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, signal } from '@angular/core';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { IconService } from '../../services/icon-service/icon.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,8 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import Link from './link';
 import ContactI18N from './contactI18N';
-import { Observable } from 'rxjs';
-import { forkJoin } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
 
 @Component({
@@ -41,7 +40,7 @@ export class ContactComponent implements OnInit, AfterViewInit {
         linkedin: '',
     };
 
-    isLoading: boolean = true;
+    isLoading = signal<boolean>(true);
 
     constructor(
         private translate: TranslateConfigService,
@@ -56,7 +55,9 @@ export class ContactComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.isLoading = false;
+        setTimeout(() => {
+            this.isLoading.set(false);
+        }, 200);
     }
 
     recoverValue(key: string): Observable<string> {

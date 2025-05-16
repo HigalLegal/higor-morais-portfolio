@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, signal } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { IconService } from '../../services/icon-service/icon.service';
 import { MatListModule } from '@angular/material/list';
+import { filter } from 'rxjs/operators';
 import {
     trigger,
     state,
@@ -17,7 +18,7 @@ import {
 import { ThemeService } from '../../services/theme-service/theme.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { HomeScreenService } from '../../services/home-screen.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { Observable } from 'rxjs';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -98,6 +99,10 @@ export class HeaderComponent implements OnInit {
     tooltipClass: string = 'mat-tooltip';
     themeColor: 'dark' | 'light' = 'dark';
 
+    currentUrl: string = '';
+
+    activeComponent = signal<string>('inicio');
+
     constructor(
         private translate: TranslateConfigService,
         private iconService: IconService,
@@ -107,16 +112,28 @@ export class HeaderComponent implements OnInit {
     ) {
         this.iconService.registerIcons('medieval-celta');
         this.windowWidth = window.innerWidth;
+        this.router.events
+            .pipe(filter((event) => event instanceof NavigationEnd))
+            .subscribe((event: NavigationEnd) => {
+                this.currentUrl = event.url;
+            });
     }
 
     ngOnInit(): void {
         this.insertI18n();
+        this.activeComponent.set(this.homeScreenService.getHomeScreen());
     }
 
     recoverValue(key: string): Observable<string> {
         return this.translate.retrieveKeyValueObservable(
             `${this.TRANSLANTE_JSON}.${key}`,
         );
+    }
+
+    openComponent(aliasComponent: string): void {
+        this.handleNavigation();
+        this.setLoadingTemporarily();
+        this.setComponent(aliasComponent);
     }
 
     onChangeTheme(): void {
@@ -199,18 +216,23 @@ export class HeaderComponent implements OnInit {
         ];
     }
 
-    openComponent(aliasComponent: string): void {
+    private handleNavigation(): void {
         const currentRoute: string = this.router.url;
-
-        if (currentRoute != '/') {
+        if (currentRoute !== '/') {
             this.router.navigate(['/']);
         } else {
             this.isLoading = true;
         }
+    }
 
-        this.homeScreenService.setHomeScreen(aliasComponent);
+    private setLoadingTemporarily(): void {
         setTimeout(() => {
             this.isLoading = false;
         }, 250);
+    }
+
+    private setComponent(alias: string): void {
+        this.homeScreenService.setHomeScreen(alias);
+        this.activeComponent.set(alias);
     }
 }

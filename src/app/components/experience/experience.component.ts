@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, signal } from '@angular/core';
 import ExperienceResponse from '../../models/response/experienceResponse';
 import { DESCRIPTION_1, DESCRIPTION_2 } from './mocksExperiences';
 import { CardComponent } from '../card/card.component';
@@ -65,7 +65,7 @@ export class ExperienceComponent implements OnInit, AfterViewInit {
         register: '',
     };
 
-    isLoading: boolean = true;
+    isLoading = signal<boolean>(true);
 
     constructor(private translate: TranslateConfigService) {}
 
@@ -80,7 +80,9 @@ export class ExperienceComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.isLoading = false;
+        setTimeout(() => {
+            this.isLoading.set(false);
+        }, 200);
     }
 
     recoverValue(key: string): Observable<string> {
@@ -97,6 +99,10 @@ export class ExperienceComponent implements OnInit, AfterViewInit {
     generateSentence(technologies: string[]): string {
         const { tecnologiasTrabalhadas: message } = this.i18n;
         return generatePhraseTechnologies(message, technologies);
+    }
+
+    handleDelete(): void {
+        console.log('Por hora, apenas o clique...');
     }
 
     private insertI18n(): void {

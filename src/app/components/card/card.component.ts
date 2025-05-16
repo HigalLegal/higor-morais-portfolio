@@ -2,11 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { LongTextComponent } from '../long-text/long-text.component';
 import { ButtonFormComponent } from '../../shared/button-form/button-form.component';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
-import { Observable } from 'rxjs';
+import { ButtonActionComponent } from '../../shared/button-action/button-action.component';
+import { Observable, forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-card',
-    imports: [LongTextComponent, ButtonFormComponent],
+    imports: [LongTextComponent, ButtonFormComponent, ButtonActionComponent],
     templateUrl: './card.component.html',
     styleUrls: ['./card.component.scss', './card.component.responsive.scss'],
 })
@@ -20,8 +21,10 @@ export class CardComponent implements OnInit {
     @Input() hideTextByDefault: boolean = false;
 
     @Input() urlRouterFormEdit?: string;
+    @Input() onAction?: () => void;
 
     messageEdit: string = '';
+    messageDelete: string = '';
 
     constructor(private translate: TranslateConfigService) {}
 
@@ -35,10 +38,15 @@ export class CardComponent implements OnInit {
         );
     }
 
+    private observableRequests(): Observable<string>[] {
+        return [this.recoverValue('edit'), this.recoverValue('del')];
+    }
+
     private insertI18N(): void {
-        this.recoverValue('edit').subscribe({
-            next: (edit) => {
+        forkJoin(this.observableRequests()).subscribe({
+            next: ([edit, del]) => {
                 this.messageEdit = edit;
+                this.messageDelete = del;
             },
             error: (err) => console.log('Erro inesperado! ' + err),
         });

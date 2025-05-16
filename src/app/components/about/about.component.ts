@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, signal } from '@angular/core';
 import { ThemeService } from '../../services/theme-service/theme.service';
 import { MatCardModule } from '@angular/material/card';
 import { LongTextComponent } from '../long-text/long-text.component';
@@ -27,12 +27,14 @@ export class AboutComponent implements AfterViewInit {
 
         Nos meus momentos livres, também sou fã de animes e mangás, o que me ajuda a relaxar e explorar novas perspectivas criativas. Sou natural de Icó, no Ceará.`;
 
-    isLoading = true;
+    isLoading = signal<boolean>(true);
 
     constructor(private themeService: ThemeService) {}
 
     ngAfterViewInit(): void {
-        this.isLoading = false;
+        setTimeout(() => {
+            this.isLoading.set(false);
+        }, 200);
     }
 
     getCoin1(): string {

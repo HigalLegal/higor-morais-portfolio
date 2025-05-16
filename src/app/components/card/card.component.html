@@ -11,8 +11,12 @@
 <p>
     <span>{{ technologiesUsed }}</span>
 </p>
-@if (urlRouterFormEdit) {
-    <div class="button-form">
+
+<div class="button-form">
+    @if (urlRouterFormEdit) {
         <app-button-form [text]="messageEdit" [urlRouter]="urlRouterFormEdit" />
-    </div>
-}
+    }
+    @if (onAction) {
+        <app-button-action [text]="messageDelete" [onAction]="onAction" />
+    }
+</div>

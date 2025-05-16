@@ -1,4 +1,4 @@
-<app-api-loading [isLoading]="isLoading">
+<app-api-loading [isLoading]="isLoading()">
     <div class="courses-wrapper">
         <div class="button-form">
             <app-button-form [text]="i18n.register" urlRouter="inserir-curso" />
@@ -11,6 +11,7 @@
                     [url]="course.urlCertificate"
                     [technologiesUsed]="descriptionsTechnologies[$index]"
                     [urlRouterFormEdit]="'editar-curso/' + course.id"
+                    [onAction]="handleDelete"
                 />
             }
         </div>

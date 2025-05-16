@@ -17,7 +17,8 @@
     },
     "skills": {
         "register": "Cadastrar nova habilidade técnica.",
-        "edit": "Editar"
+        "edit": "Editar",
+        "del": "Deletar"
     },
     "login": {
         "email": "Email",
@@ -41,7 +42,8 @@
         "register": "Cadastrar novo artigo"
     },
     "card": {
-        "edit": "Editar"
+        "edit": "Editar",
+        "del": "Deletar"
     },
     "formTechnology": {
         "nameTechnology": "Nome da tecnologia",

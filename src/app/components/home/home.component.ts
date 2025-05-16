@@ -1,9 +1,14 @@
-import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    HostListener,
+    OnInit,
+    signal,
+} from '@angular/core';
 import { ThemeService } from '../../services/theme-service/theme.service';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { forkJoin } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
 import HomeI18N from '../home/homeI18N';
 
@@ -11,7 +16,7 @@ import HomeI18N from '../home/homeI18N';
     selector: 'app-home',
     imports: [ApiLoadingComponent],
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss'],
+    styleUrls: ['./home.component.scss', './home.component.responsive.scss'],
 })
 export class HomeComponent implements OnInit, AfterViewInit {
     private readonly TRANSLANTE_JSON: string = 'home';
@@ -24,7 +29,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     windowWidth: number;
 
-    isLoading: boolean = true;
+    isLoading = signal<boolean>(true);
 
     i18n: HomeI18N = {
         desenvolvedor: '',
@@ -45,7 +50,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.isLoading = false;
+        setTimeout(() => {
+            this.isLoading.set(false);
+        }, 200);
     }
 
     getSwordIcon(): string {

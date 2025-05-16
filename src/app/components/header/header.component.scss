@@ -21,8 +21,13 @@ $spacing-medium: 15px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.active-component {
+    border-bottom: 2px solid var(--font-color);
+}
+
 .sidenav-container {
     @include themed-container;
+    z-index: 90;
     position: fixed;
     display: flex;
     width: 45vw;

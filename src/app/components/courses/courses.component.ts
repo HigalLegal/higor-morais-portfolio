@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, signal } from '@angular/core';
 import { CardImageComponent } from '../card-image/card-image.component';
 import { CourseResponse } from '../../models/response/courseResponse';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -73,7 +73,7 @@ export class CoursesComponent implements OnInit, AfterViewInit {
         register: '',
     };
 
-    isLoading: boolean = true;
+    isLoading = signal<boolean>(true);
 
     constructor(private translate: TranslateConfigService) {}
 
@@ -85,7 +85,13 @@ export class CoursesComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.isLoading = false;
+        setTimeout(() => {
+            this.isLoading.set(false);
+        }, 200);
+    }
+
+    handleDelete(): void {
+        console.log('Por hora, apenas o clique.');
     }
 
     private recoverValue(key: string): Observable<string> {

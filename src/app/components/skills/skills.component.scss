@@ -47,8 +47,12 @@ $color-text-button: #101d20;
         font-size: 1.5rem;
         margin-top: 10px;
     }
-    app-button-form {
-        margin-top: 20px;
+    .actions {
+        margin-top: 15px;
+        app-button-form {
+            margin-top: 20px;
+            margin-right: 10px;
+        }
     }
 }
 

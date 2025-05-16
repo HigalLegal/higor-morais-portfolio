@@ -10,6 +10,7 @@ import { ButtonFormComponent } from '../../shared/button-form/button-form.compon
 import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs';
 import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
+import { ButtonActionComponent } from '../../shared/button-action/button-action.component';
 import SKillsI18N from './skillsI18N';
 
 @Component({
@@ -21,6 +22,7 @@ import SKillsI18N from './skillsI18N';
         CommonModule,
         RouterModule,
         ButtonFormComponent,
+        ButtonActionComponent,
         ApiLoadingComponent,
     ],
     templateUrl: './skills.component.html',
@@ -54,9 +56,10 @@ export class SkillsComponent implements OnInit, AfterViewInit {
     i18n: SKillsI18N = {
         register: '',
         edit: '',
+        del: '',
     };
 
-    isLoading: boolean = true;
+    isLoading = signal<boolean>(true);
 
     constructor(private translate: TranslateConfigService) {}
 
@@ -65,11 +68,9 @@ export class SkillsComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.isLoading = false;
-    }
-
-    get visibleItems(): TechnologyResponse[] {
-        return [...this.technologies];
+        setTimeout(() => {
+            this.isLoading.set(false);
+        }, 200);
     }
 
     next(): void {
@@ -83,6 +84,10 @@ export class SkillsComponent implements OnInit, AfterViewInit {
         );
     }
 
+    handleDelete(): void {
+        console.log('Por hora, apenas o clique...');
+    }
+
     private recoverValue(key: string): Observable<string> {
         return this.translate.retrieveKeyValueObservable(
             `${this.TRANSLATE_JSON}.${key}`,
@@ -90,13 +95,17 @@ export class SkillsComponent implements OnInit, AfterViewInit {
     }
 
     private observableRequests(): Observable<string>[] {
-        return [this.recoverValue('register'), this.recoverValue('edit')];
+        return [
+            this.recoverValue('register'),
+            this.recoverValue('edit'),
+            this.recoverValue('del'),
+        ];
     }
 
     private insertI18N(): void {
         forkJoin(this.observableRequests()).subscribe({
-            next: ([register, edit]) => {
-                this.i18n = { register, edit };
+            next: ([register, edit, del]) => {
+                this.i18n = { register, edit, del };
             },
             error: (err) => console.error('Erro inesperado! ' + err),
         });

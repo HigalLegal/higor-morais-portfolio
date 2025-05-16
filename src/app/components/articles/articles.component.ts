@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, signal } from '@angular/core';
 import ArticleResponse from '../../models/response/articleResponse';
 import { CardComponent } from '../card/card.component';
 import { generatePhraseTechnologies } from '../utils/functionTechnologies';
@@ -67,7 +67,7 @@ export class ArticlesComponent implements OnInit, AfterViewInit {
 
     textsDescription: string[] = [];
 
-    isLoading: boolean = true;
+    isLoading = signal<boolean>(true);
 
     constructor(private translate: TranslateConfigService) {}
 
@@ -79,7 +79,13 @@ export class ArticlesComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.isLoading = false;
+        setTimeout(() => {
+            this.isLoading.set(false);
+        }, 200);
+    }
+
+    handleDelete(): void {
+        console.log('Por hora, apenas o clique...');
     }
 
     private generateSentence(technologies: string[]): string {
