@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HomeScreenService } from './home-screen.service';
+import { TokenService } from './token.service';
 
-describe('HomeScreenService', () => {
-    let service: HomeScreenService;
+describe('TokenService', () => {
+    let service: TokenService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
-        service = TestBed.inject(HomeScreenService);
+        service = TestBed.inject(TokenService);
     });
 
     it('should be created', () => {

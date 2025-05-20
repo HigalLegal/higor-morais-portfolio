@@ -10,11 +10,13 @@ import { TranslateConfigService } from '../../services/translate-config-service/
 import { Router } from '@angular/router';
 import { Observable, forkJoin } from 'rxjs';
 import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
+import { ButtonActionComponent } from '../../shared/button-action/button-action.component';
+import { TokenService } from '../../services/token-service/token.service';
 import HomeI18N from '../home/homeI18N';
 
 @Component({
     selector: 'app-home',
-    imports: [ApiLoadingComponent],
+    imports: [ApiLoadingComponent, ButtonActionComponent],
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss', './home.component.responsive.scss'],
 })
@@ -29,6 +31,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     windowWidth: number;
 
+    isAdmin = signal<boolean>(false);
+
     isLoading = signal<boolean>(true);
 
     i18n: HomeI18N = {
@@ -41,8 +45,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
         private themeService: ThemeService,
         private translate: TranslateConfigService,
         private router: Router,
+        private tokenService: TokenService,
     ) {
         this.windowWidth = window.innerWidth;
+        this.isAdmin.set(tokenService.isAdmin());
     }
 
     ngOnInit(): void {
@@ -53,6 +59,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
             this.isLoading.set(false);
         }, 200);
+    }
+
+    onLogout(): void {
+        this.tokenService.clearToken();
+        this.isAdmin.set(false);
     }
 
     getSwordIcon(): string {

@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { HomeScreenService } from '../../services/home-screen.service';
+import { HomeScreenService } from '../../services/home-screen-service/home-screen.service';
 import NotFoundI18N from './notFoundI18N';
 
 @Component({

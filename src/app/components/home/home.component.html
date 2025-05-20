@@ -4,8 +4,14 @@
             <img [src]="MY_PHOTO" alt="" class="img-photo" />
             <h1>{{ i18n.desenvolvedor }}</h1>
         </div>
-        <div class="to-login">
-            <h4 (click)="onLogin()">{{ i18n.fraseLogin }}</h4>
-        </div>
+        @if (!isAdmin()) {
+            <div class="to-login">
+                <h4 (click)="onLogin()">{{ i18n.fraseLogin }}</h4>
+            </div>
+        } @else {
+            <div class="logout">
+                <app-button-action text="Logout" (click)="onLogout()" />
+            </div>
+        }
     </div>
 </app-api-loading>

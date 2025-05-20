@@ -17,6 +17,6 @@
         <app-button-form [text]="messageEdit" [urlRouter]="urlRouterFormEdit" />
     }
     @if (onAction) {
-        <app-button-action [text]="messageDelete" [onAction]="onAction" />
+        <app-button-action [text]="messageDelete" (click)="onAction()" />
     }
 </div>

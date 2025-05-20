@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit, signal } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { CommonModule } from '@angular/common';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { IconService } from '../../services/icon-service/icon.service';
@@ -17,7 +17,7 @@ import {
 } from '@angular/animations';
 import { ThemeService } from '../../services/theme-service/theme.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { HomeScreenService } from '../../services/home-screen.service';
+import { HomeScreenService } from '../../services/home-screen-service/home-screen.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { Observable } from 'rxjs';

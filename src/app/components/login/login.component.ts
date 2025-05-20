@@ -6,6 +6,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { forkJoin, Observable } from 'rxjs';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
+import { UserService } from '../../services/user-service/user.service';
+import { TokenService } from '../../services/token-service/token.service';
+import { Router } from '@angular/router';
 import LoginI18N from './loginI18N';
 
 @Component({
@@ -32,7 +35,12 @@ export class LoginComponent implements OnInit {
         password: '',
     };
 
-    constructor(private translate: TranslateConfigService) {}
+    constructor(
+        private translate: TranslateConfigService,
+        private userService: UserService,
+        private tokenService: TokenService,
+        private router: Router,
+    ) {}
 
     disableButton = computed(() => {
         return (
@@ -46,7 +54,20 @@ export class LoginComponent implements OnInit {
     }
 
     onLogin(): void {
-        console.log('Mock');
+        const login = { email: this.email(), password: this.password() };
+        this.userService.postLogin(login).subscribe({
+            next: (token) => {
+                this.tokenService.setToken(token.jwt);
+                this.redirectToHome();
+            },
+            error: (err) => {
+                console.error('Erro inesperado! ', err);
+            },
+        });
+    }
+
+    private redirectToHome(): void {
+        this.router.navigate(['/']);
     }
 
     private recoverValue(key: string): Observable<string> {

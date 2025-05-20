@@ -6,10 +6,15 @@ import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { provideNgxMask } from 'ngx-mask';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { importProvidersFrom } from '@angular/core';
+import { GlobalErrorInterceptor } from './interceptors/global-error.interceptor';
 import {
     HttpClient,
     provideHttpClient,
     withJsonpSupport,
+    withInterceptorsFromDi,
 } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { routes } from './app.routes';
@@ -28,8 +33,17 @@ export const appConfig: ApplicationConfig = {
         provideNgxMask(),
         provideRouter(routes),
         provideAnimationsAsync(),
-        provideHttpClient(withJsonpSupport()),
+
+        importProvidersFrom(MatSnackBarModule),
+        provideHttpClient(withJsonpSupport(), withInterceptorsFromDi()),
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: GlobalErrorInterceptor,
+            multi: true,
+        },
+
         provideNativeDateAdapter(),
+
         provideTranslateService({
             loader: {
                 provide: TranslateLoader,

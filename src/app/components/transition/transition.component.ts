@@ -1,6 +1,6 @@
 import { Component, Type, effect, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomeScreenService } from '../../services/home-screen.service';
+import { HomeScreenService } from '../../services/home-screen-service/home-screen.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -28,13 +28,10 @@ export class TransitionComponent {
     private homeScreenService = inject(HomeScreenService);
 
     constructor() {
-        effect(
-            async () => {
-                const name = this.homeScreenService.getHomeScreen();
-                this.lazyComponent = await this.loadComponentByName(name);
-            },
-            { allowSignalWrites: true },
-        );
+        effect(async () => {
+            const name = this.homeScreenService.getHomeScreen();
+            this.lazyComponent = await this.loadComponentByName(name);
+        });
     }
 
     async loadComponentByName(name: string): Promise<Type<unknown> | null> {

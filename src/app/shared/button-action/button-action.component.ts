@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
@@ -9,11 +9,9 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class ButtonActionComponent {
     @Input() text: string = 'Padrão';
-    @Input() onAction?: () => void;
+    @Output() click = new EventEmitter<void>();
 
     onClickButton(): void {
-        if (this.onAction) {
-            this.onAction();
-        }
+        this.click.emit();
     }
 }
