@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackBarService } from '../../services/snack-bar-service/snack-bar.service';
 import Link from './link';
 import ContactI18N from './contactI18N';
 import { Observable, forkJoin } from 'rxjs';
@@ -46,6 +47,7 @@ export class ContactComponent implements OnInit, AfterViewInit {
         private translate: TranslateConfigService,
         private iconService: IconService,
         private snackBar: MatSnackBar,
+        private snackbarService: SnackBarService,
     ) {
         this.iconService.registerIcons('github-icon', 'linkedin');
     }
@@ -75,22 +77,14 @@ export class ContactComponent implements OnInit, AfterViewInit {
         navigator.clipboard
             .writeText(this.EMAIL)
             .then(() => {
-                this.snackBar.open(
+                this.snackbarService.openSnackBarSucess(
                     `Email copiado com sucesso (${this.EMAIL})!`,
-                    'Fechar',
-                    {
-                        duration: 3000,
-                        verticalPosition: 'bottom',
-                        horizontalPosition: 'center',
-                        panelClass: 'snackbar-success',
-                    },
                 );
             })
             .catch(() => {
-                this.snackBar.open('Erro ao copiar o email.', 'Fechar', {
-                    duration: 3000,
-                    panelClass: 'snackbar-error',
-                });
+                this.snackbarService.openSnackBarError(
+                    'Erro ao copiar o email.',
+                );
             });
     }
 

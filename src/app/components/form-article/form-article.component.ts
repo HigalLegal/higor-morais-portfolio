@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { TechnologyResponse } from '../../models/response/technologyResponse';
+import { TechnologyResponse } from '../../models/response/technology-response';
 import FormArticleI18N from './formArticleI18N';
 
 @Component({

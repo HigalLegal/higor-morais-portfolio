@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
     {
@@ -21,6 +22,7 @@ export const routes: Routes = [
             import(
                 './components/form-technology/form-technology.component'
             ).then((m) => m.FormTechnologyComponent),
+        canActivate: [authGuard],
     },
     {
         path: 'editar-tecnologia/:id',
@@ -28,6 +30,7 @@ export const routes: Routes = [
             import(
                 './components/form-technology/form-technology.component'
             ).then((m) => m.FormTechnologyComponent),
+        canActivate: [authGuard],
     },
     {
         path: 'inserir-curso',
@@ -35,6 +38,7 @@ export const routes: Routes = [
             import('./components/form-course/form-course.component').then(
                 (m) => m.FormCourseComponent,
             ),
+        canActivate: [authGuard],
     },
     {
         path: 'editar-curso/:id',
@@ -42,6 +46,7 @@ export const routes: Routes = [
             import('./components/form-course/form-course.component').then(
                 (m) => m.FormCourseComponent,
             ),
+        canActivate: [authGuard],
     },
     {
         path: 'inserir-experiencia',
@@ -49,6 +54,7 @@ export const routes: Routes = [
             import(
                 './components/form-experience/form-experience.component'
             ).then((m) => m.FormExperienceComponent),
+        canActivate: [authGuard],
     },
     {
         path: 'editar-experiencia/:id',
@@ -56,6 +62,7 @@ export const routes: Routes = [
             import(
                 './components/form-experience/form-experience.component'
             ).then((m) => m.FormExperienceComponent),
+        canActivate: [authGuard],
     },
     {
         path: 'inserir-projeto',
@@ -63,6 +70,7 @@ export const routes: Routes = [
             import('./components/project-form/project-form.component').then(
                 (m) => m.ProjectFormComponent,
             ),
+        canActivate: [authGuard],
     },
     {
         path: 'editar-projeto/:id',
@@ -70,6 +78,7 @@ export const routes: Routes = [
             import('./components/project-form/project-form.component').then(
                 (m) => m.ProjectFormComponent,
             ),
+        canActivate: [authGuard],
     },
     {
         path: 'inserir-artigo',
@@ -77,6 +86,7 @@ export const routes: Routes = [
             import('./components/form-article/form-article.component').then(
                 (m) => m.FormArticleComponent,
             ),
+        canActivate: [authGuard],
     },
     {
         path: 'editar-artigo/:id',
@@ -84,6 +94,7 @@ export const routes: Routes = [
             import('./components/form-article/form-article.component').then(
                 (m) => m.FormArticleComponent,
             ),
+        canActivate: [authGuard],
     },
     {
         path: '**',

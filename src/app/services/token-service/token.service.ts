@@ -14,6 +14,10 @@ export class TokenService {
 
     constructor() {}
 
+    get token(): string | null | undefined {
+        return this.tokenSignal();
+    }
+
     setToken(token: string): void {
         localStorage.setItem(TOKEN_KEY, token);
         this.tokenSignal.set(token);

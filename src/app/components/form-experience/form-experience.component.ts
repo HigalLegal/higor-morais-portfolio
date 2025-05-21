@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs';
 import { NgxMaskDirective } from 'ngx-mask';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TechnologyResponse } from '../../models/response/technologyResponse';
+import { TechnologyResponse } from '../../models/response/technology-response';
 import { TextErrorComponent } from '../../shared/text-error/text-error.component';
 import FormExperienceI18N from './formExperienceI18N';
 

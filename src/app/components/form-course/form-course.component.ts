@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
-import { TechnologyResponse } from '../../models/response/technologyResponse';
+import { TechnologyResponse } from '../../models/response/technology-response';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs';

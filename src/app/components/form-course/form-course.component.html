@@ -57,7 +57,7 @@
             </mat-select>
         </mat-form-field>
 
-        <app-file-upload (image)="handleImage($event)" />
+        <app-file-upload [imageFile]="image()" (image)="handleImage($event)" />
 
         <button
             mat-raised-button

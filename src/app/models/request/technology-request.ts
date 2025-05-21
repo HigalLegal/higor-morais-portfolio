@@ -1,6 +1,6 @@
 type TechnologyRequest = {
     name: string;
-    importanceLevel: string;
+    importanceLevel: number | null;
 };
 
 export default TechnologyRequest;

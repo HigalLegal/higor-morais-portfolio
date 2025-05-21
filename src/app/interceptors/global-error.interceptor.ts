@@ -7,12 +7,12 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import ErrorJSON from '../models/errors/errorJSON';
+import { SnackBarService } from '../services/snack-bar-service/snack-bar.service';
 
 @Injectable()
 export class GlobalErrorInterceptor implements HttpInterceptor {
-    constructor(private snackBar: MatSnackBar) {}
+    constructor(private snackbarService: SnackBarService) {}
 
     intercept(
         req: HttpRequest<any>,
@@ -25,10 +25,7 @@ export class GlobalErrorInterceptor implements HttpInterceptor {
                 const message = customError?.message || 'Erro inesperado';
                 const title = customError?.title || `Erro ${error.status}`;
 
-                this.snackBar.open(`${title}: ${message}`, 'Fechar', {
-                    duration: 5000,
-                    panelClass: ['snackbar-error'],
-                });
+                this.snackbarService.openSnackBarError(`${title}: ${message}`);
 
                 return throwError(() => error);
             }),

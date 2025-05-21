@@ -1,0 +1,32 @@
+@mixin snackbar-container {
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+}
+
+.snackbar-error {
+    background-color: red;
+    @include snackbar-container();
+}
+
+.snackbar-sucess {
+    background-color: green;
+    @include snackbar-container();
+}
+
+.snackbar-icon {
+    font-size: 20px;
+}
+.snackbar-message {
+    flex: 1;
+}
+.snackbar-close {
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}

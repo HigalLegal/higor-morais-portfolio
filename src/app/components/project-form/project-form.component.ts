@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TechnologyResponse } from '../../models/response/technologyResponse';
+import { TechnologyResponse } from '../../models/response/technology-response';
 import { FileUploadComponent } from '../../shared/file-upload/file-upload.component';
 import ProjectFormI18N from './projectFormI18N';
 import { Router } from '@angular/router';

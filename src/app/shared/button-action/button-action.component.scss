@@ -2,3 +2,8 @@ button {
     color: #101d20 !important;
     border: none;
 }
+
+.disable-button {
+    pointer-events: none;
+    opacity: 0.5;
+}

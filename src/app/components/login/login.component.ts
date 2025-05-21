@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { forkJoin, Observable } from 'rxjs';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
-import { UserService } from '../../services/user-service/user.service';
+import { UserService } from '../../services/api/user-service/user.service';
 import { TokenService } from '../../services/token-service/token.service';
 import { Router } from '@angular/router';
 import LoginI18N from './loginI18N';

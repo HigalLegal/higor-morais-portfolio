@@ -1,5 +1,5 @@
 <div class="form-container">
-    <form (ngSubmit)="onSubmit()">
+    <form>
         <mat-form-field appearance="fill">
             <mat-label>{{ i18n.nameTechnology }}</mat-label>
             <input
@@ -28,9 +28,10 @@
             />
         </mat-form-field>
 
-        <app-file-upload (image)="image.set($event)" />
+        <app-file-upload [imageFile]="image()" (image)="image.set($event)" />
 
         <button
+            (click)="onSubmit()"
             mat-raised-button
             color="primary"
             type="submit"

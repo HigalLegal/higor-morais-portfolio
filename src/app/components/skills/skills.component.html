@@ -1,10 +1,12 @@
 <app-api-loading [isLoading]="isLoading()">
-    <div class="button-form">
-        <app-button-form
-            [text]="i18n.register"
-            urlRouter="inserir-tecnologia"
-        />
-    </div>
+    @if (isAdmin()) {
+        <div class="button-form">
+            <app-button-form
+                [text]="i18n.register"
+                urlRouter="inserir-tecnologia"
+            />
+        </div>
+    }
     <div class="carousel-container">
         <button mat-icon-button (click)="prev()">
             <mat-icon>chevron_left</mat-icon>
@@ -19,16 +21,25 @@
                     <mat-card class="carousel-item">
                         <img [src]="tech.urlImage" alt="{{ tech.name }}" />
                         <p>{{ tech.name }}</p>
-                        <div class="actions">
-                            <app-button-form
-                                [text]="i18n.edit"
-                                [urlRouter]="'editar-tecnologia/' + tech.id"
-                            />
-                            <app-button-action
-                                [text]="i18n.del"
-                                (click)="handleDelete()"
-                            />
-                        </div>
+                        @if (isAdmin()) {
+                            <div class="importance-level">
+                                <span
+                                    >{{ i18n.importanceLevel
+                                    }}{{ tech.importanceLevel }}</span
+                                >
+                            </div>
+
+                            <div class="actions">
+                                <app-button-form
+                                    [text]="i18n.edit"
+                                    [urlRouter]="'editar-tecnologia/' + tech.id"
+                                />
+                                <app-button-action
+                                    [text]="i18n.del"
+                                    (clicked)="handleDelete(tech.id)"
+                                />
+                            </div>
+                        }
                     </mat-card>
                 }
             </div>

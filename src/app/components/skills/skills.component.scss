@@ -41,9 +41,9 @@ $color-text-button: #101d20;
     justify-content: center;
     text-align: center;
     background: none;
+    font-family: MedievalSharp;
+    color: var(--font-color);
     p {
-        font-family: MedievalSharp;
-        color: var(--font-color);
         font-size: 1.5rem;
         margin-top: 10px;
     }

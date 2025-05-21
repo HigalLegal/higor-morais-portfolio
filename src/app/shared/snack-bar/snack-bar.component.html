@@ -1,0 +1,11 @@
+<div [ngClass]="isSucess ? 'snackbar-sucess' : 'snackbar-error'">
+    <span class="snackbar-icon">
+        @if (isSucess) {
+            <mat-icon>done</mat-icon>
+        } @else {
+            <mat-icon>error</mat-icon>
+        }
+    </span>
+    <span class="snackbar-message">{{ data.message }}</span>
+    <button class="snackbar-close" (click)="close()">{{ message }}</button>
+</div>

@@ -1,5 +1,15 @@
 @forward "./assets/scss/variables.scss";
 
+@use "@angular/material" as mat;
+
+:root {
+    @include mat.snack-bar-overrides(
+        (
+            container-color: none,
+        )
+    );
+}
+
 @font-face {
     font-family: "MedievalSharp";
     src:
@@ -28,9 +38,10 @@
     font-weight: normal;
     font-style: normal;
 }
-
-body .mat-mdc-tooltip-surface {
-    font-family: CinzelDecorative;
+.snack-bar-clear {
+    .mat-mdc-snackbar-surface {
+        box-shadow: none;
+    }
 }
 
 * {
