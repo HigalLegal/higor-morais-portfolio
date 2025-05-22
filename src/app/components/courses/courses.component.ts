@@ -1,4 +1,10 @@
-import { Component, OnInit, AfterViewInit, signal } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    AfterViewInit,
+    signal,
+    effect,
+} from '@angular/core';
 import { CardImageComponent } from '../card-image/card-image.component';
 import { CourseResponse } from '../../models/response/courseResponse';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -8,7 +14,10 @@ import { ButtonFormComponent } from '../../shared/button-form/button-form.compon
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { forkJoin, Observable } from 'rxjs';
 import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
+import { TokenService } from '../../services/token-service/token.service';
+import { CourseService } from '../../services/api/course-service/course.service';
 import CoursesI18N from './coursesI18N';
+import { SnackBarService } from '../../services/snack-bar-service/snack-bar.service';
 
 @Component({
     selector: 'app-courses',
@@ -26,46 +35,9 @@ import CoursesI18N from './coursesI18N';
 export class CoursesComponent implements OnInit, AfterViewInit {
     private readonly TRANSLATE_JSON: string = 'courses';
 
-    courses: CourseResponse[] = [
-        {
-            id: 1,
-            name: 'Introdução ao Angular',
-            urlImage:
-                'https://i.ibb.co/LSb6f2V/resteasy-reactive8863785267111177153upload.jpg',
-            urlCertificate: 'https://example.com/certificado-angular',
-            importanceLevel: 9,
-            technologies: ['Angular', 'TypeScript', 'RxJS'],
-        },
-        {
-            id: 2,
-            name: 'Spring Boot Avançado',
-            urlImage:
-                'https://i.ibb.co/LSb6f2V/resteasy-reactive8863785267111177153upload.jpg',
-            urlCertificate: 'https://example.com/certificado-spring-boot',
-            importanceLevel: 10,
-            technologies: ['Spring Boot', 'Java', 'Hibernate'],
-        },
-        {
-            id: 3,
-            name: 'Aprenda Next.js',
-            urlImage:
-                'https://i.ibb.co/LSb6f2V/resteasy-reactive8863785267111177153upload.jpg',
-            urlCertificate: 'https://example.com/certificado-nextjs',
-            importanceLevel: 8,
-            technologies: ['Next.js', 'React', 'Node.js'],
-        },
-        {
-            id: 4,
-            name: 'Banco de Dados com PostgreSQL',
-            urlImage:
-                'https://i.ibb.co/LSb6f2V/resteasy-reactive8863785267111177153upload.jpg',
-            urlCertificate: 'https://example.com/certificado-postgresql',
-            importanceLevel: 7,
-            technologies: ['PostgreSQL', 'SQL', 'Banco de Dados'],
-        },
-    ];
+    courses = signal<CourseResponse[]>([]);
 
-    descriptionsTechnologies: string[] = [];
+    descriptionsTechnologies = signal<string[]>([]);
 
     i18n: CoursesI18N = {
         technologies: '',
@@ -73,15 +45,34 @@ export class CoursesComponent implements OnInit, AfterViewInit {
         register: '',
     };
 
+    isAdmin = signal<boolean>(false);
+
     isLoading = signal<boolean>(true);
 
-    constructor(private translate: TranslateConfigService) {}
+    constructor(
+        private translate: TranslateConfigService,
+        private tokenService: TokenService,
+        private courseService: CourseService,
+        private snackbarService: SnackBarService,
+    ) {
+        this.isAdmin.set(tokenService.isAdmin());
+
+        effect(() => {
+            const courses = this.courses();
+            const i18n = this.i18n;
+
+            if (courses.length > 0 && i18n.technologies.length > 0) {
+                const descriptions = courses.map((course) =>
+                    this.generateDescription(course.technologies),
+                );
+                this.descriptionsTechnologies.set(descriptions);
+            }
+        });
+    }
 
     ngOnInit(): void {
+        this.searchCourses();
         this.insertI18n();
-        this.descriptionsTechnologies = this.courses.map((course) =>
-            this.generateDescription(course.technologies),
-        );
     }
 
     ngAfterViewInit(): void {
@@ -90,8 +81,31 @@ export class CoursesComponent implements OnInit, AfterViewInit {
         }, 200);
     }
 
-    handleDelete(): void {
-        console.log('Por hora, apenas o clique.');
+    handleDelete(id: number): void {
+        this.courseService.delete(id).subscribe({
+            next: () => {
+                this.openSnackbar();
+                this.searchCourses();
+            },
+            error: (err) => {
+                console.error('Erro inesperado', err);
+            },
+        });
+    }
+
+    private searchCourses(): void {
+        this.courseService.getAll().subscribe({
+            next: (courses) => {
+                this.courses.set(courses);
+            },
+            error: (err) => {
+                console.error('Erro inesperado! ', err);
+            },
+        });
+    }
+
+    private openSnackbar(): void {
+        this.snackbarService.openSnackBarSucess(`Excluído com exito!`);
     }
 
     private recoverValue(key: string): Observable<string> {

@@ -15,7 +15,7 @@
         <p>{{ technologiesUsed }}</p>
     </mat-card-content>
 
-    @if (urlRouterFormEdit) {
+    @if (urlRouterFormEdit && isAdmin()) {
         <mat-card-content class="button-form">
             <app-button-form
                 [text]="messageEdit"
@@ -24,9 +24,12 @@
         </mat-card-content>
     }
 
-    @if (onAction) {
+    @if (isAdmin()) {
         <mat-card-content class="button-form">
-            <app-button-action [text]="messageDelete" (clicked)="onAction()" />
+            <app-button-action
+                [text]="messageDelete"
+                (clicked)="onClick.emit()"
+            />
         </mat-card-content>
     }
 </mat-card>

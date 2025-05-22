@@ -1,5 +1,5 @@
 <div class="form-container">
-    <form (ngSubmit)="onSubmit()">
+    <form>
         <mat-form-field appearance="fill">
             <mat-label>{{ i18n.nameCourse }}</mat-label>
             <input
@@ -32,8 +32,7 @@
                 matInput
                 type="number"
                 name="importanceLevel"
-                (ngModel)="importanceLevel()"
-                (ngModelChange)="importanceLevel.set($event)"
+                [(ngModel)]="importanceLevelValue"
                 [ngModelOptions]="{ standalone: true }"
                 min="0"
                 required
@@ -44,8 +43,7 @@
             <mat-label>{{ i18n.technologies }}</mat-label>
             <mat-select
                 name="technologies"
-                (ngModel)="technologiesIds()"
-                (ngModelChange)="technologiesIds.set($event)"
+                [(ngModel)]="technologiesIdsValue"
                 [ngModelOptions]="{ standalone: true }"
                 multiple
             >
@@ -60,6 +58,7 @@
         <app-file-upload [imageFile]="image()" (image)="handleImage($event)" />
 
         <button
+            (click)="onSubmit()"
             mat-raised-button
             color="primary"
             type="submit"

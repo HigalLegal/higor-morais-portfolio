@@ -1,10 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    signal,
+} from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { LongTextComponent } from '../long-text/long-text.component';
 import { ButtonFormComponent } from '../../shared/button-form/button-form.component';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { ButtonActionComponent } from '../../shared/button-action/button-action.component';
 import { Observable, forkJoin } from 'rxjs';
+import { TokenService } from '../../services/token-service/token.service';
 
 @Component({
     selector: 'app-card-image',
@@ -27,12 +35,20 @@ export class CardImageComponent implements OnInit {
     @Input() technologiesUsed: string = '';
 
     @Input() urlRouterFormEdit?: string;
-    @Input() onAction?: () => void;
+
+    @Output() onClick = new EventEmitter<void>();
 
     messageEdit: string = '';
     messageDelete: string = '';
 
-    constructor(private translate: TranslateConfigService) {}
+    isAdmin = signal<boolean>(false);
+
+    constructor(
+        private translate: TranslateConfigService,
+        private tokenService: TokenService,
+    ) {
+        this.isAdmin.set(tokenService.isAdmin());
+    }
 
     ngOnInit(): void {
         this.insertI18N();

@@ -16,6 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TokenService } from '../../services/token-service/token.service';
 import SKillsI18N from './skillsI18N';
+import { SnackBarService } from '../../services/snack-bar-service/snack-bar.service';
 
 @Component({
     selector: 'app-skills',
@@ -56,7 +57,7 @@ export class SkillsComponent implements OnInit, AfterViewInit {
         private translate: TranslateConfigService,
         private technologyService: TechnologyService,
         private tokenService: TokenService,
-        private snackBar: MatSnackBar,
+        private snackBarService: SnackBarService,
     ) {
         this.isAdmin.set(tokenService.isAdmin());
     }
@@ -115,15 +116,8 @@ export class SkillsComponent implements OnInit, AfterViewInit {
     }
 
     private openSucessDelete(nameTechnology: string) {
-        this.snackBar.open(
+        this.snackBarService.openSnackBarSucess(
             `${nameTechnology} excluído com sucesso!`,
-            'Fechar',
-            {
-                duration: 3000,
-                verticalPosition: 'bottom',
-                horizontalPosition: 'center',
-                panelClass: 'snackbar-success',
-            },
         );
     }
 

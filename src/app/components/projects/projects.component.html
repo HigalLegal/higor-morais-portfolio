@@ -14,7 +14,7 @@
                     [url]="project.urlRepository"
                     [technologiesUsed]="textsDescription[$index]"
                     [urlRouterFormEdit]="'editar-projeto/' + project.id"
-                    [onAction]="handleDelete"
+                    (onClick)="handleDelete()"
                 />
             }
         </div>
