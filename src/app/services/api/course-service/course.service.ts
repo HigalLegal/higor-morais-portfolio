@@ -68,7 +68,7 @@ export class CourseService {
 
         const headers = generateAuthorization(jwt);
 
-        return this.http.post<void>(`${this.BASE_URL}/${id}`, { headers });
+        return this.http.delete<void>(`${this.BASE_URL}/${id}`, { headers });
     }
 
     private generateFormData(
