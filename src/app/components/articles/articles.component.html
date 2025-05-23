@@ -1,19 +1,21 @@
 <app-api-loading [isLoading]="isLoading()">
     <div class="articles-container">
-        <div class="button-form">
-            <app-button-form
-                [text]="i18n.register"
-                urlRouter="inserir-artigo"
-            />
-        </div>
-        @for (article of articles; track $index) {
+        @if (isAdmin()) {
+            <div class="button-form">
+                <app-button-form
+                    [text]="i18n.register"
+                    urlRouter="inserir-artigo"
+                />
+            </div>
+        }
+        @for (article of articles(); track $index) {
             <app-card
                 [title]="article.title"
                 [description]="article.summary"
-                [technologiesUsed]="textsDescription[$index]"
+                [technologiesUsed]="textsDescription()[$index]"
                 [url]="article.urlArticle"
                 [urlRouterFormEdit]="'editar-artigo/' + article.id"
-                (onAction)="handleDelete()"
+                (onAction)="handleDelete(article.id)"
             />
         }
     </div>

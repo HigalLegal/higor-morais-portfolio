@@ -40,8 +40,7 @@
             <mat-label>{{ i18n.technologiesCovered }}</mat-label>
             <mat-select
                 name="technologies"
-                (ngModel)="technologiesCoveredId()"
-                (ngModelChange)="technologiesCoveredId.set($event)"
+                [(ngModel)]="technologiesCoveredIdValue"
                 [ngModelOptions]="{ standalone: true }"
                 multiple
             >

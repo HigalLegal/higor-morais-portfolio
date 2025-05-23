@@ -1,4 +1,10 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    signal,
+    computed,
+    AfterViewInit,
+} from '@angular/core';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { Observable, forkJoin } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,6 +15,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { TechnologyResponse } from '../../models/response/technology-response';
 import FormArticleI18N from './formArticleI18N';
+import { TechnologyService } from '../../services/api/technology-service/technology.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SnackBarService } from '../../services/snack-bar-service/snack-bar.service';
+import ArticleResponse from '../../models/response/articleResponse';
+import ArticleRequest from '../../models/request/articleRequest';
+import { ArticleService } from '../../services/api/article-service/article.service';
 
 @Component({
     selector: 'app-form-article',
@@ -26,7 +38,7 @@ import FormArticleI18N from './formArticleI18N';
         './form-article.component.responsive.scss',
     ],
 })
-export class FormArticleComponent implements OnInit {
+export class FormArticleComponent implements OnInit, AfterViewInit {
     private readonly TRANSLATE_JSON: string = 'formArticle';
     private readonly MIN: number = 3;
 
@@ -43,13 +55,26 @@ export class FormArticleComponent implements OnInit {
         submit: '',
     };
 
-    technologies: TechnologyResponse[] = [
-        { id: 1, name: 'Angular', urlImage: '', importanceLevel: 3 },
-        { id: 2, name: 'React', urlImage: '', importanceLevel: 4 },
-        { id: 3, name: 'Vue', urlImage: '', importanceLevel: 2 },
-    ];
+    technologies: TechnologyResponse[] = [];
 
-    constructor(private translate: TranslateConfigService) {}
+    idRouter: number | string | null = null;
+
+    constructor(
+        private translate: TranslateConfigService,
+        private articleService: ArticleService,
+        private technologyService: TechnologyService,
+        private router: Router,
+        private activeRouter: ActivatedRoute,
+        private snackbarService: SnackBarService,
+    ) {}
+
+    get technologiesCoveredIdValue(): number[] {
+        return this.technologiesCoveredId();
+    }
+
+    set technologiesCoveredIdValue(technologiesCoveredIdValue: number[]) {
+        this.technologiesCoveredId.set(technologiesCoveredIdValue);
+    }
 
     disableButton = computed(() => {
         return (
@@ -62,10 +87,103 @@ export class FormArticleComponent implements OnInit {
 
     ngOnInit(): void {
         this.insertI18N();
+        this.searchTechnologies();
+        this.insertId();
+    }
+
+    ngAfterViewInit(): void {
+        this.searchArticleById();
     }
 
     onSubmit(): void {
-        console.log('Por hora, só o clique mesmo...');
+        const article: ArticleRequest = {
+            title: this.title(),
+            summary: this.summary(),
+            urlArticle: this.urlArticle(),
+            technologiesCoveredId: this.technologiesCoveredId(),
+        };
+
+        if (this.router.url.includes('inserir-artigo')) {
+            this.postCreate(article);
+        } else {
+            this.putUpdate(article);
+        }
+    }
+
+    private postCreate(article: ArticleRequest): void {
+        this.articleService.postCreate(article).subscribe({
+            next: () => {
+                this.clearFields();
+                this.openSnackBar();
+            },
+            error: (err) => {
+                console.error('Erro inesperado! ', err);
+            },
+        });
+    }
+
+    private putUpdate(article: ArticleRequest): void {
+        if (this.idRouter) {
+            this.articleService.putCreate(this.idRouter, article).subscribe({
+                next: () => {
+                    this.openSnackBar();
+                    this.router.navigate(['/']);
+                },
+                error: (err) => {
+                    console.error('Erro inesperado! ', err);
+                },
+            });
+        }
+    }
+
+    private searchArticleById(): void {
+        if (this.idRouter) {
+            this.articleService.getById(this.idRouter).subscribe({
+                next: (article) => {
+                    this.insertFields(article);
+                },
+                error: (err) => {
+                    console.error('Erro inesperado! ', err);
+                },
+            });
+        }
+    }
+
+    private clearFields(): void {
+        this.title.set('');
+        this.summary.set('');
+        this.urlArticle.set('');
+        this.technologiesCoveredId.set([]);
+    }
+
+    private insertFields(article: ArticleResponse) {
+        this.title.set(article.title);
+        this.summary.set(article.summary);
+        this.urlArticle.set(article.urlArticle);
+        this.technologiesCoveredId.set(
+            this.technologieForName(article.technologiesCovered).map(
+                (technology) => technology.id,
+            ),
+        );
+    }
+
+    private technologieForName(
+        technologiesName: string[],
+    ): TechnologyResponse[] {
+        return this.technologies.filter((technology) =>
+            technologiesName.includes(technology.name),
+        );
+    }
+
+    private searchTechnologies(): void {
+        this.technologyService.getAll().subscribe({
+            next: (technologies) => {
+                this.technologies = technologies;
+            },
+            error: (err) => {
+                console.error('Erro inesperado! ', err);
+            },
+        });
     }
 
     private recoverValue(key: string) {
@@ -104,6 +222,16 @@ export class FormArticleComponent implements OnInit {
             error: (err) => {
                 console.error('Erro inesperado! ' + err);
             },
+        });
+    }
+
+    private openSnackBar(): void {
+        this.snackbarService.openSnackBarSucess('Artigo salvo com êxito!');
+    }
+
+    private insertId(): void {
+        this.activeRouter.paramMap.subscribe((params) => {
+            this.idRouter = params.get('id');
         });
     }
 }
