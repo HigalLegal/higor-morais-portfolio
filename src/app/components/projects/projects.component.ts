@@ -1,4 +1,10 @@
-import { Component, OnInit, AfterViewInit, signal } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    AfterViewInit,
+    signal,
+    effect,
+} from '@angular/core';
 import ProjectResponse from '../../models/response/projectResponse';
 import { CardImageComponent } from '../card-image/card-image.component';
 import { generatePhraseTechnologies } from '../utils/functionTechnologies';
@@ -7,6 +13,9 @@ import ProjectsI18N from './projectsI18N';
 import { forkJoin, Observable } from 'rxjs';
 import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
 import { ButtonFormComponent } from '../../shared/button-form/button-form.component';
+import { ProjectService } from '../../services/api/project-service/project.service';
+import { SnackBarService } from '../../services/snack-bar-service/snack-bar.service';
+import { TokenService } from '../../services/token-service/token.service';
 
 @Component({
     selector: 'app-projects',
@@ -23,47 +32,27 @@ export class ProjectsComponent implements OnInit, AfterViewInit {
         edit: '',
     };
 
-    projects: ProjectResponse[] = [
-        {
-            id: 1,
-            description:
-                'Sistema de gerenciamento de tarefas com autenticação e painel administrativo.',
-            urlRepository: 'https://github.com/seu-usuario/todo-app',
-            urlImage: 'https://i.imgur.com/ev57OVJ.png',
-            importanceLevel: 5,
-            technologiesWorked: ['Angular', 'TypeScript', 'Node.js', 'MongoDB'],
-        },
-        {
-            id: 2,
-            description:
-                'Landing page institucional responsiva para empresa de tecnologia.',
-            urlRepository: 'https://github.com/seu-usuario/landing-page-tech',
-            urlImage: 'https://i.imgur.com/ev57OVJ.png',
-            importanceLevel: 3,
-            technologiesWorked: ['HTML', 'SCSS', 'JavaScript', 'Vite'],
-        },
-        {
-            id: 3,
-            description:
-                'API REST para gerenciamento de estoque com autenticação JWT.',
-            urlRepository: 'https://github.com/seu-usuario/inventory-api',
-            urlImage: 'https://i.imgur.com/ev57OVJ.png',
-            importanceLevel: 4,
-            technologiesWorked: ['Java', 'Spring Boot', 'PostgreSQL', 'Docker'],
-        },
-    ];
+    projects = signal<ProjectResponse[]>([]);
 
-    textsDescription: string[] = [];
+    textsDescription = signal<string[]>([]);
 
     isLoading = signal<boolean>(true);
 
-    constructor(private translate: TranslateConfigService) {}
+    isAdmin = signal<boolean>(false);
+
+    constructor(
+        private translate: TranslateConfigService,
+        private tokenService: TokenService,
+        private projectService: ProjectService,
+        private snackbarService: SnackBarService,
+    ) {
+        this.isAdmin.set(tokenService.isAdmin());
+        effect(() => this.insertTextsDescription());
+    }
 
     ngOnInit(): void {
         this.insertI18N();
-        this.textsDescription = this.projects.map((project) =>
-            this.generateDescription(project.technologiesWorked),
-        );
+        this.searchProjects();
     }
 
     ngAfterViewInit(): void {
@@ -72,8 +61,37 @@ export class ProjectsComponent implements OnInit, AfterViewInit {
         }, 200);
     }
 
-    handleDelete(): void {
-        console.log('Por hora, apenas o clique.');
+    handleDelete(id: number | string): void {
+        this.projectService.delete(id).subscribe({
+            next: () => {
+                this.openSnackbar();
+                this.searchProjects();
+            },
+            error: (err) => {
+                console.error('Erro inesperado! ', err);
+            },
+        });
+    }
+
+    private searchProjects(): void {
+        this.projectService.getAll().subscribe({
+            next: (projects) => {
+                this.projects.set(projects);
+            },
+            error: (err) => {
+                console.error('Erro inesperado! ', err);
+            },
+        });
+    }
+
+    private insertTextsDescription(): void {
+        if (this.i18n.technologies.length > 0 && this.projects().length > 0) {
+            this.textsDescription.set(
+                this.projects().map((project) =>
+                    this.generateDescription(project.technologiesWorked),
+                ),
+            );
+        }
     }
 
     private generateDescription(technologies: string[]): string {
@@ -82,6 +100,10 @@ export class ProjectsComponent implements OnInit, AfterViewInit {
                 ? this.i18n.technologies
                 : this.i18n.technology;
         return generatePhraseTechnologies(message, technologies);
+    }
+
+    private openSnackbar(): void {
+        this.snackbarService.openSnackBarSucess(`Projeto excluído com exito!`);
     }
 
     private recoverValue(key: string): Observable<string> {

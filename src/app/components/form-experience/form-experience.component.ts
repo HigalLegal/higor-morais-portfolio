@@ -1,4 +1,10 @@
-import { Component, OnInit, signal, computed, AfterViewInit } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    signal,
+    computed,
+    AfterViewInit,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -77,14 +83,14 @@ export class FormExperienceComponent implements OnInit, AfterViewInit {
         private technologyService: TechnologyService,
         private router: Router,
         private activeRouter: ActivatedRoute,
-        private snackbarService: SnackBarService
+        private snackbarService: SnackBarService,
     ) {
         this.currentRouter = this.router.url;
     }
 
     get beginningValue(): string {
         const value = this.beginning();
-        if(value) {
+        if (value) {
             return this.formatDateToBR(value);
         }
 
@@ -97,7 +103,7 @@ export class FormExperienceComponent implements OnInit, AfterViewInit {
 
     get endValue(): string {
         const value = this.end();
-        if(value) {
+        if (value) {
             return this.formatDateToBR(value);
         }
 
@@ -107,7 +113,6 @@ export class FormExperienceComponent implements OnInit, AfterViewInit {
     set endValue(endValue: string) {
         this.handleDate(endValue, this.end.set);
     }
-
 
     get isCurrentValue(): boolean {
         return this.isCurrent();
@@ -156,9 +161,9 @@ export class FormExperienceComponent implements OnInit, AfterViewInit {
             beginning: this.beginningValue,
             end: this.isCurrent() ? null : this.endValue,
             technologiesWorkedId: this.technologiesWorkedId(),
-        }
+        };
 
-        if(this.currentRouter.includes('inserir-experiencia')) {
+        if (this.currentRouter.includes('inserir-experiencia')) {
             this.postCreate(experience);
         } else {
             this.putUpdate(experience);
@@ -182,40 +187,54 @@ export class FormExperienceComponent implements OnInit, AfterViewInit {
     }
 
     private searchExperienceById(): void {
-        if(this.idRouter) {
-            this.experienceService
-                .getById(this.idRouter)
-                .subscribe({
-                    next: experience => { this.insertFields(experience); },
-                    error: err => { console.error('Erro inesperado!'); }
-                });
+        if (this.idRouter) {
+            this.experienceService.getById(this.idRouter).subscribe({
+                next: (experience) => {
+                    this.insertFields(experience);
+                },
+                error: (err) => {
+                    console.error('Erro inesperado!');
+                },
+            });
         }
     }
 
     private postCreate(experience: ExperienceRequest): void {
-        this.experienceService
-            .postCreate(experience)
-            .subscribe({
-                next: () => { this.openSnackBar(); this.clearFields(); },
-                error: err => { console.error('Erro inesperado! ', err) },
-            });
+        this.experienceService.postCreate(experience).subscribe({
+            next: () => {
+                this.openSnackBar();
+                this.clearFields();
+            },
+            error: (err) => {
+                console.error('Erro inesperado! ', err);
+            },
+        });
     }
 
     private putUpdate(experience: ExperienceRequest): void {
-        if(this.idRouter) {
+        if (this.idRouter) {
             this.experienceService
-            .putUpdate(this.idRouter, experience)
-            .subscribe({
-                next: () => { this.openSnackBar(); this.router.navigate(['/']); },
-                error: err => { console.error('Erro inesperado! ', err) },
-            });
+                .putUpdate(this.idRouter, experience)
+                .subscribe({
+                    next: () => {
+                        this.openSnackBar();
+                        this.router.navigate(['/']);
+                    },
+                    error: (err) => {
+                        console.error('Erro inesperado! ', err);
+                    },
+                });
         }
     }
 
     private insertFields(experience: ExperienceResponse) {
         this.companyName.set(experience.companyName);
         this.description.set(experience.description);
-        this.technologiesWorkedId.set(this.technologieForName(experience.technologiesWorked).map(technology => technology.id));
+        this.technologiesWorkedId.set(
+            this.technologieForName(experience.technologiesWorked).map(
+                (technology) => technology.id,
+            ),
+        );
     }
 
     private technologieForName(
@@ -226,10 +245,11 @@ export class FormExperienceComponent implements OnInit, AfterViewInit {
         );
     }
 
-
     private searchTechnologies(): void {
         this.technologyService.getAll().subscribe({
-            next: (technologies) => { this.technologies = technologies; },
+            next: (technologies) => {
+                this.technologies = technologies;
+            },
             error: (err) => {
                 console.error('Erro inesperado! ', err);
             },
@@ -245,7 +265,10 @@ export class FormExperienceComponent implements OnInit, AfterViewInit {
         this.technologiesWorkedId.set([]);
     }
 
-    private handleDate(value: string, onChange: (date: Date | null) => void): void {
+    private handleDate(
+        value: string,
+        onChange: (date: Date | null) => void,
+    ): void {
         if (value.length == 8) {
             const parsedDate = this.stringToDate(value);
             if (!isNaN(parsedDate.getTime())) {
@@ -267,7 +290,9 @@ export class FormExperienceComponent implements OnInit, AfterViewInit {
     }
 
     private openSnackBar(): void {
-        this.snackbarService.openSnackBarSucess('Experiência profissional salva com êxito!');
+        this.snackbarService.openSnackBarSucess(
+            'Experiência profissional salva com êxito!',
+        );
     }
 
     private observableRequests(): Observable<string>[] {
@@ -349,7 +374,6 @@ export class FormExperienceComponent implements OnInit, AfterViewInit {
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     }
-
 
     private validateDateFuture(): boolean {
         if (!this.beginning && !this.end) {

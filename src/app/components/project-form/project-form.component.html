@@ -30,8 +30,7 @@
                 matInput
                 type="number"
                 name="importanceLevel"
-                [ngModel]="importanceLevel()"
-                (ngModelChange)="importanceLevel.set($event)"
+                [(ngModel)]="importanceLevelValue"
                 [ngModelOptions]="{ standalone: true }"
                 min="0"
                 required
@@ -42,8 +41,7 @@
             <mat-label>{{ i18n.technologiesWorked }}</mat-label>
             <mat-select
                 name="technologies"
-                (ngModel)="technologiesWorkedId()"
-                (ngModelChange)="technologiesWorkedId.set($event)"
+                [(ngModel)]="technologiesWorkedIdValue"
                 [ngModelOptions]="{ standalone: true }"
                 multiple
             >

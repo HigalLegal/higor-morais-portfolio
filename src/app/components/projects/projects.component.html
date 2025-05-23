@@ -1,20 +1,22 @@
 <app-api-loading [isLoading]="isLoading()">
     <div class="projects-wrapper">
-        <div class="button-form">
-            <app-button-form
-                [text]="i18n.register"
-                urlRouter="inserir-projeto"
-            />
-        </div>
+        @if (isAdmin()) {
+            <div class="button-form">
+                <app-button-form
+                    [text]="i18n.register"
+                    urlRouter="inserir-projeto"
+                />
+            </div>
+        }
         <div class="card-grid">
-            @for (project of projects; track $index) {
+            @for (project of projects(); track $index) {
                 <app-card-image
                     [title]="project.description"
                     [imageUrl]="project.urlImage"
                     [url]="project.urlRepository"
-                    [technologiesUsed]="textsDescription[$index]"
+                    [technologiesUsed]="textsDescription()[$index]"
                     [urlRouterFormEdit]="'editar-projeto/' + project.id"
-                    (onClick)="handleDelete()"
+                    (onClick)="handleDelete(project.id)"
                 />
             }
         </div>

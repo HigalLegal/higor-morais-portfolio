@@ -1,4 +1,10 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    signal,
+    computed,
+    AfterViewInit,
+} from '@angular/core';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
 import { forkJoin, Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +17,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TechnologyResponse } from '../../models/response/technology-response';
 import { FileUploadComponent } from '../../shared/file-upload/file-upload.component';
 import ProjectFormI18N from './projectFormI18N';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TechnologyService } from '../../services/api/technology-service/technology.service';
+import ProjectResponse from '../../models/response/projectResponse';
+import { SnackBarService } from '../../services/snack-bar-service/snack-bar.service';
+import { ProjectService } from '../../services/api/project-service/project.service';
+import ProjectRequest from '../../models/request/projectRequest';
 
 @Component({
     selector: 'app-project-form',
@@ -31,7 +42,7 @@ import { Router } from '@angular/router';
         './project-form.component.responsive.scss',
     ],
 })
-export class ProjectFormComponent implements OnInit {
+export class ProjectFormComponent implements OnInit, AfterViewInit {
     private readonly TRANSLATE_JSON: string = 'formProject';
     private readonly MIN: number = 3;
 
@@ -49,16 +60,34 @@ export class ProjectFormComponent implements OnInit {
         submit: '',
     };
 
-    technologies: TechnologyResponse[] = [
-        { id: 1, name: 'Angular', urlImage: '', importanceLevel: 3 },
-        { id: 2, name: 'React', urlImage: '', importanceLevel: 4 },
-        { id: 3, name: 'Vue', urlImage: '', importanceLevel: 2 },
-    ];
+    technologies: TechnologyResponse[] = [];
+
+    idRouter: string | number | null = null;
 
     constructor(
         private translate: TranslateConfigService,
         private router: Router,
+        private activeRouter: ActivatedRoute,
+        private snackBarService: SnackBarService,
+        private projectService: ProjectService,
+        private technologyService: TechnologyService,
     ) {}
+
+    get importanceLevelValue(): number | null {
+        return this.importanceLevel();
+    }
+
+    set importanceLevelValue(value: number | null) {
+        this.importanceLevel.set(value);
+    }
+
+    get technologiesWorkedIdValue(): number[] {
+        return this.technologiesWorkedId();
+    }
+
+    set technologiesWorkedIdValue(technologiesWorkedIdValue: number[]) {
+        this.technologiesWorkedId.set(technologiesWorkedIdValue);
+    }
 
     disableButton = computed(() => {
         return !(
@@ -72,14 +101,127 @@ export class ProjectFormComponent implements OnInit {
 
     ngOnInit(): void {
         this.insertI18N();
+        this.searchTechnologies();
+        this.insertId();
+    }
+
+    ngAfterViewInit(): void {
+        this.searchProjectById();
     }
 
     onSubmit(): void {
-        console.log('Por hora, só o clique...');
+        const importanceLevel = this.importanceLevel();
+        const project: ProjectRequest = {
+            description: this.description(),
+            urlRepository: this.urlRepository(),
+            importanceLevel: importanceLevel ? importanceLevel : 0,
+            technologiesWorkedId: this.technologiesWorkedId(),
+        };
+
+        if (this.router.url.includes('inserir-projeto')) {
+            this.postCreate(project, this.image());
+        } else {
+            this.putUpdate(project, this.image());
+        }
     }
 
     handleImage(file: File | null | undefined): void {
         this.image.set(file);
+    }
+
+    private postCreate(
+        project: ProjectRequest,
+        image: File | null | undefined,
+    ): void {
+        this.projectService.postCreate(project, image).subscribe({
+            next: () => {
+                this.openSnackBar();
+                this.clearFields();
+            },
+            error: (err) => {
+                console.error('Erro inesperado! ', err);
+            },
+        });
+    }
+
+    private putUpdate(
+        project: ProjectRequest,
+        image: File | null | undefined,
+    ): void {
+        if (this.idRouter) {
+            this.projectService
+                .putUpdate(this.idRouter, project, image)
+                .subscribe({
+                    next: () => {
+                        this.openSnackBar();
+                        this.router.navigate(['/']);
+                    },
+                    error: (err) => {
+                        console.error('Erro inesperado! ', err);
+                    },
+                });
+        }
+    }
+
+    private searchProjectById(): void {
+        if (this.idRouter) {
+            this.projectService.getById(this.idRouter).subscribe({
+                next: (project) => {
+                    this.insertFields(project);
+                },
+                error: (err) => {
+                    console.error('Erro inesperado! ', err);
+                },
+            });
+        }
+    }
+
+    private openSnackBar(): void {
+        this.snackBarService.openSnackBarSucess('Projeto salvo com êxito!');
+    }
+
+    private searchTechnologies(): void {
+        this.technologyService.getAll().subscribe({
+            next: (technologies) => {
+                this.technologies = technologies;
+            },
+            error: (err) => {
+                console.error('Erro inesperado!', err);
+            },
+        });
+    }
+
+    private insertFields(project: ProjectResponse) {
+        this.description.set(project.description);
+        this.urlRepository.set(project.urlRepository);
+        this.importanceLevel.set(project.importanceLevel);
+        this.technologiesWorkedId.set(
+            this.technologieForName(project.technologiesWorked).map(
+                (technology) => technology.id,
+            ),
+        );
+    }
+
+    private clearFields(): void {
+        this.description.set('');
+        this.urlRepository.set('');
+        this.importanceLevel.set(null);
+        this.technologiesWorkedId.set([]);
+        this.image.set(null);
+    }
+
+    private insertId(): void {
+        this.activeRouter.paramMap.subscribe((params) => {
+            this.idRouter = params.get('id');
+        });
+    }
+
+    private technologieForName(
+        technologiesName: string[],
+    ): TechnologyResponse[] {
+        return this.technologies.filter((technology) =>
+            technologiesName.includes(technology.name),
+        );
     }
 
     private recoverValue(key: string): Observable<string> {

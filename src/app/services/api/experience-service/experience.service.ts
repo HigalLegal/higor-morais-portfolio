@@ -46,7 +46,6 @@ export class ExperienceService {
         id: number | string,
         experience: ExperienceRequest,
     ): Observable<void> {
-
         console.log(id);
 
         const jwt = this.tokenService.token;
