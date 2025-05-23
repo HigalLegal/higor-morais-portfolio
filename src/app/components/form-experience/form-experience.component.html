@@ -1,5 +1,5 @@
 <div class="form-container">
-    <form (submit)="onSubmit()">
+    <form>
         <mat-form-field appearance="fill">
             <mat-label>{{ i18n.companyName }}</mat-label>
             <input
@@ -31,16 +31,14 @@
                 name="beginning"
                 placeholder="dd/mm/aaaa"
                 mask="00/00/0000"
-                [ngModel]="beginning()"
-                (ngModelChange)="handleDate($event, beginning.set)"
+                [(ngModel)]="beginningValue"
                 [ngModelOptions]="{ standalone: true }"
                 required
             />
         </mat-form-field>
 
         <mat-checkbox
-            (ngModel)="isCurrent()"
-            (ngModelChange)="handleActually($event)"
+            [(ngModel)]="isCurrentValue"
             [ngModelOptions]="{ standalone: true }"
             ><span>{{ i18n.actually }}</span></mat-checkbox
         >
@@ -53,8 +51,7 @@
                     name="end"
                     placeholder="dd/mm/aaaa"
                     mask="00/00/0000"
-                    [ngModel]="end()"
-                    (ngModelChange)="handleDate($event, end.set)"
+                    [(ngModel)]="endValue"
                     [ngModelOptions]="{ standalone: true }"
                     required
                 />
@@ -65,8 +62,7 @@
             <mat-label>{{ i18n.technologiesWorked }}</mat-label>
             <mat-select
                 name="technologies"
-                (ngModel)="technologiesWorkedId()"
-                (ngModelChange)="technologiesWorkedId.set($event)"
+                [(ngModel)]="technologiesWorkedIdValue"
                 [ngModelOptions]="{ standalone: true }"
                 multiple
             >
@@ -87,6 +83,7 @@
         }
 
         <button
+            (click)="onSubmit()"
             mat-raised-button
             color="primary"
             type="submit"

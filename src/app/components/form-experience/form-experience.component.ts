@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, AfterViewInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -13,6 +13,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TechnologyResponse } from '../../models/response/technology-response';
 import { TextErrorComponent } from '../../shared/text-error/text-error.component';
 import FormExperienceI18N from './formExperienceI18N';
+import ExperienceRequest from '../../models/request/experienceRequest';
+import ExperienceResponse from '../../models/response/experienceResponse';
+import { ExperienceService } from '../../services/api/experience-service/experience.service';
+import { TechnologyService } from '../../services/api/technology-service/technology.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SnackBarService } from '../../services/snack-bar-service/snack-bar.service';
 
 @Component({
     selector: 'app-form-experience',
@@ -33,9 +39,12 @@ import FormExperienceI18N from './formExperienceI18N';
         './form-experience.component.responsive.scss',
     ],
 })
-export class FormExperienceComponent implements OnInit {
+export class FormExperienceComponent implements OnInit, AfterViewInit {
     private readonly TRANSLATE_JSON: string = 'formExperience';
     private readonly MIN: number = 3;
+
+    currentRouter: string = '';
+    idRouter: string | number | null = null;
 
     companyName = signal<string>('');
     description = signal<string>('');
@@ -45,9 +54,9 @@ export class FormExperienceComponent implements OnInit {
     technologiesWorkedId = signal<number[]>([]);
 
     technologies: TechnologyResponse[] = [
-        { id: 1, name: 'Angular', urlImage: '', importanceLevel: 3 },
-        { id: 2, name: 'React', urlImage: '', importanceLevel: 4 },
-        { id: 3, name: 'Vue', urlImage: '', importanceLevel: 2 },
+        // { id: 1, name: 'Angular', urlImage: '', importanceLevel: 3 },
+        // { id: 2, name: 'React', urlImage: '', importanceLevel: 4 },
+        // { id: 3, name: 'Vue', urlImage: '', importanceLevel: 2 },
     ];
 
     i18n: FormExperienceI18N = {
@@ -62,7 +71,59 @@ export class FormExperienceComponent implements OnInit {
         submit: '',
     };
 
-    constructor(private translate: TranslateConfigService) {}
+    constructor(
+        private translate: TranslateConfigService,
+        private experienceService: ExperienceService,
+        private technologyService: TechnologyService,
+        private router: Router,
+        private activeRouter: ActivatedRoute,
+        private snackbarService: SnackBarService
+    ) {
+        this.currentRouter = this.router.url;
+    }
+
+    get beginningValue(): string {
+        const value = this.beginning();
+        if(value) {
+            return this.formatDateToBR(value);
+        }
+
+        return '';
+    }
+
+    set beginningValue(beginningValue: string) {
+        this.handleDate(beginningValue, this.beginning.set);
+    }
+
+    get endValue(): string {
+        const value = this.end();
+        if(value) {
+            return this.formatDateToBR(value);
+        }
+
+        return '';
+    }
+
+    set endValue(endValue: string) {
+        this.handleDate(endValue, this.end.set);
+    }
+
+
+    get isCurrentValue(): boolean {
+        return this.isCurrent();
+    }
+
+    set isCurrentValue(isCurrentValue: boolean) {
+        this.isCurrent.set(isCurrentValue);
+    }
+
+    get technologiesWorkedIdValue(): number[] {
+        return this.technologiesWorkedId();
+    }
+
+    set technologiesWorkedIdValue(technologiesWorkedIdValue: number[]) {
+        this.technologiesWorkedId.set(technologiesWorkedIdValue);
+    }
 
     isBeginningAfterEnd = computed(() => this.validateBeginningAndEnd());
     isFutureDate = computed(() => this.validateDateFuture());
@@ -80,9 +141,28 @@ export class FormExperienceComponent implements OnInit {
 
     ngOnInit(): void {
         this.insertI18N();
+        this.searchTechnologies();
+        this.insertId();
     }
+
+    ngAfterViewInit(): void {
+        this.searchExperienceById();
+    }
+
     onSubmit(): void {
-        console.log('Correto');
+        const experience: ExperienceRequest = {
+            companyName: this.companyName(),
+            description: this.description(),
+            beginning: this.beginningValue,
+            end: this.isCurrent() ? null : this.endValue,
+            technologiesWorkedId: this.technologiesWorkedId(),
+        }
+
+        if(this.currentRouter.includes('inserir-experiencia')) {
+            this.postCreate(experience);
+        } else {
+            this.putUpdate(experience);
+        }
     }
 
     validateBeginningAndEnd(): boolean {
@@ -101,14 +181,71 @@ export class FormExperienceComponent implements OnInit {
         return beginning.getTime() > end.getTime();
     }
 
-    handleActually(value: boolean): void {
-        if (value) {
-            this.end.set(null);
+    private searchExperienceById(): void {
+        if(this.idRouter) {
+            this.experienceService
+                .getById(this.idRouter)
+                .subscribe({
+                    next: experience => { this.insertFields(experience); },
+                    error: err => { console.error('Erro inesperado!'); }
+                });
         }
-        this.isCurrent.set(value);
     }
 
-    handleDate(value: string, onChange: (date: Date | null) => void) {
+    private postCreate(experience: ExperienceRequest): void {
+        this.experienceService
+            .postCreate(experience)
+            .subscribe({
+                next: () => { this.openSnackBar(); this.clearFields(); },
+                error: err => { console.error('Erro inesperado! ', err) },
+            });
+    }
+
+    private putUpdate(experience: ExperienceRequest): void {
+        if(this.idRouter) {
+            this.experienceService
+            .putUpdate(this.idRouter, experience)
+            .subscribe({
+                next: () => { this.openSnackBar(); this.router.navigate(['/']); },
+                error: err => { console.error('Erro inesperado! ', err) },
+            });
+        }
+    }
+
+    private insertFields(experience: ExperienceResponse) {
+        this.companyName.set(experience.companyName);
+        this.description.set(experience.description);
+        this.technologiesWorkedId.set(this.technologieForName(experience.technologiesWorked).map(technology => technology.id));
+    }
+
+    private technologieForName(
+        technologiesName: string[],
+    ): TechnologyResponse[] {
+        return this.technologies.filter((technology) =>
+            technologiesName.includes(technology.name),
+        );
+    }
+
+
+    private searchTechnologies(): void {
+        this.technologyService.getAll().subscribe({
+            next: (technologies) => { this.technologies = technologies; },
+            error: (err) => {
+                console.error('Erro inesperado! ', err);
+            },
+        });
+    }
+
+    private clearFields(): void {
+        this.companyName.set('');
+        this.description.set('');
+        this.beginning.set(null);
+        this.end.set(null);
+        this.isCurrent.set(false);
+        this.technologiesWorkedId.set([]);
+    }
+
+    private handleDate(value: string, onChange: (date: Date | null) => void): void {
         if (value.length == 8) {
             const parsedDate = this.stringToDate(value);
             if (!isNaN(parsedDate.getTime())) {
@@ -117,28 +254,20 @@ export class FormExperienceComponent implements OnInit {
         }
     }
 
-    handleDateBeginning(value: string): void {
-        if (value.length === 8) {
-            const parsedDate = this.stringToDate(value);
-            if (!isNaN(parsedDate.getTime())) {
-                this.beginning.set(parsedDate);
-            }
-        }
-    }
-
-    handleDateEnd(value: string): void {
-        if (value.length === 8) {
-            const parsedDate = this.stringToDate(value);
-            if (!isNaN(parsedDate.getTime())) {
-                this.end.set(parsedDate);
-            }
-        }
-    }
-
     private recoverValue(key: string) {
         return this.translate.retrieveKeyValueObservable(
             `${this.TRANSLATE_JSON}.${key}`,
         );
+    }
+
+    private insertId(): void {
+        this.activeRouter.paramMap.subscribe((params) => {
+            this.idRouter = params.get('id');
+        });
+    }
+
+    private openSnackBar(): void {
+        this.snackbarService.openSnackBarSucess('Experiência profissional salva com êxito!');
     }
 
     private observableRequests(): Observable<string>[] {
@@ -213,6 +342,14 @@ export class FormExperienceComponent implements OnInit {
         );
         return tomorrow;
     }
+
+    private formatDateToBR(date: Date): string {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // mês começa em 0
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
 
     private validateDateFuture(): boolean {
         if (!this.beginning && !this.end) {

@@ -1,4 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { TokenService } from './../../services/token-service/token.service';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    OnInit,
+    signal,
+} from '@angular/core';
 import { LongTextComponent } from '../long-text/long-text.component';
 import { ButtonFormComponent } from '../../shared/button-form/button-form.component';
 import { TranslateConfigService } from '../../services/translate-config-service/translate-config-service';
@@ -21,12 +29,19 @@ export class CardComponent implements OnInit {
     @Input() hideTextByDefault: boolean = false;
 
     @Input() urlRouterFormEdit?: string;
-    @Input() onAction?: () => void;
+    @Output() onAction = new EventEmitter<void>();
 
     messageEdit: string = '';
     messageDelete: string = '';
 
-    constructor(private translate: TranslateConfigService) {}
+    isAdmin = signal<boolean>(false);
+
+    constructor(
+        private translate: TranslateConfigService,
+        private tokenService: TokenService,
+    ) {
+        this.isAdmin.set(tokenService.isAdmin());
+    }
 
     ngOnInit(): void {
         this.insertI18N();

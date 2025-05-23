@@ -14,14 +14,4 @@ export class TranslateConfigService {
     public retrieveKeyValueObservable(key: string): Observable<string> {
         return this.translate.get(key);
     }
-
-    // public retrieveKeyValue(key: string): string {
-    //     let valueMessage = '';
-
-    //     this.translate.get(key).subscribe((value) => {
-    //         valueMessage = value;
-    //     });
-
-    //     return valueMessage;
-    // }
 }

@@ -1,4 +1,10 @@
-import { Component, OnInit, AfterViewInit, signal } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    AfterViewInit,
+    signal,
+    effect,
+} from '@angular/core';
 import ExperienceResponse from '../../models/response/experienceResponse';
 import { DESCRIPTION_1, DESCRIPTION_2 } from './mocksExperiences';
 import { CardComponent } from '../card/card.component';
@@ -9,6 +15,9 @@ import { forkJoin } from 'rxjs';
 import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
 import { ButtonFormComponent } from '../../shared/button-form/button-form.component';
 import ExperienceI18N from './experienceI18N';
+import { TokenService } from '../../services/token-service/token.service';
+import { ExperienceService } from '../../services/api/experience-service/experience.service';
+import { SnackBarService } from '../../services/snack-bar-service/snack-bar.service';
 
 @Component({
     selector: 'app-experience',
@@ -22,39 +31,39 @@ import ExperienceI18N from './experienceI18N';
 export class ExperienceComponent implements OnInit, AfterViewInit {
     private readonly TRANSLATE_JSON: string = 'experience';
 
-    experiences: ExperienceResponse[] = [
-        {
-            id: 1,
-            companyName: 'Grupo GFT',
-            description: DESCRIPTION_1,
-            beginning: 'Maio de 2022',
-            end: 'Setembro de 2022',
-            technologiesWorked: [
-                'Java',
-                'Javascript',
-                'Typescript',
-                'Spring Boot',
-                'Angular',
-            ],
-        },
-        {
-            id: 2,
-            companyName: 'Touch Health',
-            description: DESCRIPTION_2,
-            beginning: 'Maio de 2023',
-            end: 'Maio de 2025',
-            technologiesWorked: [
-                'Java',
-                'Javascript',
-                'Typescript',
-                'Spring',
-                'JSP',
-                'React',
-                'Next.js',
-                'Docker',
-            ],
-        },
-    ];
+    experiences = signal<ExperienceResponse[]>([
+        // {
+        //     id: 1,
+        //     companyName: 'Grupo GFT',
+        //     description: DESCRIPTION_1,
+        //     beginning: 'Maio de 2022',
+        //     end: 'Setembro de 2022',
+        //     technologiesWorked: [
+        //         'Java',
+        //         'Javascript',
+        //         'Typescript',
+        //         'Spring Boot',
+        //         'Angular',
+        //     ],
+        // },
+        // {
+        //     id: 2,
+        //     companyName: 'Touch Health',
+        //     description: DESCRIPTION_2,
+        //     beginning: 'Maio de 2023',
+        //     end: 'Maio de 2025',
+        //     technologiesWorked: [
+        //         'Java',
+        //         'Javascript',
+        //         'Typescript',
+        //         'Spring',
+        //         'JSP',
+        //         'React',
+        //         'Next.js',
+        //         'Docker',
+        //     ],
+        // },
+    ]);
 
     messagesTitle: string[] = [];
     messagesTechnologies: string[] = [];
@@ -66,17 +75,21 @@ export class ExperienceComponent implements OnInit, AfterViewInit {
     };
 
     isLoading = signal<boolean>(true);
+    isAdmin = signal<boolean>(false);
 
-    constructor(private translate: TranslateConfigService) {}
+    constructor(
+        private translate: TranslateConfigService,
+        private tokenService: TokenService,
+        private experienceService: ExperienceService,
+        private snackbarService: SnackBarService,
+    ) {
+        this.isAdmin.set(tokenService.isAdmin());
+        effect(() => this.insertMessages());
+    }
 
     ngOnInit(): void {
         this.insertI18n();
-        this.messagesTitle = this.experiences.map((experience) =>
-            this.generateTitle(experience),
-        );
-        this.messagesTechnologies = this.experiences.map((experience) =>
-            this.generateSentence(experience.technologiesWorked),
-        );
+        this.insertExperiences();
     }
 
     ngAfterViewInit(): void {
@@ -101,8 +114,45 @@ export class ExperienceComponent implements OnInit, AfterViewInit {
         return generatePhraseTechnologies(message, technologies);
     }
 
-    handleDelete(): void {
-        console.log('Por hora, apenas o clique...');
+    handleDelete(id: number | string): void {
+        this.experienceService.delete(id).subscribe({
+            next: () => {
+                this.openSnackbar();
+                this.insertExperiences();
+            },
+            error: (err) => {
+                console.error('Erro inesperado! ');
+            },
+        });
+    }
+
+    private insertExperiences(): void {
+        this.experienceService.getAll().subscribe({
+            next: (experiences) => {
+                this.experiences.set(experiences);
+            },
+            error: (err) => {
+                console.error('Erro inesperado! ', err);
+            },
+        });
+    }
+
+    private insertMessages(): void {
+        if (
+            this.i18n.tecnologiasTrabalhadas.length > 0 &&
+            this.experiences().length > 0
+        ) {
+            this.messagesTitle = this.experiences().map((experience) =>
+                this.generateTitle(experience),
+            );
+            this.messagesTechnologies = this.experiences().map((experience) =>
+                this.generateSentence(experience.technologiesWorked),
+            );
+        }
+    }
+
+    private openSnackbar(): void {
+        this.snackbarService.openSnackBarSucess('Excluído com êxito!');
     }
 
     private insertI18n(): void {

@@ -13,7 +13,7 @@
                 [technologiesUsed]="textsDescription[$index]"
                 [url]="article.urlArticle"
                 [urlRouterFormEdit]="'editar-artigo/' + article.id"
-                [onAction]="handleDelete"
+                (onAction)="handleDelete()"
             />
         }
     </div>

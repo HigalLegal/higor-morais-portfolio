@@ -12,11 +12,14 @@
     <span>{{ technologiesUsed }}</span>
 </p>
 
-<div class="button-form">
-    @if (urlRouterFormEdit) {
-        <app-button-form [text]="messageEdit" [urlRouter]="urlRouterFormEdit" />
-    }
-    @if (onAction) {
-        <app-button-action [text]="messageDelete" (clicked)="onAction()" />
-    }
-</div>
+@if (isAdmin()) {
+    <div class="button-form">
+        @if (urlRouterFormEdit) {
+            <app-button-form
+                [text]="messageEdit"
+                [urlRouter]="urlRouterFormEdit"
+            />
+        }
+        <app-button-action [text]="messageDelete" (clicked)="onAction.emit()" />
+    </div>
+}
