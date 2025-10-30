@@ -23,9 +23,9 @@ export class AboutComponent implements AfterViewInit {
 
     readonly textAboutMe: string = `Olá, tudo bem? Espero que sim!
 
-        Meu nome é  Higor Morais, trabalho como desenvolvedor e estudo no curso superior de Sistema de Informação no IFCE, campus Cedro. Sou apaixonado por tecnologia, programação é algo que faço até nas horas vagas, porque realmente gosto de explorar as tecnologias e desenvolver projetos. Sou alguém que não tem medo de desafios, algo que também posso aplicar no meu hobby: o karate. A prática me ensina disciplina e perseverança, características que levo para todas as áreas da minha vida.
+        Meu nome é Higor Morais, trabalho como desenvolvedor e estudo no curso superior de Sistema de Informação no IFCE, campus Cedro. Sou um grande fã de tecnologia, programação é algo que faço até nas horas vagas, porque realmente gosto de explorar as tecnologias e desenvolver projetos. Quanto aos meus hobbies, gosto bastante de assistir futebol, sou bastante fã de lutas e também prático Karate.
 
-        Nos meus momentos livres, também sou fã de animes e mangás, o que me ajuda a relaxar e explorar novas perspectivas criativas. Sou natural de Icó, no Ceará.`;
+        Moro e sou natural de Icó, no Ceará.`;
 
     isLoading = signal<boolean>(true);
 

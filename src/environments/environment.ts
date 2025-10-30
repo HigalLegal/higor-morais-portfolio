@@ -1,6 +1,6 @@
 import Environment from './type';
 
 export const environment: Environment = {
-    UrlApiBase: 'http://localhost:8080/',
+    UrlApiBase: 'https://portfolio-api-ftqe.onrender.com/',
     production: false,
 };
