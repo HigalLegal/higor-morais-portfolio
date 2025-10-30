@@ -1,0 +1,63 @@
+// $color-theme-light: #dbb587;
+// $color-theme-dark: #101d20;
+
+// //tema claro
+// $background-light: $color-theme-light;
+// $font-color-light: $color-theme-dark;
+
+// // tema escuro
+// $background-dark: url('../texture/textura-navbar-tema-escuro.png');
+// $font-color-dark: $color-theme-dark;
+
+@mixin body-style {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+@mixin home-component-light {
+    --font-magic-color: #7b3f00;
+    --text-shadow-value: 0 0 8px #8b4513, 0 0 12px #a0522d;
+}
+
+@mixin home-component-dark {
+    --font-magic-color: #ffd700;
+    --text-shadow-value: 0 0 8px #ffd700, 0 0 12px #ffec8b;
+}
+
+@mixin theme-light {
+    --background-color: #dbb587;
+    --font-color: #101d20;
+    --secondary-color: black;
+    --alternative-color: rgba(219, 181, 135, 0.9);
+    @include body-style;
+    @include home-component-light;
+}
+
+@mixin theme-dark {
+    --background-color: url("../texture/textura-navbar-tema-escuro.png");
+    --font-color: #dbb587;
+    --secondary-color: white;
+    --alternative-color: rgba(16, 29, 32, 0.9);
+    @include body-style;
+    @include home-component-dark;
+}
+
+.light-theme {
+    @include theme-light;
+    background-image: url("../texture/textura-tema-branco.jpeg");
+}
+
+.dark-theme {
+    @include theme-dark;
+    background-image: url("../texture/textura-navbar-tema-escuro.png");
+}
+
+// body {
+//     background-image: url('./assets/texture/textura-tema-branco.jpeg');
+//     background-size: cover;
+//     background-position: center;
+//     background-repeat: no-repeat;
+//     background-attachment: fixed;
+// }

@@ -1,0 +1,1 @@
+import{Z as r,sa as o}from"./chunk-XWV3PDOS.js";var c=class e{selectedHomeScreen=o("inicio");constructor(){}setHomeScreen(t){this.selectedHomeScreen.set(t)}getHomeScreen(){return this.selectedHomeScreen()}static \u0275fac=function(n){return new(n||e)};static \u0275prov=r({token:e,factory:e.\u0275fac,providedIn:"root"})};export{c as a};
