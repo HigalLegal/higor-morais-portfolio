@@ -12,14 +12,14 @@ import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.compon
 })
 export class AboutComponent implements AfterViewInit {
     private readonly COIN_BLACK_1: string =
-        '../../../assets/img/moeda-1-para-tema-escuro.png';
+        'assets/img/moeda-1-para-tema-escuro.png';
     private readonly COIN_BLACK_2: string =
-        '../../../assets/img/moeda-2-para-tema-escuro.png';
+        'assets/img/moeda-2-para-tema-escuro.png';
 
     private readonly COIN_LIGHT_1: string =
-        '../../../assets/img/moeda-1-para-tema-claro.png';
+        'assets/img/moeda-1-para-tema-claro.png';
     private readonly COIN_LIGHT_2: string =
-        '../../../assets/img/moeda-2-para-tema-claro.png';
+        'assets/img/moeda-2-para-tema-claro.png';
 
     readonly textAboutMe: string = `Olá, tudo bem? Espero que sim!
 

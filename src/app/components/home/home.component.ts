@@ -24,9 +24,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private readonly TRANSLANTE_JSON: string = 'home';
 
     private readonly SWORD_BLACK_THEME: string =
-        '../../../assets/texture/espada-pro-tema-preto.png';
+        'assets/texture/espada-pro-tema-preto.png';
     private readonly SWORD_LIGHT_THEME: string =
-        '../../../assets/texture/espada-pro-tema-branco.png';
+        'assets/texture/espada-pro-tema-branco.png';
     MY_PHOTO: string = 'assets/texture/sem-foto.jpg';
 
     windowWidth: number;
