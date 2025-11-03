@@ -23,7 +23,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 registerLocaleData(localePt);
 
 const createTranslateLoader = (http: HttpClient) => {
-    return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
+    return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 };
 
 export const appConfig: ApplicationConfig = {
