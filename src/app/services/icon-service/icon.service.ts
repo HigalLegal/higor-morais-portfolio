@@ -12,7 +12,7 @@ export class IconService {
     ) {}
 
     public registerIcons(...namesIcons: string[]): void {
-        const prePath = '../../assets/icons/';
+        const prePath = 'assets/icons/';
 
         namesIcons.forEach((icon) => {
             this.matIconRegistry.addSvgIcon(
