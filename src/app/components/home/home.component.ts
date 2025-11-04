@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         'assets/texture/espada-pro-tema-preto.png';
     private readonly SWORD_LIGHT_THEME: string =
         'assets/texture/espada-pro-tema-branco.png';
-    MY_PHOTO: string = 'assets/img/eu.jpg';
+    MY_PHOTO: string = 'assets/img/minha-foto.jpeg';
 
     windowWidth: number;
 
