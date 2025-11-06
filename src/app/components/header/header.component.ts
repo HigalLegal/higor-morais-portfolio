@@ -134,6 +134,7 @@ export class HeaderComponent implements OnInit {
         this.handleNavigation();
         this.setLoadingTemporarily();
         this.setComponent(aliasComponent);
+        this.isOpenMenu = false;
     }
 
     onChangeTheme(): void {
