@@ -1,4 +1,11 @@
-import { Component, OnInit, AfterViewInit, signal } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    AfterViewInit,
+    signal,
+    ElementRef,
+    ViewChild,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TechnologyResponse } from '../../models/response/technology-response';
@@ -12,7 +19,6 @@ import { forkJoin } from 'rxjs';
 import { ApiLoadingComponent } from '../../shared/api-loading/api-loading.component';
 import { ButtonActionComponent } from '../../shared/button-action/button-action.component';
 import { TechnologyService } from '../../services/api/technology-service/technology.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TokenService } from '../../services/token-service/token.service';
 import SKillsI18N from './skillsI18N';
@@ -36,6 +42,8 @@ import { SnackBarService } from '../../services/snack-bar-service/snack-bar.serv
 })
 export class SkillsComponent implements OnInit, AfterViewInit {
     readonly TRANSLATE_JSON: string = 'skills';
+    private touchStartX = 0;
+    private touchEndX = 0;
 
     isAdmin = signal<boolean>(false);
 
@@ -52,6 +60,8 @@ export class SkillsComponent implements OnInit, AfterViewInit {
     };
 
     isLoading = signal<boolean>(true);
+
+    @ViewChild('carouselWrapper') carouselWrapper!: ElementRef;
 
     constructor(
         private translate: TranslateConfigService,
@@ -71,6 +81,7 @@ export class SkillsComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
             this.isLoading.set(false);
         }, 200);
+        this.addSwipeListeners();
     }
 
     next(): void {
@@ -143,5 +154,32 @@ export class SkillsComponent implements OnInit, AfterViewInit {
             },
             error: (err) => console.error('Erro inesperado! ' + err),
         });
+    }
+
+    private addSwipeListeners(): void {
+        const element = this.carouselWrapper.nativeElement;
+
+        element.addEventListener('touchstart', (event: TouchEvent) => {
+            this.touchStartX = event.changedTouches[0].screenX;
+        });
+
+        element.addEventListener('touchend', (event: TouchEvent) => {
+            this.touchEndX = event.changedTouches[0].screenX;
+            this.handleSwipeGesture();
+        });
+    }
+
+    private handleSwipeGesture(): void {
+        const swipeDistance = this.touchEndX - this.touchStartX;
+
+        const swipeThreshold = 50;
+
+        if (Math.abs(swipeDistance) < swipeThreshold) return;
+
+        if (swipeDistance < 0) {
+            this.next();
+        } else {
+            this.prev();
+        }
     }
 }
